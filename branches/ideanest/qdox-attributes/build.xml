@@ -1,0 +1,64 @@
+<project name="IdeanestAttributes" default="Archive distribution">
+
+	<property name="release" value="0.6"/>
+
+	<path id="classes">
+		<pathelement location="lib\qdox-tiny.jar"/>
+		<pathelement location="c:\code\libraries\junit-3.8.1.jar"/>
+	</path>
+	
+	<target name="Attribute JARs" depends="Development JAR,Runtime JAR"/>
+	
+	<target name="Development JAR" depends="Build optimized">
+		<jar basedir="build-opt" destfile="lib/attrib-dev.jar" excludes="**/*Test.class"/>
+	</target>
+	
+	<target name="Runtime JAR" depends="Build optimized">
+		<jar basedir="build-opt" destfile="lib/attrib-rt.jar">
+			<exclude name="**/*Test.class"/>
+			<exclude name="com/ideanest/attributes/dev/*"/>
+		</jar>
+	</target>
+	
+	<target name="QDox tiny JAR">
+		<jar basedir="c:\code\libraries\qdox\target\src\java" destfile="lib/qdox-tiny.jar" includes="**/parser/**/*.class"/>
+	</target>
+	
+	<target name="Javadocs">
+		<delete dir="doc/api" quiet="true"/>
+		<javadoc
+			destdir="doc/api"
+			public="true" source="1.4" verbose="false" nodeprecated="true"
+			classpathref="classes">
+			<fileset dir="src"/>
+		</javadoc>
+		<delete dir="C:\Documents and Settings\Piotr Kaminski\My Documents\Research\web\attributes\doc\api" quiet="true"/>
+		<copy todir="C:\Documents and Settings\Piotr Kaminski\My Documents\Research\web\attributes\doc\api">
+			<fileset dir="doc/api"/>
+		</copy>
+	</target>
+	
+	<target name="Build optimized">
+		<javac
+			srcdir="src" destdir="build-opt"
+			source="1.4" target="1.4"
+			fork="true" executable="c:\code\j2sdk1.4.2\bin\javac.exe"
+			debug="false" optimize="true"
+			classpathref="classes"
+			excludes="**/CompilerTask.java"/>
+	</target>
+	
+	<target name="Archive distribution" depends="Attribute JARs,Javadocs">
+		<zip destfile="C:\Documents and Settings\Piotr Kaminski\My Documents\Research\web\attributes\attribs-${release}.zip">
+			<fileset dir=".">
+				<include name="lib/**/*"/>
+				<include name="src/**/*"/>
+				<include name="doc/**/*"/>
+			</fileset>
+			<fileset dir="C:\Documents and Settings\Piotr Kaminski\My Documents\Research\web\attributes\">
+				<include name="doc/manual.html"/>
+			</fileset>
+		</zip>
+	</target>
+	
+</project>
