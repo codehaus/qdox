@@ -1,9 +1,9 @@
 <qdox>
-	<source>
-		<package>test</package>
-		<class>
-			<name>JudyMap</name>
-			<extends>java.util.Map</extends>
-		</class>
-	</source>
+    <source>
+        <package>test</package>
+        <class>
+            <name>JudyMap</name>
+            <extends>java.util.Map</extends>
+        </class>
+    </source>
 </qdox>

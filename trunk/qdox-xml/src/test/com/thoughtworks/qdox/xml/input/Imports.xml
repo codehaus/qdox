@@ -1,10 +1,10 @@
 <qdox>
-	<source>
-		<package>test</package>
-		<import>java.util.*</import>
-		<import>java.io.File</import>
-		<class>
-			<name>X</name>
-		</class>
-	</source>
+    <source>
+        <package>test</package>
+        <import>java.util.*</import>
+        <import>java.io.File</import>
+        <class>
+            <name>X</name>
+        </class>
+    </source>
 </qdox>
