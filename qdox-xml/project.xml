@@ -19,7 +19,31 @@
     </shortDescription>
     
     <url>http://qdox.codehaus.org/</url>
+    <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10103</issueTrackingUrl>
 
+    <repository>
+        <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/qdox:qdox-xml</connection>
+        <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/qdox:qdox-xml</developerConnection>
+        <url>http://cvs.codehaus.org/viewcvs.cgi/qdox-xml/?cvsroot=qdox</url>
+    </repository>
+  
+    <versions>
+        <version>
+            <id>current</id>
+            <name>Current</name>
+            <tag>HEAD</tag>
+        </version>
+    </versions>
+
+    <mailingLists>
+        <mailingList>
+            <name>QDox User List</name>
+            <subscribe>http://lists.codehaus.org/mailman/listinfo/qdox-user</subscribe>
+            <unsubscribe>http://lists.codehaus.org/mailman/listinfo/qdox-user</unsubscribe>
+            <archive>http://lists.codehaus.org/pipermail/qdox-user/</archive>
+        </mailingList>
+    </mailingLists>
+    
     <developers>
         <developer>
             <name>Mike Williams</name>
@@ -50,12 +74,6 @@
         </dependency>
     </dependencies>
 
-    <reports>
-        <report>maven-changelog-plugin</report>
-        <report>maven-javadoc-plugin</report>
-        <report>maven-junit-report-plugin</report>
-    </reports>
-    
     <build>
 
         <sourceDirectory>src/java</sourceDirectory>
@@ -72,9 +90,14 @@
             </resources>
         </unitTest>
 
-        <integrationUnitTestSourceDirectory/>
-        <integrationUnitTest/>
-        
     </build>
+
+    <reports>
+        <report>maven-changes-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-jxr-plugin</report>
+        <report>maven-junit-report-plugin</report>
+        <report>maven-clover-plugin</report>
+    </reports>
     
 </project>
