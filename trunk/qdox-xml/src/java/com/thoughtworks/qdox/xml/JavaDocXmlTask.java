@@ -34,7 +34,7 @@ public class JavaDocXmlTask extends AbstractQdoxTask {
 
 	/**
 	 * Set the "writeDtd" attribute.  If true, the QDox DTD will be
-	 * included in the output.  Defaults to true.
+	 * included in the output.  Defaults to false.
 	 */
 	public void setWriteDtd(boolean writeDtd) {
 		this.writeDtd = writeDtd;
