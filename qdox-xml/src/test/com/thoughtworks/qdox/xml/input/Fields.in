@@ -1,6 +1,0 @@
-package test; 
-
-class X {
-   int y;
-   long[] z;
-}
