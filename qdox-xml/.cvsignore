@@ -2,6 +2,7 @@
 *.iws
 .classpath
 .project
+build.xml
 lib
 maven.log
 target
