@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <title>QDox-XML</title>
+    <author email="mdub@dogbiscuit.org">Mike Williams</author>
+  </properties>
+  
+  <body>
+
+    <section name="QDox-XML">
+
+      <p>
+        QDox-XML provides a standard serialisation of a QDox model as XML.
+      </p>
+
+    </section>
+
+    <section name="API Usage">
+
+      <p>
+        The core class of QDox-XML is <a
+        href="apidocs/com/thoughtworks/qdox/xml/JavaDocXmlGenerator.html">JavaDocXmlGenerator</a>,
+        which traverses a QDox model, sending events to an <a
+        href="apidocs/com/thoughtworks/qdox/xml/XmlHandler.html">XmlHandler</a>
+        (similar to the SAX <a
+        href="http://www.saxproject.org/apidoc/org/xml/sax/ContentHandler.html">ContentHandler</a>
+        interface, but much simplified).
+      </p>
+
+      <p>
+         To serialise a QDox model as XML text, use the
+         <a href="apidocs/com/thoughtworks/qdox/xml/TextXmlHandler.html">TextXmlHandler</a>, e.g.
+      </p>
+
+<source><![CDATA[
+    JavaDocXmlGenerator xmlGenerator =
+        new JavaDocXmlGenerator(new TextXmlHandler(fileWriter));
+    xmlGenerator.write(javaDocBuilder.getSources());
+]]></source>
+
+      <p>
+         To generate SAX events, e.g. for direct input to a XSLT
+         transformation, use the <a href="apidocs/com/thoughtworks/qdox/xml/SaxXmlHandler.html">SaxXmlHandler</a>, e.g.
+      </p>
+
+<source><![CDATA[
+    JavaDocXmlGenerator xmlGenerator =
+        new JavaDocXmlGenerator(new SaxXmlHandler(contentHandler));
+    xmlGenerator.write(javaDocBuilder.getSources());
+]]></source>
+
+    </section>
+
+    <section name="Ant Usage">
+
+      <p>
+        QDox-XML also includes an Ant task, which can be used as follows:
+      </p>
+
+<source><![CDATA[
+    <target name="generate-qdox">
+
+        <taskdef name="qdox-xml" 
+                 classname="com.thoughtworks.qdox.xml.JavaDocXmlTask">
+            <classpath>
+                <pathelement location="${lib.dir}/qdox.jar" />
+                <pathelement location="${lib.dir}/qdox-xml.jar" />
+            </classpath>
+        </taskdef>
+
+        <qdox-xml dest="build/mysrc-qdox.xml">
+            <fileset dir="src/java" />
+        </qdox-xml>
+
+    </target>
+]]></source>
+
+      <p>
+        The generated XML file could then be used as input to XSLT/Jelly
+        transformations, or processed in other ways.
+      </p>
+
+    </section>
+
+  </body>
+
+</document>
