@@ -22,8 +22,8 @@
         </qdox-xml>
         <echo message="Validating generated XML against QDox DTD" />
         <xmlvalidate file="${maven.build.dir}/qdox-with-dtd.xml">
-            <dtd publicId="-//codehaus.org//QDox 1.0//EN"
-                 location="src/dtd/qdox-1.0.dtd" />
+            <dtd publicId="-//codehaus.org//QDox 1.6//EN"
+                 location="src/dtd/qdox-1.6.dtd" />
         </xmlvalidate>
     </goal>
 

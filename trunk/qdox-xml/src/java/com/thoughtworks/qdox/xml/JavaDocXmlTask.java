@@ -22,8 +22,8 @@ public class JavaDocXmlTask extends Task {
 
     static final String QD0X_DTD_PREAMBLE = 
         "<!DOCTYPE qdox PUBLIC"
-        + " \"-//codehaus.org//QDox 1.0//EN\""
-        + " \"http://qdox.codehaus.org/dtd/qdox-1.0.dtd\">";
+        + " \"-//codehaus.org//QDox 1.6//EN\""
+        + " \"http://qdox.codehaus.org/dtd/qdox-1.6.dtd\">";
     
     //---( Arguments )---
 
