@@ -100,15 +100,22 @@ public class JavaDocXmlTask extends Task {
     } 
     
     protected void processSources(JavaSource[] sources) {
+        log("writing " + dest);
+        Writer out = null;
         try {
-            log("writing " + dest);
-            Writer out = new FileWriter(dest);
+            out = new FileWriter(dest);
             writePreamble(out);
             JavaDocXmlGenerator xmlGenerator =
                 new JavaDocXmlGenerator(new TextXmlHandler(out, "  "));
             xmlGenerator.write(sources);
         } catch (IOException e) {
             throw new BuildException(e);
+        } finally {
+            try {
+                if (out != null) out.close();
+            } catch (IOException e) {
+                // ignore
+            }
         }
     }
 
