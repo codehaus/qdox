@@ -23,9 +23,6 @@ package is sealed at runtime.  Test classes are filtered out of the distribution
 by looking for the word "Test" in the class name.  They are filtered out of the javadocs
 by marking them as deprecated; unfortunately, I couldn't find a cleaner way to do it.
 </li>
-<li>The dependencies on JDK 1.4 are pretty slim right now, so it should be easy to
-backport to 1.3 (or even earlier versions).  You'd have to take out the assertions,
-remove or modify exception chaining, and use a different logging mechanism.</li>
 <li>Any other questions?  <a href="mailto:piotr@ideanest.com?subject=QDox%20attributes%20code">Ask me.</a></li>
 </ul>
 
