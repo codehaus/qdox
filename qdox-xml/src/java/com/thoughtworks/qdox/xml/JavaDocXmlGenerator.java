@@ -87,7 +87,7 @@ public class JavaDocXmlGenerator {
         for (int i = 0; i < methods.length; i++) {
             writeJavaMethod(methods[i]);
         }
-        JavaClass[] classes = javaClass.getClasses();
+        JavaClass[] classes = javaClass.getInnerClasses();
         for (int i = 0; i < classes.length; i++) {
             writeJavaClass(classes[i]);
         }
