@@ -18,6 +18,7 @@
     <th></th>
     <th>QDox Attributes <b>v0.6</b></th>
     <th>JSR 175</th>
+    <th><a href="http://spice.sourceforge.net/metaclass/">MetaClass</a></th>
     <th><a href="http://nanning.sourceforge.net/">Nanning Attributes</a></th>
     <th><a href="http://attrib4j.sourceforge.net">Attrib4j</a></th>
     <th>C# attributes</th>
@@ -27,6 +28,7 @@
     <td align="middle">yes</td>
     <td align="middle"></td>
     <td align="middle">yes</td>
+    <td align="middle">yes</td>
     <td align="middle">no</td>
     <td align="middle">no</td>
   </tr>
@@ -35,12 +37,14 @@
     <td align="middle">yes</td>
     <td align="middle"></td>
     <td align="middle">no</td>
+    <td align="middle">no</td>
     <td align="middle">yes</td>
     <td align="middle">yes</td>
   </tr>
   <tr>
-    <td style="margin-left: 10px">Attribute subtyping:</td>
+    <td style="MARGIN-LEFT: 10px">Attribute subtyping:</td>
     <td align="middle">yes</td>
+    <td align="middle"></td>
     <td align="middle"></td>
     <td align="middle"></td>
     <td align="middle">?</td>
@@ -51,6 +55,7 @@
     <td align="middle">yes</td>
     <td align="middle"></td>
     <td align="middle"></td>
+    <td align="middle"></td>
     <td align="middle">no</td>
     <td align="middle">yes (?)</td>
   </tr>
@@ -58,13 +63,15 @@
     <td style="MARGIN-LEFT: 10px">Positional and named parameters:</td>
     <td align="middle">both</td>
     <td align="middle"></td>
+    <td align="middle">positional or single</td>
     <td align="middle"></td>
     <td align="middle">positional only</td>
     <td align="middle">both</td>
   </tr>
   <tr>
     <td style="MARGIN-LEFT: 10px">Complex parameters:</td>
-    <td align="middle"> some</td>
+    <td align="middle">some</td>
+    <td align="middle"></td>
     <td align="middle"></td>
     <td align="middle"></td>
     <td align="middle">?</td>
@@ -75,6 +82,7 @@
     <td align="middle">not yet</td>
     <td align="middle"></td>
     <td align="middle">no</td>
+    <td align="middle">no</td>
     <td align="middle">?</td>
     <td align="middle">yes</td>
   </tr>
@@ -82,6 +90,7 @@
     <td>Multiple attributes with same tag on an element:</td>
     <td align="middle">yes</td>
     <td align="middle"></td>
+    <td align="middle">yes</td>
     <td align="middle">no</td>
     <td align="middle">?</td>
     <td align="middle">yes</td>
@@ -90,6 +99,7 @@
     <td>Keeps attributes in declaration order:</td>
     <td align="middle">yes</td>
     <td align="middle"></td>
+    <td align="middle">?</td>
     <td align="middle">no</td>
     <td align="middle">?</td>
     <td align="middle">no</td>
@@ -98,6 +108,7 @@
     <td>Attribute inheritance:</td>
     <td align="middle">not yet</td>
     <td align="middle"></td>
+    <td align="middle">?</td>
     <td align="middle">yes</td>
     <td align="middle">yes</td>
     <td align="middle">yes</td>
@@ -106,6 +117,7 @@
     <td>Supports nested classes:</td>
     <td align="middle">yes</td>
     <td align="middle"></td>
+    <td align="middle">?</td>
     <td align="middle">yes</td>
     <td align="middle">?</td>
     <td align="middle">n/a (?)</td>
@@ -116,12 +128,14 @@
     <td align="middle"></td>
     <td align="middle">no</td>
     <td align="middle">no</td>
+    <td align="middle">no</td>
     <td align="middle">no (?)</td>
   </tr>
   <tr>
     <td>Attribute assignments can be modified at runtime:</td>
-    <td align="middle">yes</td>
+    <td align="middle">no</td>
     <td align="middle"></td>
+    <td align="middle">yes</td>
     <td align="middle">no</td>
     <td align="middle">no</td>
     <td align="middle">no (?)</td>
@@ -130,15 +144,17 @@
     <td>Wildcard tag application:</td>
     <td align="middle">not yet</td>
     <td align="middle"></td>
+    <td align="middle">possible with custom code</td>
     <td align="middle">no</td>
     <td align="middle">no</td>
     <td align="middle">no</td>
   </tr>
   <tr>
     <td>Attribute storage:</td>
-    <td align="middle">serialized in one separate  file per class <em>or</em> one separate file per JAR</td>
+    <td align="middle">serialized in one separate file per class <em>or</em> one separate file per JAR</td>
     <td align="middle"></td>
-    <td align="middle">text properties in one separate  file per class</td>
+    <td align="middle">one separate file per class</td>
+    <td align="middle">text properties in one separate file per class</td>
     <td align="middle">serialized within the class file</td>
     <td align="middle">serialized within the assembly file</td>
   </tr>
@@ -146,14 +162,16 @@
     <td>Prunes orphan attribute files:</td>
     <td align="middle">yes</td>
     <td align="middle"></td>
+    <td align="middle">?</td>
     <td align="middle">no</td>
     <td align="middle">yes</td>
     <td align="middle">yes</td>
   </tr>
   <tr>
     <td>Retention policy:</td>
-    <td align="middle">not yet</td>
+    <td align="middle">not yet (?)</td>
     <td align="middle"></td>
+    <td align="middle">no</td>
     <td align="middle">no</td>
     <td align="middle">?</td>
     <td align="middle">no</td>
@@ -162,6 +180,7 @@
     <td>Attribute compilation speed:</td>
     <td align="middle">fast</td>
     <td align="middle"></td>
+    <td align="middle">fast (?)</td>
     <td align="middle">fast</td>
     <td align="middle">slow</td>
     <td align="middle">very fast</td>
@@ -172,12 +191,14 @@
     <td align="middle"></td>
     <td align="middle">?</td>
     <td align="middle">?</td>
+    <td align="middle">?</td>
     <td align="middle">fast</td>
   </tr>
   <tr>
     <td>Runtime code size:</td>
     <td align="middle">14Kb</td>
     <td align="middle"></td>
+    <td align="middle">35Kb</td>
     <td align="middle">~140Kb (part of a bigger project)</td>
     <td align="middle">530Kb</td>
     <td align="middle">n/a</td>
@@ -187,6 +208,7 @@
     <td align="middle">not yet</td>
     <td align="middle"></td>
     <td align="middle">yes</td>
+    <td align="middle">yes</td>
     <td align="middle">yes (?)</td>
     <td align="middle">n/a</td>
   </tr>
@@ -195,6 +217,7 @@
     <td align="middle">not yet</td>
     <td align="middle"></td>
     <td align="middle">no</td>
+    <td align="middle">no</td>
     <td align="middle">not yet (?)</td>
     <td align="middle">n/a</td>
   </tr>
@@ -202,6 +225,7 @@
     <td>Unit test coverage:</td>
     <td align="middle">some</td>
     <td align="middle"></td>
+    <td align="middle">good</td>
     <td align="middle">a bit</td>
     <td align="middle">?</td>
     <td align="middle">n/a</td>
