@@ -2,9 +2,9 @@ package com.thoughtworks.qdox.xml;
 
 import junit.framework.TestCase;
 
-public class SaxXmlHandlerTest extends TestCase {
+public class SaxXmlHandler_Test extends TestCase {
 
-	public SaxXmlHandlerTest(String name) {
+	public SaxXmlHandler_Test(String name) {
 		super(name);
 	}
 	
