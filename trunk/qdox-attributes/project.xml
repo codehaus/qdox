@@ -85,19 +85,17 @@
   </dependencies>
 
   <build>
-
     <nagEmailAddress>qdox-user@lists.codehaus.org</nagEmailAddress>
-
     <sourceDirectory>src/java</sourceDirectory>
-    
-    <unitTestSourceDirectory>src/java</unitTestSourceDirectory>
-
-    <unitTest>
-      <includes>
-        <include>**/*$Test*</include>
-      </includes>
-    </unitTest>
-
+    <!-- resource inclusion doesn't work -- fix me -->
+    <resources>
+    	<resource>
+    		<directory>${maven.build.dir}/attribs</directory>
+    		<includes>
+    			<include>**/*.attribs</include>
+    		</includes>
+    	</resource>
+    </resources>
   </build>
 
   <reports>
