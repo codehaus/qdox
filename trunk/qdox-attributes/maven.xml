@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<project default="jar" xmlns:j="jelly:core" xmlns:maven="jelly:maven">
+
+  <goal name="test:myway"
+        description="Test the application, ala Piotr"
+        prereqs="java:compile,test:prepare-filesystem,test:test-resources"> 
+    <taskdef name="junit" 
+             classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" />
+    <junit printSummary="yes" 
+           failureProperty="maven.test.failure"
+           fork="${maven.junit.fork}"
+           dir="${maven.junit.dir}">
+      <sysproperty key="basedir" value="${basedir}"/>
+      <formatter type="xml"/>
+      <formatter type="plain" usefile="${maven.junit.usefile}"/>
+      <classpath>
+        <path refid="maven.dependency.classpath"/>
+        <pathelement location="${maven.build.dest}"/>
+        <pathelement path="${plugin.getDependencyPath('junit')}"/>
+      </classpath>
+      <batchtest todir="${maven.test.reportsDirectory}">
+        <fileset dir="${maven.build.dest}">
+          <include name="**/*$Test.class"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </goal>
+
+  <postGoal name="test:test">
+    <attainGoal name="test:myway"/>
+  </postGoal>
+
+</project>
+
