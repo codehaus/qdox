@@ -1,53 +1,34 @@
 <?xml version="1.0"?>
-<project default="jar" xmlns:j="jelly:core" xmlns:maven="jelly:maven">
+<project default="jar" 
+         xmlns:j="jelly:core" 
+         xmlns:maven="jelly:maven"
+         xmlns:doc="doc">
 
-	<goal name="demo:generate" 
-		  description="Run qdox-xml on it's own source-base">
+    <goal name="qdox-xml:taskdef">
+        <attainGoal name="java:compile"/>
+        <taskdef name="qdox-xml" 
+                 classname="com.thoughtworks.qdox.xml.JavaDocXmlTask">
+            <classpath>
+                <pathelement location="${maven.build.dir}/classes" />
+                <path refid="maven.dependency.classpath" />
+            </classpath>
+        </taskdef>
+    </goal>
+    
+    <goal name="qdox-xml:validate">
+        <attainGoal name="qdox-xml:taskdef"/>
+        <qdox-xml dest="${maven.build.dir}/qdox-with-dtd.xml" writeDTD="yes">
+            <fileset dir="src/java" />
+        </qdox-xml>
+        <echo message="Validating generated XML against QDox DTD" />
+        <xmlvalidate file="${maven.build.dir}/qdox-with-dtd.xml">
+            <dtd publicId="-//codehaus.org//QDox 1.0//EN"
+                 location="src/dtd/qdox-1.0.dtd" />
+        </xmlvalidate>
+    </goal>
 
-		<attainGoal name="java:compile"/>
-		
-		<taskdef name="qdox-xml" 
-				 classname="com.thoughtworks.qdox.xml.JavaDocXmlTask">
-			<classpath>
-				<pathelement location="${basedir}/target/classes" />
-				<path refid="maven.dependency.classpath" />
-			</classpath>
-		</taskdef>
-
-		<echo message="Dumping QDox info as XML -> target/qdox.xml" />
-		<qdox-xml dest="target/qdox.xml" writeDTD="yes">
-			<fileset dir="src/java" />
-		</qdox-xml>
-
-	</goal>
-	
-	<goal name="demo:validate">
-		<attainGoal name="demo:generate"/>
-		<xmlvalidate file="target/qdox.xml">
-			<dtd publicId="-//codehaus.org//QDox 1.0//EN"
-				 location="src/dtd/qdox-1.0.dtd" />
-		</xmlvalidate>
-	</goal>
-
-	<postGoal name="test">
-		<attainGoal name="demo:validate"/>
-	</postGoal>
-
-	<goal name="demo:style" 
-		  description="Run generated QDox-XML thru a stylesheet">
-
-		<attainGoal name="demo:generate"/>
-
-		<echo message="Extracting method summary -> target/method-summary.txt" />
-		<!-- TODO: get the style task working in maven -->
-		<style in="target/qdox.xml"
-			   style="style/method-summary.xsl" 
-			   out="target/method-summary.txt" />
-
-	</goal>
-
-	<goal name="demo">
-		<attainGoal name="demo:style"/>
-	</goal>
+    <postGoal name="test">
+        <attainGoal name="qdox-xml:validate"/>
+    </postGoal>
 
 </project>
