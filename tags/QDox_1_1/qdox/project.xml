@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<project>
+
+	<pomVersion>3</pomVersion>
+
+	<name>QDox</name>
+	<id>qdox</id>
+	<currentVersion>1.1</currentVersion>
+	<inceptionYear>2002</inceptionYear>
+	<package>com.thoughtworks.qdox</package>
+	<logo>/images/qdox.gif</logo>
+
+	<organization>
+		<name>ThoughtWorks, Inc</name>
+		<url>http://www.thoughtworks.com/</url>
+	</organization>
+
+	<shortDescription>QDox - Quick JavaDoc Scanner</shortDescription>
+	<description>
+		QDox is a high speed, small footprint parser for extracting class/interface/method 
+		definitions from source files complete with JavaDoc @tags. It is designed to be used 
+		by active code generators or documentation tools.
+	</description>
+
+	<url>http://qdox.sourceforge.net/</url>
+	<issueTrackingUrl>http://wiki.truemesh.com/qdox/</issueTrackingUrl>
+
+	<siteAddress>qdox.sf.net</siteAddress>
+	<siteDirectory>/home/groups/q/qd/qdox/htdocs</siteDirectory>
+	<distributionDirectory>/home/groups/q/qd/qdox/htdocs/downloads</distributionDirectory>
+	<distributionSite>qdox.sf.net</distributionSite>
+
+	<repository>
+		<connection>scm:cvs::pserver:anonymous@cvs.sourceforge.net:/cvsroot/qdox:qdox</connection>
+		<url>http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/qdox/qdox/</url>
+	</repository>
+
+	<versions>
+		<version>
+			<id>1.0</id>
+			<name>1.0</name>
+			<tag>1_0</tag>
+		</version>
+		<version>
+			<id>1.1</id>
+			<name>1.1</name>
+			<tag>1_1</tag>
+		</version>
+		<version>
+			<id>current</id>
+			<name>Current</name>
+			<tag>HEAD</tag>
+		</version>
+	</versions>
+
+	<mailingLists>
+		<mailingList>
+			<name>QDox User List</name>
+			<subscribe>qdox-user-request@lists.sourceforge.net</subscribe>
+			<unsubscribe>qdox-user-request@lists.sourceforge.net</unsubscribe>
+			<archive>http://www.geocrawler.com/lists/3/SourceForge/23415/0/</archive>
+		</mailingList>
+	</mailingLists>
+
+	<developers>
+
+		<developer>
+			<name>Joe Walnes</name>
+			<id>joeretro</id>
+			<email>joew@thoughtworks.com</email>
+			<organization>ThoughtWorks</organization>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Mike Royle</name>
+			<id>mlroyle</id>
+			<email>mroyle@thoughtworks.com</email>
+			<organization>ThoughtWorks</organization>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Paul Hammant</name>
+			<id>paul-h</id>
+			<email>Paul_Hammant@yahoo.com</email>
+			<organization>ThoughtWorks</organization>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<name>Mike Williams</name>
+			<id>mdub</id>
+			<email>mdub@bigfoot.com</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<contributors>
+		<contributor>
+			<name>Peter Donald</name>
+			<email>peter@apache.org</email>
+		</contributor>
+		<contributor>
+			<name>James Strachan</name>
+			<email>jstrachan@apache.org</email>
+		</contributor>
+	</contributors>
+
+	<dependencies>
+		<dependency>
+			<id>ant</id>
+			<version>1.5.1</version>
+		</dependency>
+		<dependency>
+			<id>junit</id>
+			<version>3.8.1</version>
+		</dependency>
+		<dependency>
+			<id>mmmockobjects</id>
+			<version>1.12</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+
+		<nagEmailAddress>qdox-user@lists.sourceforge.net</nagEmailAddress>
+
+		<sourceDirectory>src/java</sourceDirectory>
+		<unitTestSourceDirectory>target/src/test</unitTestSourceDirectory>
+
+		<unitTest>
+			<includes>
+				<include>**/*Test.java</include>
+			</includes>
+		</unitTest>
+
+		<jars/>
+		
+	</build>
+</project>
