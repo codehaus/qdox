@@ -116,7 +116,7 @@ public class JavaDocXmlGenerator_Test extends TestCase {
     private String toXml(JavaSource[] javaDoc) throws Exception {
         StringWriter buffer = new StringWriter();
         JavaDocXmlGenerator generator =
-            new JavaDocXmlGenerator(new TextXmlHandler(buffer));
+            new JavaDocXmlGenerator(new TextXmlHandler(buffer, ""));
         generator.write(javaDoc);
         return buffer.toString();
     }
