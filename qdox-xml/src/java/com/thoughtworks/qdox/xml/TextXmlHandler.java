@@ -12,10 +12,6 @@ public class TextXmlHandler implements XmlHandler {
 	// This avoids having to deal with SAX, and finding a fully-fledged
 	// SAX-based XML serializer.
 
-	//---( Constants )---
-
-	static final String XML_PREAMBLE = "<?xml version=\"1.0\"?>";
-
 	//---( Member variables )---
 
 	private PrintWriter out;
@@ -38,7 +34,6 @@ public class TextXmlHandler implements XmlHandler {
 	//---( Implement XmlHandler )---
 
 	public void startDocument() {
-		out.println(XML_PREAMBLE);
 	}
 
 	public void startElement(String name) {

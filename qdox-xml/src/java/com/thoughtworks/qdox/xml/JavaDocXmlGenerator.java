@@ -75,13 +75,13 @@ public class JavaDocXmlGenerator {
 				addElement("extends", superClass);
 			}
 		}
-		JavaField[] fields = javaClass.getFields();
-		for (int i = 0; i < fields.length; i++) {
-			writeJavaField(fields[i]);
-		}
 		Type[] interfaces = javaClass.getImplements();
 		for (int i = 0; i < interfaces.length; i++) {
 			addElement("implements", interfaces[i].getValue());
+		}
+		JavaField[] fields = javaClass.getFields();
+		for (int i = 0; i < fields.length; i++) {
+			writeJavaField(fields[i]);
 		}
 		JavaMethod[] methods = javaClass.getMethods();
 		for (int i = 0; i < methods.length; i++) {
