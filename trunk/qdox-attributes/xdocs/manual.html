@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 
 <head>
@@ -36,13 +37,13 @@
 
 <h1 id="top">QDox Attributes Usage Manual</h1>
 <div class="TableOfContents">
-  <p><a href="#declaring">Declaring attributes in source code</a></p>
-  <p><a href="#compiler">Compiler invocation</a></p>
-  <p><a href="#runtime">Runtime access to attributes</a></p>
-  <p><a href="#compacting">Compacting attribute files in a JAR</a></p>
+  <p><A href="#declaring">Declaring attributes in source code</A></p>
+  <p><A href="#compiler">Compiler invocation</A></p>
+  <p><A href="#runtime">Runtime access to attributes</A></p>
+  <p><A href="#compacting">Compacting attribute files in a JAR</A></p>
 </div>
 
-<hr/>
+<hr>
 
 <h2 id="declaring">Declaring attributes in source code</h2>
 <div class="Content">
@@ -68,8 +69,9 @@ public class Attributes {
   character (<kbd>pattern</kbd> above) is taken as the key, and the remainder of 
   the line (after the whitespace) as its value (<kbd>singleton</kbd> above). 
   The tag's name is not verified in any way, and the value is not parsed. 
-  This is the simplest way to use attributes.</p>
-  <p>To gain more control over attribute validation, run the compiler in 
+  This is the simplest way to use attributes.</p></div>
+<h3>Object attributes</h3><div class="Content">
+<P>To gain more control over attribute validation, run the compiler in 
   "object" mode. The attribute compiler then assumes that each tag refers 
   to an attribute class that it will attempt to find an instantiate. The 
   tag's name up to the first whitespace is taken as the name of the class. 
@@ -77,44 +79,102 @@ public class Attributes {
   declared package or imports to find the correct class, taking advantage of the 
   usual Java type resolution rules. The name can also 
   refer to a nested class in the usual way, by separating nested class names 
-  with dots (e.g. <code>Server.TransactionAttribute</code>). Furthermore, 
-  if the name does not end with <code>Attribute</code>, this word will be 
-  appended before looking for a class; however, if this fails, the original name 
-  will be tried too.</p>
-  <p>Attribute classes should normally be serializable, so that attribute 
-  instances can be saved directly in the compiled attribute files. If an 
-  attribute is not serializable, however, it will be stored as its class name 
-  and string parameters, and recreated at runtime as necessary.</p>
-  <p>Once the attribute class has been found, the compiler will attempt to 
-  instantiate it by using the tag's parameters. Two kinds of parameters 
-  are recognized: positional and named. All positional parameters 
-  must precede all named parameters, though both sets are optional. 
-  Parameters are separated by whitespace. The positional parameters will 
-  be used to locate a constructor for the attribute class that takes the same 
-  number of String parameters as there are positional parameters. The 
-  named parameters will be matched to properties of the attribute class, and 
-  each property's set method will be invoked with the given string as argument. 
-  For example:</p>
-  <pre class="CodeExample">@Tx write pessimistic isolate=full</pre>
-  <p>This attribute will be instantiated as follows:</p>
-  <pre class="CodeExample">TxAttribute attr = new TxAttribute("write", "pessimistic");
-attr.setIsolate("full");</pre>
-  <p>Properties will be located using standard JavaBeans introspection. 
-  The order of named parameters is usually not important, though this depends on 
-  whether the properties mentioned are all independent of each other. In 
-  any case, the properties will be set in the order listed in the tag. 
-  Either the constructor or any of the property setters can throw exceptions 
-  (checked or unchecked) to indicate that the parameters are unacceptable; these 
-  will be reported as tag syntax errors by the compiler.</p>
-  <p>If you wish to include whitespace or other special characters in your 
-  parameters, simply enclose them in double quotes. Inside the double 
-  quotes, spaces will be considered as part of the parameter. (This also 
-  works on named parameter values.) To include a double quote in the 
-  string, use <kbd>\"</kbd>, use <kbd>\\</kbd> for a backslash, and <kbd>\n</kbd> 
-  and <kbd>\t</kbd> to insert a newline or tab respectively.</p>
-  <p>Finally, you can also run the compiler in "mixed" mode, where any tag that 
-  is not recognized as an attribute class name will be processed as a simple 
-  "string" attribute.</p>
+  with dots (e.g. <code>Server.TransactionAttribute</code>).
+  If the class name ends with <code>Attribute</code>, this suffix 
+  can be omitted from the tag but an error will be reported if the resulting
+  tag name is ambiguous (i.e. it is a valid class name both with and without
+  the suffix).</P>
+<P>(You can also run the compiler in "mixed" mode, where any tag that is not 
+recognized as an attribute class name will be processed as a simple "string" 
+attribute. This mode is best used while transitioning from unstructured to 
+structured attributes.)</P>
+  <p>Attribute classes should normally be serializable, so 
+that attribute instances can be saved directly in the compiled attribute files. 
+If an attribute is not serializable, however, it will be stored 
+  as its class name and string parameters, and recreated at runtime as 
+  necessary. This imposes a runtime performance penalty, but may allow for decreased memory 
+  usage in the future when attribute interning is implemented.</p></div>
+<H3>Typed parameters</H3><div class="Content">
+<P>Once the attribute class has been found, the compiler will attempt to 
+instantiate it by using the tag's parameters. Two kinds of parameters are 
+recognized: positional and named. All positional parameters must precede all 
+named parameters, though both sets are optional. Parameters are separated by 
+whitespace. The positional parameters will be used to locate a constructor for 
+the attribute class that takes the same number of parameters as there are 
+positional parameters.</P>
+<P>The named parameters will be matched to properties of the attribute class, 
+and each property's set method will be invoked with the given string as 
+argument. Properties will be located using standard JavaBeans introspection. The 
+order of named parameters is usually not important, though this depends on 
+whether the properties mentioned are all independent of each other. In any case, 
+the properties will be set in the order listed in the tag. Either the 
+constructor or any of the property setters can throw exceptions (checked or 
+unchecked) to indicate that the parameters are unacceptable; these will be 
+reported as tag syntax errors by the compiler.</P>
+<P>Typically, positional parameters are use for compulsory 
+parameters, and named parameters for optional ones.</P>
+<P>Both constructors and property setters are found based on the number of 
+parameters <EM>only</EM>. If you have multiple 
+constructors with the same number of parameters overloaded on parameter type, or 
+similarly overloaded setters, any attempt to use them for attribute construction 
+will be flagged as an error. This deviates from standard Java overloading 
+practices, but allows the attibute compiler to be more flexible with the values' 
+syntax.</P></div>
+<H3>Parameter values</H3><div class="Content">
+<P>To provide the value for a parameter (whether positional or named), you have 
+two options:&nbsp; you can either refer to an existing constant, or provide a 
+literal value.&nbsp; To refer to a constant (a <code>public static final</code> field), 
+provide its name in the usual Java syntax. If the name is at least 
+partially qualified, it will be resolved according to the current scoping rules; 
+remember that an attribute applied to a class is <EM>outside</EM> the scope of that class. If the constant 
+reference is unqualified, normal scoping does not apply. Instead, the 
+field will be looked up in the attribute's class and in the current parameter's 
+class. (If it shows up in both, it is ambiguous and an error will be reported.) 
+This departs from normal Java resolution practices, but allows you to easily 
+specify values of a Typed Enumeration pattern, or special constants defined in 
+the attribute class.</P>
+<P>If the value does not resolve to a field reference, it is 
+interpreted as a literal value instead. Literals are only valid for parameters 
+of primitive type (or their corresponding wrapper types), <code>String</code> and <code>Class</code>. The 
+literal is parsed using fairly unsurprising rules, though only the simple 
+decimal form is supported for numbers (i.e. no <code>0xff</code> allowed). For <code>Class</code> type 
+parameters, the value is interpreted as the name of a type and resolved 
+according to the current scope, respecting all import statements. You must not 
+append <code>.class</code> to the type name. </P>
+<P>If you wish to include whitespace or other special 
+characters in a <code>String</code> parameter, or you wish to specify a literal parameter 
+that happens to match a field name, simply enclose the parameter in double 
+quotes. Inside the double quotes, spaces will be considered as part of the 
+parameter. To include a double quote in the string, use <KBD>\"</KBD>, use 
+<KBD>\\</KBD> for a backslash, and <KBD>\n</KBD> and <KBD>\t</KBD> to insert a 
+newline or tab respectively.</P>
+<P>To specify literal array-typed values, surround the array with braces. You 
+must normally have a space in front of the opening brace and after the closing 
+brace, but these rules are relaxed when nesting arrays. Inside an array, 
+you can only have positional arguments that must all be of the array's type. 
+Multi-dimensional arrays must be homogeneous, though they can be ragged.</P></div>
+<H3>Object attribute example</H3><div class="Content">
+<P>If you declared the following attribute class:</P>
+<PRE class=CodeExample>public class MetaAttribute {
+  public MetaAttribute(Target[] targets) {...}
+  public void setAllowMultiple(boolean allowMultiple) {...}
+  public void setDisplayName(String displayName) {...}
+  
+  public static class Target {
+    public static final Target CLASS = new Target("class");
+    public static final Target METHOD = new Target("method");
+    public static final Target FIELD = new Target("field");
+    private Target(String name) {...}
+  }
+}</PRE>
+<P>A sample use might be as follows:</P>
+<PRE class=CodeExample>@Meta {FIELD METHOD} allowMultiple=false displayName="My favourite attribute"</PRE>
+<P>This tag would be instantiated as follows:</P>
+<PRE class=CodeExample>MetaAttribute attr = new MetaAttribute(new Target[]{
+  MetaAttribute.Target.FIELD, MetaAttribute.Target.METHOD
+});
+attr.setAllowMultiple(false);
+attr.setDisplayName("My favourite attribute");</PRE>
 </div>
 <h2 id="compiler">Compiler invocation</h2>
 <div class="Content">
@@ -182,12 +242,14 @@ attr.setIsolate("full");</pre>
       <td valign="top">-mode &lt;string|object|mixed&gt;</td>
       <td valign="top">Set the compiler parsing mode:
 		<ul>
-		<li>"string" considers all tags as simple string key/value attribute 
-        pairs</li>
-		<li>"object" considers each tag as referring to an attribute class that 
-        it attempts to instantiate using the given parameters; attribute classes 
-        must be on the current classpath and the compiler reports an error if a 
-        matching class is not found</li>
+		<li>"string" considers all tags as simple string 
+        key/value attribute pairs 
+        
+		<li>"object" considers each tag as referring to an 
+        attribute class that it attempts to instantiate using the given 
+        parameters; attribute classes must be on the current classpath and the 
+        compiler reports an error if a matching class is not found 
+        
 		<li>"mixed" tries to find a class for each tag like "object", but if no 
         class can be located processes the tag as "string" without reporting an 
         error</li>
@@ -229,47 +291,46 @@ attr.setIsolate("full");</pre>
 	<ul>
 		<li>Get the value of a simple string attribute for a class:
 			<pre class="CodeExample">Attributes.getInstance().get(MyClass.class).get("mytag");</pre>
-		</li>
 		<li>Check whether a simple string attribute with a given tag was defined for a class:
 			<pre class="CodeExample">Attributes.getInstance().get(MyClass.class).has("mytag");</pre>
-		</li>
 		<li>Get the value of an object attribute for a field:
 			<pre class="CodeExample">Attributes.getInstance()
  .get(MyClass.class.getField("myfield"))
  .get(TxAttribute.class);</pre>
-		</li>
 		<li>Get an iterator for all the attributes of a method:
 			<pre class="CodeExample">Attributes.getInstance()
  .get(MyClass.class.getMethod("toString", null))
  .iterator();</pre>
-		</li>
 		<li>Get an iterator for all values of string attributes with a given tag for a class:
 			<pre class="CodeExample">Attributes.getInstance()
  .get(MyClass.class)
  .iterator("my_multiple_tag");</pre>
 		</li>
 	</ul>
-  </p>
+<P></P>
   <p>Many other accessors are available; check the Javadocs for details. A 
   few things to keep in mind:
   <ul>
 	<li>The order of all attributes is preserved for each element, and all 
-    iterators and <code>toArray()</code> will respect it. Hence, the ordering of 
-    tags can be meaningful if you'd like.</li>
+    iterators and <code>toArray()</code> will 
+  respect it. Hence, the ordering of tags can be meaningful if you'd like. 
+  
 	<li>String and object attributes never overlap. Each tag is parsed as 
     either one or the other, never both. Thus, you will not find object 
     attributes by querying for the tags used to define them. (However, you 
     will find string attributes as object attributes of class <code>
-    SimpleAttribute</code>.)</li>
+    SimpleAttribute</code>.) 
+  
 	<li>You can access attribute bundles using coded strings rather than 
     reflected element references. This can be useful if the element you 
     wish to get the attributes for is not visible from the accessing code, or 
-    you need to access the attributes <em>before</em> the class containing the 
-    element is loaded.</li>
+    you need to access the attributes <em>before</em> the 
+  class containing the element is loaded. 
+  
 	<li>You can add (and sometimes remove) attributes at runtime, but these 
     changes will not persisted back to disk.</li>
   </ul>
-  </p>
+<P></P>
 </div>
 <h2 id="compacting">Compacting attributes in a JAR</h2>
 <div class="Content">

@@ -191,7 +191,7 @@ public class Compiler {
 					if ("string".equals(kind)) {
 						c.getBuilder().setMode(new AttributesBuilder.StringMode());
 					} else if ("object".equals(kind)) {
-						c.getBuilder().setMode(new AttributesBuilder.ObjectMode());
+						c.getBuilder().setMode(new ObjectMode());
 					} else if ("mixed".equals(kind)) {
 						c.getBuilder().setMode(new AttributesBuilder.MixedMode());
 					} else {

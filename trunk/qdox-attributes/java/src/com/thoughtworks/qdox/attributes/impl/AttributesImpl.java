@@ -78,7 +78,7 @@ public class AttributesImpl extends Attributes {
 		if (classLoader == null) classLoader = Thread.currentThread().getContextClassLoader();
 		AttributesPack pack = (AttributesPack) packs.get(classLoader);
 		if (pack == null) {
-			pack = new AttributesPack(classLoader);
+			pack = new AttributesPack(classLoader, true);
 			pack.merge(COALESCED_FILENAME);
 			packs.put(classLoader, pack);
 		}
