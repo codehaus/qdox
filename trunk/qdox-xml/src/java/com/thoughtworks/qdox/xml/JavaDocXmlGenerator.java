@@ -174,7 +174,7 @@ public class JavaDocXmlGenerator {
     }
 
     private void addText(String text) {
-        if (text == null) throw new NullPointerException();
+        if (text == null) return;
         handler.addContent(text);
     }
 
