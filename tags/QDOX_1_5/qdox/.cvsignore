@@ -1,0 +1,8 @@
+config.properties
+maven.log
+velocity.log
+target
+build
+tmp
+.classpath
+.project

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE project [
+    <!ENTITY oslash "&#248;">
+]>
+
+<project>
+
+  <pomVersion>3</pomVersion>
+
+  <name>QDox</name>
+  <id>qdox</id>
+  <currentVersion>1.5</currentVersion>
+  <inceptionYear>2002</inceptionYear>
+  <package>com.thoughtworks.qdox</package>
+  <logo>/images/qdox.gif</logo>
+
+  <organization>
+    <name>ThoughtWorks, Inc</name>
+    <url>http://www.thoughtworks.com/</url>
+  </organization>
+
+  <shortDescription>QDox - Quick JavaDoc Scanner</shortDescription>
+  <description>
+    QDox is a high speed, small footprint parser for extracting
+    class/interface/method definitions from source files complete with
+    JavaDoc @tags. It is designed to be used by active code generators or
+    documentation tools.
+  </description>
+
+  <url>http://qdox.codehaus.org/</url>
+  <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10103</issueTrackingUrl>
+
+  <siteAddress>qdox.codehaus.org</siteAddress>
+  <siteDirectory>/home/projects/qdox/public_html</siteDirectory>
+
+  <distributionDirectory>/dist</distributionDirectory>
+  <distributionSite>beaver.codehaus.org</distributionSite>
+
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.qdox.codehaus.org:/home/projects/qdox/scm:qdox</connection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.qdox.codehaus.org:/home/projects/qdox/scm:qdox</developerConnection>
+    <url>http://cvs.qdox.codehaus.org/qdox</url>   
+  </repository>
+  
+  <mailingLists>
+    <mailingList>
+      <name>QDox User List</name>
+      <subscribe>mailto:user-subscribe@qdox.codehaus.org</subscribe>
+      <unsubscribe>mailto:user-unsubscribe@qdox.codehaus.org</unsubscribe>
+      <archive>http://archive.qdox.codehaus.org/user</archive>
+    </mailingList>
+    <mailingList>
+      <name>QDox Announce List</name>
+      <subscribe>mailto:announce-subscribe@qdox.codehaus.org</subscribe>
+      <unsubscribe>mailto:announce-unsubscribe@qdox.codehaus.org</unsubscribe>
+      <archive>http://archive.qdox.codehaus.org/announce</archive>
+    </mailingList>
+    <mailingList>
+      <name>QDox Dev List</name>
+      <subscribe>mailto:dev-subscribe@qdox.codehaus.org</subscribe>
+      <unsubscribe>mailto:dev-unsubscribe@qdox.codehaus.org</unsubscribe>
+      <archive>http://archive.qdox.codehaus.org/dev</archive>
+    </mailingList>
+    <mailingList>
+      <name>QDox SCM List</name>
+      <subscribe>mailto:scm-subscribe@qdox.codehaus.org</subscribe>
+      <unsubscribe>mailto:scm-unsubscribe@qdox.codehaus.org</unsubscribe>
+      <archive>http://archive.qdox.codehaus.org/scm</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+
+    <developer>
+      <name>Aslak Helles&oslash;y</name>
+      <id>rinkrank</id>
+      <email>nospam.aslak@thoughtworks.net</email>
+      <organization>ThoughtWorks</organization>
+      <roles>
+        <role>Administrator</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Joe Walnes</name>
+      <id>joeretro</id>
+      <email>joew@thoughtworks.com</email>
+      <organization>ThoughtWorks</organization>
+      <roles>
+        <role>Founder</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Mike Royle</name>
+      <id>mlroyle</id>
+      <email>mroyle@thoughtworks.com</email>
+      <organization>ThoughtWorks</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Paul Hammant</name>
+      <id>paul</id>
+      <email>Paul_Hammant@yahoo.com</email>
+      <organization>ThoughtWorks</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Mike Williams</name>
+      <id>mdub</id>
+      <email>mdub@dogbiscuit.org</email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Peter Donald</name>
+      <email>peter@realityforge.org</email>
+    </contributor>
+    <contributor>
+      <name>James Strachan</name>
+      <email>jstrachan@apache.org</email>
+    </contributor>
+    <contributor>
+      <name>Nick Pomfret</name>
+      <email></email>
+    </contributor>
+    <contributor>
+      <name>Chris Stevenson</name>
+      <email>cstevenson@thoughtworks.com</email>
+    </contributor>
+    <contributor>
+      <name>Ben Hogan</name>
+      <email>ben@lizardsoftware.com</email>
+    </contributor>
+    <contributor>
+      <name>Laurent Etiemble</name>
+      <email></email>
+    </contributor>
+  </contributors>
+
+  <dependencies>
+    <dependency>
+      <id>ant</id>
+      <version>1.5.1</version>
+    </dependency>
+    <dependency>
+      <id>junit</id>
+      <version>3.8.1</version>
+    </dependency>
+    <dependency>
+      <id>jmock</id>
+      <version>1.0.0</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>dev@qdox.codehaus.org</nagEmailAddress>
+
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+      <excludes>
+        <exclude>**/Abstract*.java</exclude>
+      </excludes>
+    </unitTest>
+
+    <jars/>
+
+  </build>
+
+  <reports>
+    <report>maven-license-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-changes-plugin</report>
+    <report>maven-jxr-plugin</report>
+    <report>maven-junit-report-plugin</report>
+    <report>maven-clover-plugin</report>
+    <report>maven-jdepend-plugin</report>
+    <report>maven-simian-plugin</report>
+  </reports>
+
+</project>
