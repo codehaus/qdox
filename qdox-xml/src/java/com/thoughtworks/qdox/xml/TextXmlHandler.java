@@ -10,7 +10,7 @@ import java.util.Stack;
 public class TextXmlHandler implements XmlHandler {
 
 	// This avoids having to deal with SAX, and finding a fully-fledged
-	// SAX-based handler.
+	// SAX-based XML serializer.
 
 	//~~~( Constants )~~~
 
