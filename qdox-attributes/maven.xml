@@ -24,7 +24,7 @@
       </classpath>
       <batchtest todir="${maven.build.dir}/test-reports">
         <fileset dir="${maven.build.dest}">
-          <include name="**/*$Test.class"/>
+          <include name="**/*$Test*.class"/>
         </fileset>
       </batchtest>
     </junit>
@@ -34,8 +34,9 @@
         description="Create the deliverable jar file.">
     <jar jarfile="${maven.build.dir}/${maven.final.name}-rt.jar" 
 		 basedir="${maven.build.dest}">
-      <exclude name="**/*Test.class"/>
-      <exclude name="com/ideanest/attributes/dev/*"/>
+      <exclude name="**/*$Test*.class"/>
+      <exclude name="com/thoughtworks/qdox/attributes/dev/*"/>
+      <exclude name="com/thoughtworks/qdox/attributes/dev"/>
 	</jar>
   </goal>
   
