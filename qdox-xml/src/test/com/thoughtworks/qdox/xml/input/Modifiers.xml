@@ -8,14 +8,18 @@
 			<field>
 				<name>X</name>
 				<modifier>private</modifier>
-				<modifier>final</modifier>
 				<modifier>static</modifier>
-				<type>int</type>
+				<modifier>final</modifier>
+				<type>
+					<name>int</name>
+				</type>
 			</field>
 			<method>
 				<name>isDonIsGood</name>
 				<modifier>protected</modifier>
-				<type>boolean</type>   
+				<type>
+					<name>boolean</name>
+				</type>   
 			</method>
 		</class>
 	</source>

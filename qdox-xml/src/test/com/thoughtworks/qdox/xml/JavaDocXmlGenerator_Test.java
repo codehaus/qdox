@@ -12,18 +12,30 @@ import junit.framework.TestCase;
 
 public class JavaDocXmlGenerator_Test extends TestCase {
 
-	//~~~( Constants )~~~
+	//---( Constants )---
 
 	private static final String TEST_FILE_PREFIX =
 		"src/test/com/thoughtworks/qdox/xml/input";
 
-	//~~~( Constructors )~~~
+	//---( Constructors )---
 
 	public JavaDocXmlGenerator_Test(String name) {
 		super(name);
 	}
 
-	//~~~( Tests )~~~
+	//---( Test utils )---
+
+	protected void testConversion(String testCaseName) throws Exception {
+		String actualXml =
+			toXml(parse(getTestFile(testCaseName + ".in")));
+		String expectedXml =
+			readExpectedFile(getTestFile(testCaseName + ".xml"));
+		if (!expectedXml.equals(actualXml)) {
+			fail("EXPECTED:\n" + expectedXml + "\nBUT WAS:\n" + actualXml);
+		}
+	}
+
+	//---( Tests )---
 
 	public void testEmptyClass() throws Exception {
 		testConversion("EmptyClass");
@@ -76,14 +88,14 @@ public class JavaDocXmlGenerator_Test extends TestCase {
 	public void testModifiers() throws Exception {
 		testConversion("Modifiers");
 	}
-
-	//~~~( Test utils )~~~
-
-	protected void testConversion(String testCaseName) throws Exception {
-		String actualXml =
-			toXml(parse(getTestFile(testCaseName + ".in")));
+	
+	public void testSourceFile() throws Exception {
+		JavaSource source = new JavaSource();
+		source.setPackage("test");
+		source.setFile(new File("xyz"));
 		String expectedXml =
-			readExpectedFile(getTestFile(testCaseName + ".xml"));
+			readExpectedFile(getTestFile("SourceFile.xml"));
+		String actualXml = toXml(new JavaSource[] {source});
 		if (!expectedXml.equals(actualXml)) {
 			fail("EXPECTED:\n" + expectedXml + "\nBUT WAS:\n" + actualXml);
 		}
@@ -94,7 +106,7 @@ public class JavaDocXmlGenerator_Test extends TestCase {
 	 */
 	private JavaSource[] parse(File file) throws Exception {
 		JavaDocBuilder builder = new JavaDocBuilder();
-		builder.addSource(file);
+		builder.addSource(new FileReader(file));
 		return builder.getSources();
 	}
 

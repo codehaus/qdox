@@ -6,12 +6,16 @@
 			<name>X</name>
 			<field>
 				<name>y</name>
-				<type>int</type>
+				<type>
+					<name>int</name>
+				</type>
 			</field>
 			<field>
 				<name>z</name>
-				<type>long</type>
-				<dimensions>1</dimensions>
+				<type>
+					<name>long</name>
+					<dimensions>1</dimensions>
+				</type>
 			</field>
 		</class>
 	</source>

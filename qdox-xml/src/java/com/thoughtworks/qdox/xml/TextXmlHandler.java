@@ -5,18 +5,18 @@ import java.io.Writer;
 import java.util.Stack;
 
 /**
- * Simple XML XmlHandler.
+ * A simple {@link XmlHandler} that produces XML text.
  */
 public class TextXmlHandler implements XmlHandler {
 
 	// This avoids having to deal with SAX, and finding a fully-fledged
 	// SAX-based XML serializer.
 
-	//~~~( Constants )~~~
+	//---( Constants )---
 
 	static final String XML_PREAMBLE = "<?xml version=\"1.0\"?>";
 
-	//~~~( Member variables )~~~
+	//---( Member variables )---
 
 	private PrintWriter out;
 	private String indentPrefix;
@@ -24,7 +24,7 @@ public class TextXmlHandler implements XmlHandler {
 	private Stack nodeStack = new Stack();
 	private boolean onNewLine = true;
 
-	//~~~( Constructors )~~~
+	//---( Constructors )---
 
 	public TextXmlHandler(Writer out, String indentPrefix) {
 		this.out = new PrintWriter(out);
@@ -35,7 +35,7 @@ public class TextXmlHandler implements XmlHandler {
 		this(out, "");
 	}
 
-	//~~~( Implement XmlHandler )~~~
+	//---( Implement XmlHandler )---
 
 	public void startDocument() {
 		out.println(XML_PREAMBLE);
@@ -81,7 +81,7 @@ public class TextXmlHandler implements XmlHandler {
 		out.flush();
 	}
 
-	//~~~( Support methods )~~~
+	//---( Support methods )---
 
 	private void indent(int level) {
 		for (int i = 0; i < level; i++) {
