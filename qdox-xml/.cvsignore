@@ -1,7 +1,0 @@
-*.ipr
-*.iws
-.classpath
-.project
-lib
-maven.log
-target
