@@ -10,38 +10,62 @@
         prereqs="java:compile,test:prepare-filesystem,test:test-resources"> 
     <taskdef name="junit" 
              classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" />
-    <junit printSummary="yes" 
+    <junit printSummary="on" 
            failureProperty="maven.test.failure"
            fork="${maven.junit.fork}"
            dir="${maven.junit.dir}">
       <sysproperty key="basedir" value="${basedir}"/>
       <formatter type="xml"/>
-      <formatter type="plain" usefile="${maven.junit.usefile}"/>
       <classpath>
         <path refid="maven.dependency.classpath"/>
         <pathelement location="${maven.build.dest}"/>
+        <pathelement location="${maven.build.dir}/attribs"/>
         <pathelement path="${plugin.getDependencyPath('junit')}"/>
       </classpath>
       <batchtest todir="${maven.build.dir}/test-reports">
         <fileset dir="${maven.build.dest}">
           <include name="**/*$Test*.class"/>
+          <exclude name="**/*$Test*$*.class"/>
         </fileset>
       </batchtest>
     </junit>
   </goal>
 
-  <goal name="rt-jar"
-        description="Create the deliverable jar file.">
-    <jar jarfile="${maven.build.dir}/${maven.final.name}-rt.jar" 
-		 basedir="${maven.build.dest}">
-      <exclude name="**/*$Test*.class"/>
-      <exclude name="com/thoughtworks/qdox/attributes/dev/*"/>
-      <exclude name="com/thoughtworks/qdox/attributes/dev"/>
+  <goal name="jar:rt-jar" description="Create the deliverable jar file.">
+    <jar jarfile="${maven.build.dir}/${maven.final.name}-rt.jar">
+    	<fileset dir="${maven.build.dest}">
+			<exclude name="**/*$Test*.class"/>
+			<exclude name="com/thoughtworks/qdox/attributes/dev/*"/>
+			<exclude name="com/thoughtworks/qdox/attributes/dev"/>
+		</fileset>
+		<fileset dir="${maven.build.dir}/attribs"/>
 	</jar>
   </goal>
   
   <postGoal name="jar:jar">
-    <attainGoal name="rt-jar"/>
+    <attainGoal name="jar:rt-jar"/>
+  </postGoal>
+  
+  <goal name="java:attribs" description="Compile project attributes.">
+  	<mkdir dir="${maven.build.dir}/attribs"/>
+  	<echo level="info" message="Compiling attributes to ${maven.build.dir}/attribs" />
+  	<java classname="com.thoughtworks.qdox.attributes.dev.Compiler" failonerror="true" fork="true">
+  		<arg value="-mode" />
+  		<arg value="object" />
+  		<arg value="-force" />
+  		<arg value="-src" />
+  		<arg file="${maven.src.dir}/java" />
+  		<arg value="-dst" />
+  		<arg file="${maven.build.dir}/attribs" />
+		<classpath>
+			<path refid="maven.dependency.classpath"/>
+			<pathelement location="${maven.build.dest}"/>
+		</classpath>
+  	</java>
+  </goal>
+  
+  <postGoal name="java:compile">
+  	<attainGoal name="java:attribs"/>
   </postGoal>
   
 </project>
