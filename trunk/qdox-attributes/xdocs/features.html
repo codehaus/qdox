@@ -139,7 +139,11 @@ now since the specification is not yet public.
 	 </td>
     <td align="middle">not yet</td>
     <td align="middle"></td>
-    <td align="middle">no</td>
+    <td align="middle">
+ 	 	<a href="javascript:void(0);" onclick="return detail('You can code a custom tag interceptor and plug it into the parsing stream.');">
+			possible
+		</a>
+	 </td>
     <td align="middle">no</td>
     <td align="middle">?</td>
     <td align="middle">yes</td>
@@ -165,7 +169,7 @@ now since the specification is not yet public.
 	 </td>
     <td align="middle">yes</td>
     <td align="middle"></td>
-    <td align="middle">?</td>
+    <td align="middle">yes</td>
     <td align="middle">no</td>
     <td align="middle">?</td>
     <td align="middle">no</td>
@@ -178,7 +182,7 @@ now since the specification is not yet public.
 	 </td>
     <td align="middle">not yet</td>
     <td align="middle"></td>
-    <td align="middle">?</td>
+    <td align="middle">not yet</td>
     <td align="middle">yes</td>
     <td align="middle">yes</td>
     <td align="middle">yes</td>
@@ -191,7 +195,7 @@ now since the specification is not yet public.
 	 </td>
     <td align="middle">yes</td>
     <td align="middle"></td>
-    <td align="middle">?</td>
+    <td align="middle">yes</td>
     <td align="middle">yes</td>
     <td align="middle">?</td>
     <td align="middle">yes (?)</td>
@@ -204,7 +208,7 @@ now since the specification is not yet public.
 	 </td>
     <td align="middle">yes</td>
     <td align="middle"></td>
-    <td align="middle">no</td>
+    <td align="middle">yes</td>
     <td align="middle">no</td>
     <td align="middle">no</td>
     <td align="middle">no (?)</td>
@@ -230,7 +234,11 @@ now since the specification is not yet public.
 	 </td>
     <td align="middle">yes</td>
     <td align="middle"></td>
-    <td align="middle">no</td>
+    <td align="middle">
+ 	 	<a href="javascript:void(0);" onclick="return detail('Since attributes are treated as value types, reassignment should be sufficient.');">
+			no
+		</a>
+	 </td>
     <td align="middle">?</td>
     <td align="middle">?</td>
     <td align="middle">yes (?)</td>
@@ -273,7 +281,7 @@ now since the specification is not yet public.
 	 </td>
     <td align="middle">yes</td>
     <td align="middle"></td>
-    <td align="middle">?</td>
+    <td align="middle">no</td>
     <td align="middle">no</td>
     <td align="middle">yes</td>
     <td align="middle">yes</td>
@@ -299,7 +307,7 @@ now since the specification is not yet public.
 	 </td>
     <td align="middle">fast</td>
     <td align="middle"></td>
-    <td align="middle">fast (?)</td>
+    <td align="middle">fast</td>
     <td align="middle">fast</td>
     <td align="middle">slow</td>
     <td align="middle">very fast</td>
@@ -319,23 +327,19 @@ now since the specification is not yet public.
   </tr>
   <tr>
     <td>
-	 	<a href="javascript:void(0);" onclick="return detail('How big is the toolkit\'s runtime JAR file?  The sizes given are for the toolkit library plus dependencies &lt;em&gt;as supplied in the distribution&lt;/em&gt;.  In many cases, the library size could be further reduced by pruning unnecessary classes and optimizing compile flags.  This measure just tells you what you get \'out of the box\'.');">
+	 	<a href="javascript:void(0);" onclick="return detail('How big is the toolkit\'s runtime JAR file?  The \'delivered\' sizes given are for the toolkit library plus dependencies &lt;em&gt;as supplied in the distribution&lt;/em&gt;, to tell you what you get \'out of the box\'.  In many cases, the library size could be further reduced by pruning unnecessary classes and optimizing compile flags; if I tried the experiment, this size is indicated as \'optimized\'.');">
 		 Runtime code size:
 		</a>
 	 </td>
-    <td align="middle">
-	 	<a href="javascript:void(0);" onclick="return detail('This size is already optimized.');">
-			14Kb
-		</a>
-	 </td>
+    <td align="middle">14Kb optimized and as delivered</td>
     <td align="middle"></td>
-    <td align="middle">35Kb</td>
+    <td align="middle">35Kb as delivered, 17Kb optimized</td>
     <td align="middle">
  	 	<a href="javascript:void(0);" onclick="return detail('Part of a bigger project; it\'s unclear how difficult it would be to separate just the attribute-related classes.');">
 			~140Kb
 		</a>
 	 </td>
-    <td align="middle">530Kb</td>
+    <td align="middle">530Kb as delivered</td>
     <td align="middle">n/a</td>
   </tr>
   <tr>
