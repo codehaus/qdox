@@ -174,7 +174,7 @@ public class TypeResolver {
 	 * @param simpleTypeName the name of the simple type to find; must not contain any delimiters ('.' or '$')
 	 * @return the fully qualified name of the type if found, <code>null</code> otherwise
 	 */
-	private String findSimpleType(String simpleTypeName) {
+	private String findSimpleType(String simpleTypeName) throws ClassNotFoundException {
 		// 1. is it a type name currently being defined, or a member of such?
 		// (note that overlap is not possible, since hiding is forbidden)
 		for (Iterator it = simpleClassNameStack.iterator(), it2 = qualifiedClassNameStack.iterator(); it.hasNext();) {
@@ -209,7 +209,7 @@ public class TypeResolver {
 				String name = (String) it.next();
 				Class klass2 = load(name + suffix);
 				if (klass2 != null) {
-					if (klass != null) ;
+					if (klass != null) throw new ClassNotFoundException("Ambiguous wildcard import of " + suffix);
 					klass = klass2;
 				}
 			}
