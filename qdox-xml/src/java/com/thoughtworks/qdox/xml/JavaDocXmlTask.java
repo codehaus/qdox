@@ -112,9 +112,9 @@ public class JavaDocXmlTask extends Task {
             throw new BuildException(e);
         } finally {
             try {
-                if (out != null) out.close();
+                out.close();
             } catch (IOException e) {
-                // ignore
+                throw new BuildException(e);
             }
         }
     }
