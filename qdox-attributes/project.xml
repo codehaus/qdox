@@ -20,7 +20,7 @@
   
   <!-- to be fixed by somebody who knows the web site structure -->
   <url>http://qdox.codehaus.org/attributes</url>
-  <issueTrackingUrl>http://jira.codehaus.org/secure/BrowseProject.jspa?id=10103</issueTrackingUrl>
+  <issueTrackingUrl>http://jira.codehaus.org/secure/IssueNavigator.jspa?reset=true&amp;mode=hide&amp;pid=10103&amp;sorter/order=ASC&amp;sorter/field=priority&amp;resolutionIds=-1&amp;component=10531</issueTrackingUrl>
   <siteAddress>codehaus.org</siteAddress>
   <siteDirectory>/www/qdox.codehaus.org/</siteDirectory>
   <distributionDirectory>/www/qdox.codehaus.org/downloads/</distributionDirectory>
@@ -91,12 +91,11 @@
 
   <reports>
     <report>maven-license-plugin</report>
-    <report>maven-simian-plugin</report>
     <report>maven-changes-plugin</report>
-    <report>maven-statcvs-plugin</report>
+<!--    <report>maven-statcvs-plugin</report> -->
     <report>maven-jxr-plugin</report>
     <report>maven-javadoc-plugin</report>
-    <report>maven-junit-report-plugin</report>
-    <report>maven-clover-plugin</report>
+<!--    <report>maven-junit-report-plugin</report> -->
+<!--    <report>maven-clover-plugin</report> -->
   </reports>
 </project>
