@@ -32,13 +32,12 @@ the author of one of the "competing" toolkits.  I
 all corrections, clarifications, and suggestions for other features to compare.</p>
 <p>You can click on
 <a style="text-decoration: none; color: #00a;" href="javascript:void(0);" onclick="return detail('Thanks to the cool &lt;a href=\'http://www.bosrup.com/web/overlib/\'&gt;overLIB&lt;/a&gt; script.');">
-blue</a> entries to get a popup with extra details.  The JSR 175 column is blank for
-now since the specification is not yet public.
+blue</a> entries to get a popup with extra details.
 </p>
 <table border="1" cellpadding="3" cellspacing="1">
   <tr>
     <th></th>
-    <th>QDox Attributes <b>v0.6</b></th>
+    <th>QDox Attributes <b>v0.7</b></th>
     <th><a href="http://www.jcp.org/en/jsr/detail?id=175">JSR 175</a></th>
     <th><a href="http://spice.sourceforge.net/metaclass/">MetaClass</a></th>
     <th><a href="http://nanning.sourceforge.net/">Nanning Attributes</a></th>
@@ -52,7 +51,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">yes</td>
-    <td align="middle"></td>
+    <td align="middle">no</td>
     <td align="middle">yes</td>
     <td align="middle">yes</td>
     <td align="middle">no</td>
@@ -65,7 +64,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">yes</td>
-    <td align="middle"></td>
+    <td align="middle">yes</td>
     <td align="middle">no</td>
     <td align="middle">no</td>
     <td align="middle">yes</td>
@@ -78,7 +77,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">yes</td>
-    <td align="middle"></td>
+    <td align="middle">no</td>
     <td align="middle">n/a</td>
     <td align="middle">n/a</td>
     <td align="middle">?</td>
@@ -91,7 +90,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">automatic or manual</td>
-    <td align="middle"></td>
+    <td align="middle">automatic</td>
     <td align="middle">n/a</td>
     <td align="middle">n/a</td>
     <td align="middle">manual</td>
@@ -104,7 +103,10 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">both</td>
-    <td align="middle"></td>
+    <td align="middle">
+	 	<a href="javascript:void(0);" onclick="return detail('Unless you only supply a single parameter, in which case its name is automatically inferred to be <em>value</em>.');">
+    	named only
+    </td>
     <td align="middle">
 	 	<a href="javascript:void(0);" onclick="return detail('While MetaClass does not support user-defined attribute types, it has an extended string map attribute.  If well-formed named parameters are detected they are parsed as such, otherwise the whole string is treated as a single parameter value.');">
 		 named or single
@@ -125,7 +127,7 @@ now since the specification is not yet public.
 			some
 		</a>
 	 </td>
-    <td align="middle"></td>
+    <td align="middle">yes</td>
     <td align="middle">n/a</td>
     <td align="middle">n/a</td>
     <td align="middle">?</td>
@@ -137,8 +139,8 @@ now since the specification is not yet public.
 		 Target restrictions:
 		</a>
 	 </td>
-    <td align="middle">not yet</td>
-    <td align="middle"></td>
+    <td align="middle">yes</td>
+    <td align="middle">yes</td>
     <td align="middle">
  	 	<a href="javascript:void(0);" onclick="return detail('You can code a custom tag interceptor and plug it into the parsing stream.');">
 			possible
@@ -155,7 +157,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">yes</td>
-    <td align="middle"></td>
+    <td align="middle">no</td>
     <td align="middle">yes</td>
     <td align="middle">no</td>
     <td align="middle">?</td>
@@ -168,7 +170,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">yes</td>
-    <td align="middle"></td>
+    <td align="middle">no</td>
     <td align="middle">yes</td>
     <td align="middle">no</td>
     <td align="middle">?</td>
@@ -180,8 +182,8 @@ now since the specification is not yet public.
 		 Attribute inheritance:
 		</a>
 	 </td>
-    <td align="middle">not yet</td>
-    <td align="middle"></td>
+    <td align="middle">yes</td>
+    <td align="middle">yes</td>
     <td align="middle">not yet</td>
     <td align="middle">yes</td>
     <td align="middle">yes</td>
@@ -194,7 +196,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">yes</td>
-    <td align="middle"></td>
+    <td align="middle">yes</td>
     <td align="middle">yes</td>
     <td align="middle">yes</td>
     <td align="middle">?</td>
@@ -207,7 +209,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">yes</td>
-    <td align="middle"></td>
+    <td align="middle">not yet (?)</td>
     <td align="middle">yes</td>
     <td align="middle">no</td>
     <td align="middle">no</td>
@@ -220,7 +222,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">no</td>
-    <td align="middle"></td>
+    <td align="middle">no</td>
     <td align="middle">yes</td>
     <td align="middle">no</td>
     <td align="middle">no</td>
@@ -232,8 +234,11 @@ now since the specification is not yet public.
 		 Attributes can be modified at runtime:
 		</a>
 	 </td>
-    <td align="middle">yes</td>
-    <td align="middle"></td>
+    <td align="middle">
+	 	<a href="javascript:void(0);" onclick="return detail('It\'s also easy to create attribute types with named parameters (i.e. setter methods) that <em>cannot</em> be mutated at runtime.');">
+    	yes
+    </td>
+    <td align="middle">no</td>
     <td align="middle">
  	 	<a href="javascript:void(0);" onclick="return detail('Since attributes are treated as value types, reassignment should be sufficient.');">
 			no
@@ -250,7 +255,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">not yet</td>
-    <td align="middle"></td>
+    <td align="middle">no</td>
     <td align="middle">
 	 	<a href="javascript:void(0);" onclick="return detail('This effect could be achieved by a custom filter parser plugin written by the developer.');">
 			possible
@@ -266,8 +271,8 @@ now since the specification is not yet public.
 		 Attribute storage:
 		</a>
 	 </td>
-    <td align="middle">serialized in one separate file per class <em>or</em> one separate file per JAR</td>
-    <td align="middle"></td>
+    <td align="middle">serialized within the class file <em>or</em> one separate file per JAR</td>
+    <td align="middle">stored within the class file</td>
     <td align="middle">raw data in one separate file per class</td>
     <td align="middle">text properties in one separate file per class</td>
     <td align="middle">serialized within the class file</td>
@@ -280,7 +285,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">yes</td>
-    <td align="middle"></td>
+    <td align="middle">yes</td>
     <td align="middle">no</td>
     <td align="middle">no</td>
     <td align="middle">yes</td>
@@ -293,7 +298,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">storage, not yet retrieval</td>
-    <td align="middle"></td>
+    <td align="middle">storage and retrieval</td>
     <td align="middle">storage only</td>
     <td align="middle">none</td>
     <td align="middle">?</td>
@@ -306,7 +311,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">fast</td>
-    <td align="middle"></td>
+    <td align="middle">very fast</td>
     <td align="middle">fast</td>
     <td align="middle">fast</td>
     <td align="middle">slow</td>
@@ -319,7 +324,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">?</td>
-    <td align="middle"></td>
+    <td align="middle">?</td>
     <td align="middle">?</td>
     <td align="middle">?</td>
     <td align="middle">?</td>
@@ -331,8 +336,11 @@ now since the specification is not yet public.
 		 Runtime code size:
 		</a>
 	 </td>
-    <td align="middle">14Kb optimized and as delivered</td>
-    <td align="middle"></td>
+    <td align="middle">30Kb optimized and as delivered</td>
+    <td align="middle">
+ 	 	<a href="javascript:void(0);" onclick="return detail('Part of JDK 1.5.');">
+    	n/a
+    </td>
     <td align="middle">35Kb as delivered, 17Kb optimized</td>
     <td align="middle">
  	 	<a href="javascript:void(0);" onclick="return detail('Part of a bigger project; it\'s unclear how difficult it would be to separate just the attribute-related classes.');">
@@ -349,7 +357,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">not yet</td>
-    <td align="middle"></td>
+    <td align="middle">n/a</td>
     <td align="middle">yes</td>
     <td align="middle">yes</td>
     <td align="middle">yes (?)</td>
@@ -362,7 +370,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">not yet</td>
-    <td align="middle"></td>
+    <td align="middle">n/a</td>
     <td align="middle">no</td>
     <td align="middle">no</td>
     <td align="middle">not yet (?)</td>
@@ -375,7 +383,7 @@ now since the specification is not yet public.
 		</a>
 	 </td>
     <td align="middle">some</td>
-    <td align="middle"></td>
+    <td align="middle">n/a (?)</td>
     <td align="middle">good</td>
     <td align="middle">a bit</td>
     <td align="middle">?</td>
