@@ -15,7 +15,7 @@ public interface XmlHandler {
 
 	void addContent(String text);
 
-	void endElement();
+	void endElement(String name);
 
 	void endDocument();
 
