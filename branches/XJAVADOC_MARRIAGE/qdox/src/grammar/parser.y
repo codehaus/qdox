@@ -1,6 +1,9 @@
 %{
-import com.thoughtworks.qdox.parser.*;
-import com.thoughtworks.qdox.parser.structs.*;
+import com.thoughtworks.qdox.parser.structs.ClassDef;
+import com.thoughtworks.qdox.parser.structs.MethodDef;
+import com.thoughtworks.qdox.parser.structs.FieldDef;
+import com.thoughtworks.qdox.parser.Builder;
+import com.thoughtworks.qdox.parser.Lexer;
 import java.io.IOException;
 %}
 
