@@ -1,3 +1,0 @@
-package test;
-
-class JudyMap extends java.util.Map {}
