@@ -87,6 +87,15 @@
   <build>
     <nagEmailAddress>qdox-user@lists.codehaus.org</nagEmailAddress>
     <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/java</unitTestSourceDirectory>
+    <unitTest>
+    	<includes>
+			<include>**/*$Test*</include>
+    	</includes>
+    	<excludes>
+			<exclude>**/*$Sample*</exclude>
+    	</excludes>
+    </unitTest>
   </build>
 
   <reports>
