@@ -1,0 +1,289 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-ca"/>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
+<title>QDox Attributes Usage Manual</title>
+
+<style type="text/css">
+	@import url(base.css);
+	
+	div.TableOfContents {
+		margin-left: 40px;
+		font-family: "Trebuchet MS", sans-serif;
+	}
+	div.Content {
+		margin-left: 2em;
+	}
+	pre {
+		white-space: pre;
+		margin-left: 2em;
+		margin-right: 2em;
+		padding: 0.5em;
+	}
+	pre.CodeExample {
+		border: medium dashed blue;
+		background-color: #e0f0e0;
+	}
+	pre.Command {
+		background-color: #f0e0e0;
+	}
+</style>
+
+</head>
+
+<body>
+
+<h1 id="top">QDox Attributes Usage Manual</h1>
+<div class="TableOfContents">
+  <p><a href="#declaring">Declaring attributes in source code</a></p>
+  <p><a href="#compiler">Compiler invocation</a></p>
+  <p><a href="#runtime">Runtime access to attributes</a></p>
+  <p><a href="#compacting">Compacting attribute files in a JAR</a></p>
+</div>
+
+<hr/>
+
+<h2 id="declaring">Declaring attributes in source code</h2>
+<div class="Content">
+  <p>To declare an attribute in your code, add a tag to the Javadoc comment just 
+  before the element in question. For example:</p>
+  <pre class="CodeExample">/**
+ * Central access point to all attribute-related methods.
+ * 
+ * @pattern singleton
+ */
+public class Attributes {
+   // ...
+}</pre>
+  <p>You can add these attributes to any element that can normally have Javadoc 
+  comments, including classes, interfaces, fields and methods. You can 
+  also continue to use the standard Javadoc tags (e.g. <kbd>@author</kbd>, <kbd>
+  @param</kbd>, etc.), and they will by default be ignored by the attributes 
+  module. (See the compiler section below for details.)</p>
+  <p>The syntax of each attribute tag can generally be anything you want, though 
+  constraints can be imposed depending on the attribute compiler mode. By 
+  default, the compiler runs in "string" mode, where each tag is converted into 
+  a string key/value pair. The tag's name up to the first whitespace 
+  character (<kbd>pattern</kbd> above) is taken as the key, and the remainder of 
+  the line (after the whitespace) as its value (<kbd>singleton</kbd> above). 
+  The tag's name is not verified in any way, and the value is not parsed. 
+  This is the simplest way to use attributes.</p>
+  <p>To gain more control over attribute validation, run the compiler in 
+  "object" mode. The attribute compiler then assumes that each tag refers 
+  to an attribute class that it will attempt to find an instantiate. The 
+  tag's name up to the first whitespace is taken as the name of the class. 
+  The name can be fully qualified, or it can rely on the compilation unit's 
+  declared package or imports to find the correct class, taking advantage of the 
+  usual Java type resolution rules. The name can also 
+  refer to a nested class in the usual way, by separating nested class names 
+  with dots (e.g. <code>Server.TransactionAttribute</code>). Furthermore, 
+  if the name does not end with <code>Attribute</code>, this word will be 
+  appended before looking for a class; however, if this fails, the original name 
+  will be tried too.</p>
+  <p>Attribute classes should normally be serializable, so that attribute 
+  instances can be saved directly in the compiled attribute files. If an 
+  attribute is not serializable, however, it will be stored as its class name 
+  and string parameters, and recreated at runtime as necessary.</p>
+  <p>Once the attribute class has been found, the compiler will attempt to 
+  instantiate it by using the tag's parameters. Two kinds of parameters 
+  are recognized: positional and named. All positional parameters 
+  must precede all named parameters, though both sets are optional. 
+  Parameters are separated by whitespace. The positional parameters will 
+  be used to locate a constructor for the attribute class that takes the same 
+  number of String parameters as there are positional parameters. The 
+  named parameters will be matched to properties of the attribute class, and 
+  each property's set method will be invoked with the given string as argument. 
+  For example:</p>
+  <pre class="CodeExample">@Tx write pessimistic isolate=full</pre>
+  <p>This attribute will be instantiated as follows:</p>
+  <pre class="CodeExample">TxAttribute attr = new TxAttribute("write", "pessimistic");
+attr.setIsolate("full");</pre>
+  <p>Properties will be located using standard JavaBeans introspection. 
+  The order of named parameters is usually not important, though this depends on 
+  whether the properties mentioned are all independent of each other. In 
+  any case, the properties will be set in the order listed in the tag. 
+  Either the constructor or any of the property setters can throw exceptions 
+  (checked or unchecked) to indicate that the parameters are unacceptable; these 
+  will be reported as tag syntax errors by the compiler.</p>
+  <p>If you wish to include whitespace or other special characters in your 
+  parameters, simply enclose them in double quotes. Inside the double 
+  quotes, spaces will be considered as part of the parameter. (This also 
+  works on named parameter values.) To include a double quote in the 
+  string, use <kbd>\"</kbd>, use <kbd>\\</kbd> for a backslash, and <kbd>\n</kbd> 
+  and <kbd>\t</kbd> to insert a newline or tab respectively.</p>
+  <p>Finally, you can also run the compiler in "mixed" mode, where any tag that 
+  is not recognized as an attribute class name will be processed as a simple 
+  "string" attribute.</p>
+</div>
+<h2 id="compiler">Compiler invocation</h2>
+<div class="Content">
+  <p>This section concentrates on the command-line compiler. The Ant task 
+  works similarly, but all parameters are passed through the build definition 
+  file instead. Make sure you have <kbd>attrib-dev.jar</kbd> and the 
+  included <kbd>qdox-tiny.jar</kbd> on your classpath. Also present on 
+  your classpath should be all the classes normally needed to compile the code 
+  you'll be compiling attributes for, and the attribute classes themselves, if 
+  any.</p>
+  <p>To compile all attributes in your project, change to the root of your 
+  source hierarchy (i.e. the package root) and run the compiler:</p>
+  <pre class="Command">java com.thoughtworks.qdox.attributes.compiler.Compiler</pre>
+  <p>The resulting attribute files will be placed next to the source files. 
+  This works best if you normally generate your class files in the same place as 
+  your source files. If you use separate directories, say "<kbd>source</kbd>" 
+  for source files and "<kbd>build</kbd>" for build files, use this command line 
+  from your project root directory instead:</p>
+  <pre class="Command">java com.thoughtworks.qdox.attributes.compiler.Compiler -src source -dst build</pre>
+  <p>This will compile the attributes in all source files in the directories 
+  below "<kbd>source</kbd>" and place the attribute files into matching 
+  subdirectories of "<kbd>build</kbd>". If you have multiple source and 
+  build directories, you can list them all (type all of this on one line):</p>
+  <pre class="Command">java com.thoughtworks.qdox.attributes.compiler.Compiler
+   -src source;tests -dst build;testbuild</pre>
+  <p>All source files in the "<kbd>source</kbd>" and "<kbd>tests</kbd>" 
+  directories will be compiled, and the attribute files will be placed wherever 
+  the matching class files are found in "<kbd>build</kbd>" and "<kbd>testbuild</kbd>". 
+  (If a source file doesn't have a matching class file, the attribute file will 
+  be placed into the first destination directory listed, "<kbd>build</kbd>" in 
+  this case.) The source and destination directories are separated by the 
+  same character used to separate classpath entries (normally "<kbd>;</kbd>" on 
+  Windows and "<kbd>:</kbd>" on Unix).</p>
+  <p>Finally, if you only want to compile attributes for classes in the <code>
+  com.example.foo</code> package and subpackages, even though its source files 
+  are spread across the source and tests directories, do this:</p>
+  <pre class="Command">java com.thoughtworks.qdox.attributes.compiler.Compiler
+   -src source;tests -dst build;testbuild com/example/foo</pre>
+  <p>You can list any number of directories (and Java source code files) in this 
+  manner, and only those files and directory hierarchies will be considered by 
+  the attribute compiler.</p>
+  <p>A full list of compiler options follows:</p>
+  <table border="1" cellpadding="3" cellspacing="1">
+    <tr>
+      <td valign="top">-help</td>
+      <td valign="top">Print usage and exit.</td>
+    </tr>
+    <tr>
+      <td valign="top">-src &lt;source paths&gt;</td>
+      <td valign="top">Specify the list of package root directories that contain 
+      source code. Separate directories with the platform's path separator 
+      character (like classpath). If not specified, use the current 
+      directory as the default source root.</td>
+    </tr>
+    <tr>
+      <td valign="top">-dst &lt;destination paths&gt;</td>
+      <td valign="top">Specify the list of package root directories that will 
+      receive compiled attribute files. Separate directories with the 
+      platform's path separator character (like classpath). Each attribute 
+      file will go into the same directory that contains the matching class 
+      file, or the first directory listed if none is found. If not 
+      specified, use the source paths as the default destination paths.</td>
+    </tr>
+    <tr>
+      <td valign="top">-mode &lt;string|object|mixed&gt;</td>
+      <td valign="top">Set the compiler parsing mode:
+		<ul>
+		<li>"string" considers all tags as simple string key/value attribute 
+        pairs</li>
+		<li>"object" considers each tag as referring to an attribute class that 
+        it attempts to instantiate using the given parameters; attribute classes 
+        must be on the current classpath and the compiler reports an error if a 
+        matching class is not found</li>
+		<li>"mixed" tries to find a class for each tag like "object", but if no 
+        class can be located processes the tag as "string" without reporting an 
+        error</li>
+		</ul>
+      The default mode is "mixed".</td>
+    </tr>
+    <tr>
+      <td valign="top">-ignore &lt;tags to ignore&gt;</td>
+      <td valign="top">Set the list of tags to ignore when processing. The 
+      tags must not include the @ sign, and must be comma-separated. If 
+      not specified, default to ignoring all standard Javadoc tags, so that they 
+      won't be processed as attributes. If specified, though, standard 
+      Javadoc tags are <em>not</em> automatically ignored and must be listed if so 
+      desired.</td>
+    </tr>
+    <tr>
+      <td valign="top">-force</td>
+      <td valign="top">Force all attribute files to be regenerated, regardless 
+      of file timestamps.</td>
+    </tr>
+    <tr>
+      <td valign="top">-nocleanup</td>
+      <td valign="top">Do not remove attribute files with no matching source 
+      file. You must use this option if you have non-public classes in 
+      files whose names don't match the class name.</td>
+    </tr>
+    <tr>
+      <td valign="top">-verbose</td>
+      <td valign="top">Print extra information on the compilation process.</td>
+    </tr>
+  </table>
+</div>
+<h2 id="runtime">Runtime access to attributes</h2>
+<div class="Content">
+  <p>At runtime, you need to have the <kbd>attrib-rt.jar</kbd> (or <kbd>attrib-dev.jar</kbd>, 
+  which is a superset) on your classpath. To access attributes, use the
+  <code>com.thoughtworks.qdox.attributes.Attributes</code> 
+  singleton. Some typical uses:
+	<ul>
+		<li>Get the value of a simple string attribute for a class:
+			<pre class="CodeExample">Attributes.getInstance().get(MyClass.class).get("mytag");</pre>
+		</li>
+		<li>Check whether a simple string attribute with a given tag was defined for a class:
+			<pre class="CodeExample">Attributes.getInstance().get(MyClass.class).has("mytag");</pre>
+		</li>
+		<li>Get the value of an object attribute for a field:
+			<pre class="CodeExample">Attributes.getInstance()
+ .get(MyClass.class.getField("myfield"))
+ .get(TxAttribute.class);</pre>
+		</li>
+		<li>Get an iterator for all the attributes of a method:
+			<pre class="CodeExample">Attributes.getInstance()
+ .get(MyClass.class.getMethod("toString", null))
+ .iterator();</pre>
+		</li>
+		<li>Get an iterator for all values of string attributes with a given tag for a class:
+			<pre class="CodeExample">Attributes.getInstance()
+ .get(MyClass.class)
+ .iterator("my_multiple_tag");</pre>
+		</li>
+	</ul>
+  </p>
+  <p>Many other accessors are available; check the Javadocs for details. A 
+  few things to keep in mind:
+  <ul>
+	<li>The order of all attributes is preserved for each element, and all 
+    iterators and <code>toArray()</code> will respect it. Hence, the ordering of 
+    tags can be meaningful if you'd like.</li>
+	<li>String and object attributes never overlap. Each tag is parsed as 
+    either one or the other, never both. Thus, you will not find object 
+    attributes by querying for the tags used to define them. (However, you 
+    will find string attributes as object attributes of class <code>
+    SimpleAttribute</code>.)</li>
+	<li>You can access attribute bundles using coded strings rather than 
+    reflected element references. This can be useful if the element you 
+    wish to get the attributes for is not visible from the accessing code, or 
+    you need to access the attributes <em>before</em> the class containing the 
+    element is loaded.</li>
+	<li>You can add (and sometimes remove) attributes at runtime, but these 
+    changes will not persisted back to disk.</li>
+  </ul>
+  </p>
+</div>
+<h2 id="compacting">Compacting attributes in a JAR</h2>
+<div class="Content">
+  <p>When putting your application in a JAR, make sure that all the attribute 
+  files generated by the compiler stay with their matching class files. 
+  That's it -- you don't need to do anything more!</p>
+  <p>As an optional step, you can compact the attribute files inside the JAR 
+  into one big attribute file. This should decrease the overall loading 
+  time of attributes, and may reduce the overall size as well. To compact 
+  the attribute files, run the following command line passing it any number of 
+  JAR filenames as arguments. They will be compacted in place.</p>
+  <pre class="Command">java com.thoughtworks.qdox.attributes.dev.JarCompacter myfilename.jar</pre>
+</div>
+
+</body>
+
+</html>
