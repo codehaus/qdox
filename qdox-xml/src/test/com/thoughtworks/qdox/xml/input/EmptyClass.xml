@@ -1,8 +1,0 @@
-<qdox>
-    <source>
-        <package>test</package>
-        <class>
-            <name>EmptyClass</name>
-        </class>
-    </source>
-</qdox>
