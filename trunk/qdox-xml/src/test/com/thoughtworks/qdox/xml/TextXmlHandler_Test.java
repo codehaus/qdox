@@ -43,7 +43,7 @@ public class TextXmlHandler_Test extends TestCase {
 
 	public void testEndWithoutStart() {
 		try {
-			handler.endElement();
+			handler.endElement("x");
 			fail("IllegalStateException expected");
 		} catch (IllegalStateException e) {
 			// expected
@@ -52,15 +52,15 @@ public class TextXmlHandler_Test extends TestCase {
 
 	public void testStartThenEnd() {
 		handler.startElement("a");
-		handler.endElement();
+		handler.endElement("a");
 		assertBuffered("<a></a>\n");
 	}
 
 	public void testNestedStarts() {
 		handler.startElement("a");
 		handler.startElement("b");
-		handler.endElement();
-		handler.endElement();
+		handler.endElement("b");
+		handler.endElement("a");
 		assertBuffered("<a>\n<b></b>\n</a>\n");
 	}
 
@@ -80,7 +80,7 @@ public class TextXmlHandler_Test extends TestCase {
 	public void testFullElement() {
 		handler.startElement("a");
 		handler.addContent("xyz");
-		handler.endElement();
+		handler.endElement("a");
 		assertBuffered("<a>xyz</a>\n");
 	}
 
@@ -89,13 +89,13 @@ public class TextXmlHandler_Test extends TestCase {
 		handler.startElement("a");
 		handler.startElement("b");
 		handler.addContent("xyz");
-		handler.endElement();
+		handler.endElement("b");
 		handler.startElement("c");
 		handler.startElement("d");
 		handler.addContent("mno");
-		handler.endElement();
-		handler.endElement();
-		handler.endElement();
+		handler.endElement("d");
+		handler.endElement("c");
+		handler.endElement("a");
 		assertBuffered(
 			"<a>\n" + 
 			"  <b>xyz</b>\n" + 

@@ -45,7 +45,7 @@ public class JavaDocXmlGenerator {
 		for (int i = 0; i < javaSources.length; i++) {
 			writeJavaSource(javaSources[i]);
 		}
-		endElement();
+		endElement("qdox");
 		handler.endDocument();
 	}
 
@@ -63,7 +63,7 @@ public class JavaDocXmlGenerator {
 		for (int i = 0; i < classes.length; i++) {
 			writeJavaClass(classes[i]);
 		}
-		endElement();
+		endElement("source");
 	}
 
 	void writeJavaClass(JavaClass javaClass) {
@@ -91,14 +91,14 @@ public class JavaDocXmlGenerator {
 		for (int i = 0; i < classes.length; i++) {
 			writeJavaClass(classes[i]);
 		}
-		endElement();
+		endElement("class");
 	}
 
 	void writeJavaField(JavaField javaField) {
 		startElement("field");
 		writeAbstractJavaEntity(javaField);
 		addTypeInfo(javaField.getType());
-		endElement();
+		endElement("field");
 	}
 
 	void writeJavaMethod(JavaMethod javaMethod) {
@@ -115,14 +115,14 @@ public class JavaDocXmlGenerator {
 		for (int i = 0; i < exceptions.length; i++) {
 			addElement("exception", exceptions[i].getValue());
 		}
-		endElement();
+		endElement(nodeType);
 	}
 
 	void writeJavaParameter(JavaParameter javaParameter) {
 		startElement("parameter");
 		addElement("name", javaParameter.getName());
 		addTypeInfo(javaParameter.getType());
-		endElement();
+		endElement("parameter");
 	}
 
 	void writeAbstractJavaEntity(AbstractJavaEntity javaEntity) {
@@ -153,7 +153,7 @@ public class JavaDocXmlGenerator {
 		startElement("tag");
 		addElement("name", tag.getName());
 		addElement("value", tag.getValue());
-		endElement();
+		endElement("tag");
 	}
 
 	void addTypeInfo(Type type) {
@@ -163,7 +163,7 @@ public class JavaDocXmlGenerator {
 		if (type.getDimensions() > 0) {
 			addElement("dimensions", String.valueOf(type.getDimensions()));
 		}
-		endElement();
+		endElement("type");
 	}
 
 	//---( Support routines )---
@@ -178,14 +178,14 @@ public class JavaDocXmlGenerator {
 		handler.addContent(text);
 	}
 
-	private void endElement() {
-		handler.endElement();
+	private void endElement(String name) {
+		handler.endElement(name);
 	}
 
 	private void addElement(String name, String value) {
 		startElement(name);
 		addText(value);
-		endElement();
+		endElement(name);
 	}
 
 }

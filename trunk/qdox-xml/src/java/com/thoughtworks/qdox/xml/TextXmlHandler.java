@@ -2,7 +2,6 @@ package com.thoughtworks.qdox.xml;
 
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.Stack;
 
 /**
  * A simple {@link XmlHandler} that produces XML text.
@@ -16,8 +15,7 @@ public class TextXmlHandler implements XmlHandler {
 
 	private PrintWriter out;
 	private String indentPrefix;
-
-	private Stack nodeStack = new Stack();
+	private int nestingLevel;
 	private boolean onNewLine = true;
 
 	//---( Constructors )---
@@ -40,12 +38,12 @@ public class TextXmlHandler implements XmlHandler {
 		if (!onNewLine) {
 			out.println();
 		}
-		indent(nodeStack.size());
+		indent();
 		out.print('<');
 		out.print(name);
 		out.print('>');
 		onNewLine = false;
-		nodeStack.push(name);
+		nestingLevel++;
 	}
 
 	public void addContent(String text) {
@@ -60,13 +58,13 @@ public class TextXmlHandler implements XmlHandler {
 		}
 	}
 
-	public void endElement() {
-		if (nodeStack.isEmpty()) {
+	public void endElement(String name) {
+		nestingLevel--;
+		if (nestingLevel < 0) {
 			throw new IllegalStateException();
 		}
-		String name = (String) nodeStack.pop();
 		if (onNewLine) {
-			indent(nodeStack.size());
+			indent();
 		}
 		out.println("</" + name + ">");
 		onNewLine = true;
@@ -78,8 +76,8 @@ public class TextXmlHandler implements XmlHandler {
 
 	//---( Support methods )---
 
-	private void indent(int level) {
-		for (int i = 0; i < level; i++) {
+	private void indent() {
+		for (int i = 0; i < nestingLevel; i++) {
 			out.print(indentPrefix);
 		}
 	}
