@@ -1,11 +1,11 @@
 <qdox>
-	<source>
-		<package>test</package>
-		<class>
-			<name>Outer</name>
-			<class>
-				<name>Inner</name>
-			</class>
-		</class>
-	</source>
+    <source>
+        <package>test</package>
+        <class>
+            <name>Outer</name>
+            <class>
+                <name>Inner</name>
+            </class>
+        </class>
+    </source>
 </qdox>

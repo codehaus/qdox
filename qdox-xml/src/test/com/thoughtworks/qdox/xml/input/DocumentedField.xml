@@ -1,19 +1,19 @@
 <qdox>
-	<source>
-		<package>test</package>
-		<class>
-			<name>X</name>
-			<field>
-				<name>y</name>	 
-				<comment>Explain y</comment>
-				<tag>
-					<name>foo</name>
-					<value>bar</value>
-				</tag>
-				<type>
-					<name>int</name>
-				</type>
-			</field>
-		</class>
-	</source>
+    <source>
+        <package>test</package>
+        <class>
+            <name>X</name>
+            <field>
+                <name>y</name>   
+                <comment>Explain y</comment>
+                <tag>
+                    <name>foo</name>
+                    <value>bar</value>
+                </tag>
+                <type>
+                    <name>int</name>
+                </type>
+            </field>
+        </class>
+    </source>
 </qdox>

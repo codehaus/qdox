@@ -9,14 +9,14 @@ package com.thoughtworks.qdox.xml;
  */
 public interface XmlHandler {
 
-	void startDocument();
+    void startDocument();
 
-	void startElement(String name);
+    void startElement(String name);
 
-	void addContent(String text);
+    void addContent(String text);
 
-	void endElement(String name);
+    void endElement(String name);
 
-	void endDocument();
+    void endDocument();
 
 }

@@ -2,7 +2,7 @@ package test;
 
 public class C {
 
-	// dodgy modifier ordering is intentional
+    // dodgy modifier ordering is intentional
     static final private int X = 0;
 
     protected boolean isDonIsGood() {
