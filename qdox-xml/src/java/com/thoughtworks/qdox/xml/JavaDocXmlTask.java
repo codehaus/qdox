@@ -1,15 +1,20 @@
 package com.thoughtworks.qdox.xml;
 
-import com.thoughtworks.qdox.ant.AbstractQdoxTask;
+import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaSource;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.Writer;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.Task;
+import org.apache.tools.ant.types.FileSet;
+import org.apache.tools.ant.types.Path;
 
-public class JavaDocXmlTask extends AbstractQdoxTask {
+public class JavaDocXmlTask extends Task {
 
     //---( Constants )---
 
@@ -23,8 +28,23 @@ public class JavaDocXmlTask extends AbstractQdoxTask {
     
     //---( Arguments )---
 
+    private Path inputJavaFiles;
     private File dest;
     private boolean writeDtd;
+
+    //---( Config )---
+
+    public void setProject(Project project) {
+        super.setProject(project);
+        inputJavaFiles = new Path(project);
+    }
+
+    /**
+     * Nested &lt;fileset&gt; element
+     */
+    public void addConfiguredFileSet(FileSet fileSet) {
+        inputJavaFiles.addFileset(fileSet);
+    }
 
     /**
      * Set output file name
@@ -43,15 +63,45 @@ public class JavaDocXmlTask extends AbstractQdoxTask {
 
     //---( Execution )---
 
+    public void execute() {
+        validateAttributes();
+        String[] files = inputJavaFiles.list();
+        if (upToDate(files)) return;
+        processSources(parse(files));
+    }
+
     protected void validateAttributes() {
-        super.validateAttributes();
         if (dest == null) {
             throw new BuildException("no \"dest\" specified");
         }
     }
 
+    private boolean upToDate(String[] files) {
+        if (! dest.exists()) return false;
+        long destLastMod = dest.lastModified();
+        for (int i = 0; i < files.length; i++) {
+            long fileLastMod = new File(files[i]).lastModified();
+            if (fileLastMod > destLastMod) return false;
+        }
+        return true;
+    } 
+    
+    private JavaSource[] parse(String[] files) {
+        JavaDocBuilder builder = new JavaDocBuilder();
+        builder.getClassLibrary().addClassLoader(getClass().getClassLoader());
+        for (int i = 0; i < files.length; i++) {
+            try {
+                builder.addSource(new File(files[i]));
+            } catch (FileNotFoundException e) {
+                throw new BuildException(e);
+            }
+        }
+        return builder.getSources();
+    } 
+    
     protected void processSources(JavaSource[] sources) {
         try {
+            log("writing " + dest);
             Writer out = new FileWriter(dest);
             writePreamble(out);
             JavaDocXmlGenerator xmlGenerator =
