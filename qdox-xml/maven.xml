@@ -19,6 +19,7 @@
         <attainGoal name="qdox-xml:taskdef"/>
         <qdox-xml dest="${maven.build.dir}/qdox-with-dtd.xml" writeDTD="yes">
             <fileset dir="src/java" />
+            <fileset dir="../qdox/src/java" />
         </qdox-xml>
         <echo message="Validating generated XML against QDox DTD" />
         <xmlvalidate file="${maven.build.dir}/qdox-with-dtd.xml">
