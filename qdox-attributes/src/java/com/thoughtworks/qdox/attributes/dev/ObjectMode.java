@@ -716,7 +716,13 @@ public class ObjectMode implements AttributesBuilder.Mode {
 			}
 		}
 		
+		/**
+		 * @deprecated Test class that should not be javadoc'ed.
+		 */
 		public static class Sample {}
+		/**
+		 * @deprecated Test class that should not be javadoc'ed.
+		 */
 		public static class SampleAttribute {}
 	}
 

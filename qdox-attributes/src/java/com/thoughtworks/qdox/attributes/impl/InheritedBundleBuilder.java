@@ -28,7 +28,7 @@ public class InheritedBundleBuilder {
 	 * @param base the base bundle of the target element
 	 */
 	public InheritedBundleBuilder(Bundle base) {
-		errorBundle = new ErrorBundle("validated");
+		errorBundle = new ErrorBundle();
 		try {
 			inheritedBundle = new InheritedBundle(base);
 		} catch (InvalidBundleException e) {
@@ -54,19 +54,16 @@ public class InheritedBundleBuilder {
 			String declaringClassName = (String) entry.getValue();
 			AttributeUsageAttribute usage = AttributeUsageAttribute.of(attribute);
 			
-			if (usage == null || usage.getInherit()) {
+			if (usage.getInherit()) {
 				boolean shouldInherit = true;
-				
-				// if usage==null, assume allowMultiple && !final
-				if (usage != null && (!usage.getAllowMultiple() || usage.getFinal())) {
-					
+				if (!usage.getAllowMultiple() || usage.getFinal()) {
 					// assume target and multiplicity have already been checked, only worry about inheritance
 					String usageDefiningClassName = (String) Attributes.getInstance().get(attribute.getClass()).getProvenanceMap().get(usage);
 					try {
 						// if no existing attribute with matching class, inheriting is always OK
 						if (inheritedBundle.iterator(attribute.getClass().getClassLoader().loadClass(usageDefiningClassName)).hasNext()) {
 							if (usage.getFinal()) {
-								errorBundle.add("attempt to redefine final attribute " + attribute.getClass() + " originally assigned in " + declaringClassName);
+								errorBundle.addError("attempt to redefine final attribute " + attribute.getClass() + " originally assigned in " + declaringClassName);
 								shouldInherit = false;
 							} else if (!usage.getAllowMultiple()) {
 								// already have a more specific assignment, ignore inherited one
@@ -88,7 +85,7 @@ public class InheritedBundleBuilder {
 	 * @return the constructed bundle
 	 */
 	public BundleBase getBundle() {
-		if (errorBundle.getErrorCount() > 0) {
+		if (errorBundle.size() > 0) {
 			return errorBundle;
 		} else {
 			assert inheritedBundle != null;
@@ -111,13 +108,13 @@ public class InheritedBundleBuilder {
 		public void testBaseConstructor() {
 			SimpleBundle base = makeSampleBundle();
 			InheritedBundleBuilder bb = new InheritedBundleBuilder(base);
-			assertEquals(0, bb.errorBundle.getErrorCount());
+			assertEquals(0, bb.errorBundle.size());
 			assertTrue(Arrays.equals(base.toArray(), bb.inheritedBundle.toArray()));
 			assertSame(bb.inheritedBundle, bb.getBundle());
 		}
 		public void testBaseConstructorError() {
 			InheritedBundleBuilder bb = new InheritedBundleBuilder(new ErrorBundle());
-			assertEquals(1, bb.errorBundle.getErrorCount());
+			assertEquals(1, bb.errorBundle.size());
 			assertNull(bb.inheritedBundle);
 			assertSame(bb.errorBundle, bb.getBundle());
 		}

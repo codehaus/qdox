@@ -1,11 +1,9 @@
 package com.thoughtworks.qdox.attributes.dev;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 import com.thoughtworks.qdox.attributes.Attributes;
-import com.thoughtworks.qdox.attributes.impl.*;
 
 /**
  * A command-line attributes compiler.
@@ -17,9 +15,7 @@ public class Compiler {
 	
 	private File[] sourceRoots, destinations;
 	private String[] sources;
-	private boolean force, cleanup = true, verbose;
-	
-	private Set matchedAttributeFiles = new HashSet();
+	private boolean force, verbose;
 	
 	private AttributesBuilder builder = new AttributesBuilder(new MixedMode());
 	
@@ -41,10 +37,6 @@ public class Compiler {
 		this.force = force;
 	}
 	
-	public void setCleanup(boolean cleanup) {
-		this.cleanup = cleanup;
-	}
-	
 	public void setVerbose(boolean verbose) {
 		this.verbose = verbose;
 	}
@@ -63,40 +55,8 @@ public class Compiler {
 		}
 
 		if (sources == null) scanSourceRoots(); else scanSources();
-		if (cleanup) {
-			if (sources == null) pruneSourceRoots(); else pruneSources();
-		} 
 	}
-	
-	private void pruneSources() {
-		for (int i = 0; i < sources.length; i++) {
-			String source = sources[i];
-			if (source.endsWith(".java")) continue;
-			for (int j = 0; j < destinations.length; j++) {
-				File file = new File(destinations[j], source);
-				if (file.exists() && file.isDirectory()) pruneRecursive(file);
-			}
-		}
-	}
-	
-	private void pruneSourceRoots() {
-		for (int i=0; i<destinations.length; i++) {
-			pruneRecursive(destinations[i]);
-		}
-	}
-	
-	private void pruneRecursive(File dir) {
-		File[] files = dir.listFiles();
-		for (int i = 0; i < files.length; i++) {
-			File file = files[i];
-			if (file.isDirectory()) {
-				pruneRecursive(file);
-			} else if (file.getName().endsWith(SimpleAttributesImpl.FILENAME_SUFFIX)) {
-				if (!matchedAttributeFiles.contains(file)) file.delete();
-			}			
-		}
-	}
-	
+		
 	private void scanSources() {
 		for (int i = 0; i < sources.length; i++) {
 			String source = sources[i];
@@ -143,50 +103,43 @@ public class Compiler {
 		}
 	}
 	
-	private void processSource(File file, String qualifiedName) {
+	private void processSource(File file, String slashedName) {
 		if (verbose) System.out.println("Processing " + file);
 		
-		// 1. find matching attribs file
-		File destPath;
-		FIND_CLASS: {
-			for (int i=0; i<destinations.length; i++) {
-				destPath = destinations[i];
-				File classFile = new File(destPath, qualifiedName + ".class");
-				if (classFile.exists()) break FIND_CLASS;
-			}
-			destPath = (File) destinations[0];
-		}
-		File attribsFile = new File(destPath, qualifiedName + SimpleAttributesImpl.FILENAME_SUFFIX);
-		
-		// 2. compare timestamps, skip if up-to-date
-		if (!force && attribsFile.exists() && attribsFile.lastModified() >= file.lastModified()) {
-			if (cleanup) matchedAttributeFiles.add(attribsFile);
-			return;
-		}
-		if (attribsFile.exists()) attribsFile.delete();
-		
-		// 3. parse source file and write out attribs
 		try {
+			if (!force) {
+				// find matching class file and see if it already has bundles 
+				// if so, then it must be up-to-date, since a javac compile would've overwritten them
+				if (new CheckClassFile(new FileInputStream(findClassFile(slashedName))).hasBundles()) return;
+			}
+			
+			// otherwise, parse source file and write out attribs
 			builder.parse(file);
 			for (Iterator it = builder.getPacks().entrySet().iterator(); it.hasNext();) {
 				Map.Entry entry = (Map.Entry) it.next();
-				AttributesPack pack = (AttributesPack) entry.getValue();
+				final String className = (String) entry.getKey();
+				WriteAttributesPack pack = (WriteAttributesPack) entry.getValue();
 				if (pack.size() == 0) continue;
-				File outFile = new File(destPath, ((String) entry.getKey()).replace('.', File.separatorChar) + SimpleAttributesImpl.FILENAME_SUFFIX);
-				if (cleanup && !attribsFile.equals(outFile)) {
-					System.err.println("Warning: file '" + file + "' contains class '" + entry.getKey() + "'; you must run the compiler in nocleanup mode.");
-					System.err.println(">>> mismatch: " + attribsFile + " vs. " + outFile);
-				}
-				pack.save(outFile);
-				if (cleanup) matchedAttributeFiles.add(outFile);
+				pack.save(findClassFile(className.replace('.', File.separatorChar)));
 			}
 		} catch (IOException e) {
 			System.err.println("Error processing file '" + file + "': " + e);
+		} catch (ClassNotFoundException e) {
+			assert false;
 		}
 	}
 	
+	private File findClassFile(String slashedName) throws IOException {
+		slashedName += ".class";
+		for (int i=0; i<destinations.length; i++) {
+			File classFile = new File(destinations[i], slashedName);
+			if (classFile.exists()) return classFile;
+		}
+		throw new IOException("no matching class file found");
+	}
+	
 	public static void main(String[] args) {
-		System.setProperty(Attributes.SIMPLE_IMPL_CLASS_NAME_PROPKEY, CompileTimeAttributesImpl.class.getName());
+		System.setProperty(Attributes.IMPL_CLASS_NAME_PROPKEY, CompileTimeAttributesImpl.class.getName());
 		Compiler c = new Compiler();
 		try {
 			int k = 0;
@@ -215,8 +168,6 @@ public class Compiler {
 					ignoreSpecified = true;
 				} else if ("-force".equals(arg)) {
 					c.setForce(true);
-				} else if ("-nocleanup".equals(arg)) {
-					c.setCleanup(false);
 				} else if ("-verbose".equals(arg)) {
 					c.setVerbose(true);
 				} else if ("-help".equals(arg)) {
@@ -251,7 +202,6 @@ public class Compiler {
 		System.out.println("  -mode <string|object|mixed>");
 		System.out.println("  -ignore <tags to ignore, separated by commas> (if not specified, ignore all standard javadoc tags)");
 		System.out.println("  -force");
-		System.out.println("  -nocleanup");
 		System.out.println("  -verbose");
 		System.out.println("  -help");
 	}

@@ -20,54 +20,36 @@ import java.lang.reflect.*;
  */
 
 public abstract class Attributes {
-	public static final String SIMPLE_IMPL_CLASS_NAME_PROPKEY = "com.thoughtworks.qdox.attributes.implementation.simple";
-	public static final String DEFAULT_SIMPLE_IMPL_CLASS_NAME = "com.thoughtworks.qdox.attributes.impl.SimpleAttributesImpl";
-	public static final String VALIDATING_IMPL_CLASS_NAME_PROPKEY = "com.thoughtworks.qdox.attributes.implementation.validating";
-	public static final String DEFAULT_VALIDATING_IMPL_CLASS_NAME = "com.thoughtworks.qdox.attributes.impl.ValidatingAttributesImpl";
+	public static final String IMPL_CLASS_NAME_PROPKEY = "com.thoughtworks.qdox.attributes.implementation";
+	public static final String DEFAULT_IMPL_CLASS_NAME = "com.thoughtworks.qdox.attributes.impl.AttributesImpl";
 	
-	private static Attributes simpleInstance, validatingInstance;
+	private static Attributes instance;
 	/**
-	 * Get the validating singleton instance of the <code>Attributes</code> class.
-	 * @see #getInstance(boolean)
-	 * @return the validating singleton instance of <code>Attributes</code>
+	 * Get the  singleton instance of the <code>Attributes</code> class.  The first time this
+	 * method is called, the class specified by the value of the system property keyed with
+	 * {@link #IMPL_CLASS_NAME_PROPKEY} will be instantiated.  If a property value is not defined,
+	 * a {@link #DEFAULT_IMPL_CLASS_NAME default class} will be instantiated as necessary. 
+	 * 
+	 * @return the singleton instance of <code>Attributes</code>
 	 * @throws InstantiationException if unable to instantiate the implementation class
 	 * @throws IllegalAccessException if unable to access the implementation class
 	 * @throws ClassNotFoundException if unable to find the implementation class
 	 */
 	public static Attributes getInstance() {
-		return getInstance(true);
-	}
-	
-	/**
-	 * Get a singleton instance of the <code>Attributes</code> class.  There are two singletons:
-	 * one that validates attribute bundles according to the attributes' usage properties, and one
-	 * that does straight-up access with no validation overhead.  The first time this
-	 * method is called, the classes specified by the value of the system property keyed with
-	 * {@link #SIMPLE_IMPL_CLASS_NAME_PROPKEY} and {@link #VALIDATING_IMPL_CLASS_NAME_PROPKEY}
-	 * will be instantiated.  If a property value is not defined,
-	 * a {@link #DEFAULT_SIMPLE_IMPL_CLASS_NAME default simple class} or
-	 * {@link #DEFAULT_VALIDATING_IMPL_CLASS_NAME default validating class} will be instantiated as necessary. 
-	 * @return a singleton instance of <code>Attributes</code>
-	 * @throws InstantiationException if unable to instantiate the implementation class
-	 * @throws IllegalAccessException if unable to access the implementation class
-	 * @throws ClassNotFoundException if unable to find the implementation class
-	 */
-	public synchronized static Attributes getInstance(boolean validateUsage) {
-		if (validateUsage) {
-			if (validatingInstance == null) {
-				String implClassName = System.getProperty(VALIDATING_IMPL_CLASS_NAME_PROPKEY);
-				if (implClassName == null) implClassName = DEFAULT_VALIDATING_IMPL_CLASS_NAME;
-				validatingInstance = instantiate(implClassName);
+		if (instance == null) {
+			String implClassName = System.getProperty(IMPL_CLASS_NAME_PROPKEY);
+			if (implClassName == null) implClassName = DEFAULT_IMPL_CLASS_NAME;
+			try {
+				instance = (Attributes) Thread.currentThread().getContextClassLoader().loadClass(implClassName).newInstance();
+			} catch (InstantiationException e) {
+				throw new RuntimeException("failed to instantiate attribute implementation", e);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException("failed to instantiate attribute implementation", e);
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException("failed to instantiate attribute implementation", e);
 			}
-			return validatingInstance;
-		} else {
-			if (simpleInstance == null) {
-				String implClassName = System.getProperty(SIMPLE_IMPL_CLASS_NAME_PROPKEY);
-				if (implClassName == null) implClassName = DEFAULT_SIMPLE_IMPL_CLASS_NAME;
-				simpleInstance = instantiate(implClassName);
-			}
-			return simpleInstance;
 		}
+		return instance;
 	}
 	
 	/**
@@ -76,20 +58,7 @@ public abstract class Attributes {
 	 * system to a known state, and potentially change the implementation classes.
 	 */
 	public synchronized static void reset() {
-		simpleInstance = null;
-		validatingInstance = null;
-	}
-	
-	private static Attributes instantiate(String implClassName) {
-		try {
-			return (Attributes) Thread.currentThread().getContextClassLoader().loadClass(implClassName).newInstance();
-		} catch (InstantiationException e) {
-			throw new RuntimeException("failed to instantiate attribute implementation", e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException("failed to instantiate attribute implementation", e);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("failed to instantiate attribute implementation", e);
-		}
+		instance = null;
 	}
 	
 	/**
@@ -146,7 +115,7 @@ public abstract class Attributes {
 	
 	/**
 	 * Get the bundle of attributes for the given package.
-	 * @param className the full name of the package
+	 * @param packageName the full name of the package
 	 * @param classLoader the class loader to use when fetching attribute descriptors, if <code>null</code> use the thread's context class loader
 	 * @return the bundle of attributes for the package matching the given name
 	 */

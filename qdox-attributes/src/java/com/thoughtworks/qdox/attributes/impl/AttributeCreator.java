@@ -34,7 +34,7 @@ public class AttributeCreator implements Creator {
 	}
 	
 	public Object create() throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		((SimpleAttributesImpl) Attributes.getInstance(false)).canModifyAttributes = true;
+		((AttributesImpl) Attributes.getInstance()).canModifyAttributes = true;
 		try {
 			Class[] paramTypes = constructorArgTypes == null ? EMPTY_PARAM : constructorArgTypes;
 			Object[] args = constructorArgs == null ? EMPTY_OBJECT_ARRAY : constructorArgs.toArray();
@@ -46,7 +46,7 @@ public class AttributeCreator implements Creator {
 			}
 			return attr;
 		} finally {
-			((SimpleAttributesImpl) Attributes.getInstance(false)).canModifyAttributes = false;
+			((AttributesImpl) Attributes.getInstance()).canModifyAttributes = false;
 		}
 	}
 	

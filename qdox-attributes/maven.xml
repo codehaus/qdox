@@ -19,7 +19,6 @@
       <classpath>
         <path refid="maven.dependency.classpath"/>
         <pathelement location="${maven.build.dest}"/>
-        <pathelement location="${maven.build.dir}/attribs"/>
         <pathelement path="${plugin.getDependencyPath('junit')}"/>
       </classpath>
       <batchtest todir="${maven.build.dir}/test-reports">
@@ -38,7 +37,6 @@
 			<exclude name="com/thoughtworks/qdox/attributes/dev/*"/>
 			<exclude name="com/thoughtworks/qdox/attributes/dev"/>
 		</fileset>
-		<fileset dir="${maven.build.dir}/attribs"/>
 	</jar>
   </goal>
   
@@ -47,8 +45,7 @@
   </postGoal>
   
   <goal name="java:attribs" description="Compile project attributes.">
-  	<mkdir dir="${maven.build.dir}/attribs"/>
-  	<echo level="info" message="Compiling attributes to ${maven.build.dir}/attribs" />
+  	<echo level="info" message="Compiling attributes" />
   	<java classname="com.thoughtworks.qdox.attributes.dev.Compiler" failonerror="true" fork="true">
   		<arg value="-mode" />
   		<arg value="object" />
@@ -56,7 +53,7 @@
   		<arg value="-src" />
   		<arg file="${maven.src.dir}/java" />
   		<arg value="-dst" />
-  		<arg file="${maven.build.dir}/attribs" />
+  		<arg file="${maven.build.dest}" />
 		<classpath>
 			<path refid="maven.dependency.classpath"/>
 			<pathelement location="${maven.build.dest}"/>

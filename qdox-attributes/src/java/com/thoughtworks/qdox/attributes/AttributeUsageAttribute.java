@@ -6,7 +6,7 @@ import junit.framework.TestCase;
  * An attribute used to specify usage characteristics of an attribute class.  You can specify the
  * permitted target element types that the attribute can be applied to, whether it can be
  * applied multiple times to one element, and whether it is inherited.  If not specified,
- * attributes can be applied to all element types, are allowed to repeat, are inherited and are not final.
+ * attributes can be applied to all element types, are allowed to repeat, and are not inherited.
  * 
  * @author <a href="mailto:piotr@ideanest.com">Piotr Kaminski</a>
  * @version $Revision$ ($Date$)
@@ -29,7 +29,7 @@ public class AttributeUsageAttribute implements java.io.Serializable {
 		Attributes.getInstance().checkModifyAttribute();
 		if (getAllowMultiple() != allowMultiple) flags ^= 1<<12;
 	}
-	public boolean getInherit() {return (flags & 1<<13) == 0;}	// true by default
+	public boolean getInherit() {return (flags & 1<<13) != 0;}
 	public void setInherit(boolean inherit) {
 		Attributes.getInstance().checkModifyAttribute();
 		if (getInherit() != inherit) flags ^= 1<<13;
@@ -41,17 +41,6 @@ public class AttributeUsageAttribute implements java.io.Serializable {
 	}
 	public boolean allowsTarget(ElementType target) {return (flags & 1<<target.intValue()) != 0;}
 
-	public static AttributeUsageAttribute of(Object attribute) {
-		Bundle attributeClassBundle = Attributes.getInstance().get(attribute.getClass());
-		AttributeUsageAttribute usage = null;
-		try {
-			usage = (AttributeUsageAttribute) attributeClassBundle.get(AttributeUsageAttribute.class);
-		} catch (MultipleValuesException e) {
-			throw new MultipleValuesException("attribute type " + attribute.getClass().getName() + " has multiple usage attributes", e);
-		}
-		return usage;
-	}
-	
 	public static final ElementType[] ALL = new ElementType[] {
 		ElementType.CLASS, ElementType.INTERFACE, ElementType.FIELD, ElementType.METHOD,
 		ElementType.CONSTRUCTOR, ElementType.PACKAGE, ElementType.PARAMETER,
@@ -64,9 +53,26 @@ public class AttributeUsageAttribute implements java.io.Serializable {
 		ElementType.FIELD, ElementType.METHOD, ElementType.CONSTRUCTOR
 	};
 	
+	private static final AttributeUsageAttribute DEFAULT = new AttributeUsageAttribute(ALL);
+	public static AttributeUsageAttribute of(Object attribute) {
+		Bundle attributeClassBundle = Attributes.getInstance().get(attribute.getClass());
+		AttributeUsageAttribute usage = null;
+		try {
+			usage = (AttributeUsageAttribute) attributeClassBundle.get(AttributeUsageAttribute.class);
+			if (usage == null) return DEFAULT;
+		} catch (MultipleValuesException e) {
+			throw new MultipleValuesException("attribute type " + attribute.getClass().getName() + " has multiple usage attributes", e);
+		}
+		return usage;
+	}
+	
+
+	/**
+	 * @deprecated test class not to be documented
+	 */
 	public static class Test extends TestCase {
 		protected void setUp() {
-			System.setProperty(Attributes.SIMPLE_IMPL_CLASS_NAME_PROPKEY, Attributes.DEFAULT_SIMPLE_IMPL_CLASS_NAME);
+			System.setProperty(Attributes.IMPL_CLASS_NAME_PROPKEY, Attributes.DEFAULT_IMPL_CLASS_NAME);
 			Attributes.reset();
 		}
 		public void testCreate1() {
@@ -79,18 +85,18 @@ public class AttributeUsageAttribute implements java.io.Serializable {
 		public void testCreate2() {
 			AttributeUsageAttribute a = new AttributeUsageAttribute(new ElementType[]{});
 			assertTrue(a.getAllowMultiple());
-			assertTrue(a.getInherit());
+			assertFalse(a.getInherit());
 			assertFalse(a.getFinal());
 		}
 		public void testCreate3() {
-			System.setProperty(Attributes.SIMPLE_IMPL_CLASS_NAME_PROPKEY, "com.thoughtworks.qdox.attributes.impl.CompileTimeAttributesImpl");
+			System.setProperty(Attributes.IMPL_CLASS_NAME_PROPKEY, "com.thoughtworks.qdox.attributes.dev.CompileTimeAttributesImpl");
 			Attributes.reset();
 			AttributeUsageAttribute a = new AttributeUsageAttribute(new ElementType[]{});
 			a.setAllowMultiple(false);
-			a.setInherit(false);
+			a.setInherit(true);
 			a.setFinal(true);
 			assertFalse(a.getAllowMultiple());
-			assertFalse(a.getInherit());
+			assertTrue(a.getInherit());
 			assertTrue(a.getFinal());
 		}
 		public void testCreate4() {
