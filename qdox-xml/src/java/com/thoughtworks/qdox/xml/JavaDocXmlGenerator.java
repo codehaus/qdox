@@ -51,8 +51,8 @@ public class JavaDocXmlGenerator {
 
     void writeJavaSource(JavaSource javaSource) {
         startElement("source");
-        if (javaSource.getFile() != null) {
-            addElement("file", javaSource.getFile().toString());
+        if (javaSource.getURL() != null) {
+            addElement("url", javaSource.getURL().toString());
         }
         addElement("package", javaSource.getPackage());
         String[] imports = javaSource.getImports();

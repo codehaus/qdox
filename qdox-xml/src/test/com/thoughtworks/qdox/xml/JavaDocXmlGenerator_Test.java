@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 import junit.framework.TestCase;
 
 public class JavaDocXmlGenerator_Test extends TestCase {
@@ -92,7 +93,7 @@ public class JavaDocXmlGenerator_Test extends TestCase {
     public void testSourceFile() throws Exception {
         JavaSource source = new JavaSource();
         source.setPackage("test");
-        source.setFile(new File("xyz"));
+        source.setURL(new URL("http://qdox.codehaus.org/dummy"));
         String expectedXml =
             readExpectedFile(getTestFile("SourceFile.xml"));
         String actualXml = toXml(new JavaSource[] {source});

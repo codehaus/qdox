@@ -1,6 +1,6 @@
 <qdox>
     <source>
-        <file>xyz</file>
+        <url>http://qdox.codehaus.org/dummy</url>
         <package>test</package>
     </source>
 </qdox>
