@@ -14,17 +14,27 @@ import com.thoughtworks.qdox.attributes.*;
  */
 public class ErrorBundle extends BundleBase {
 	
+	public ErrorBundle() {
+		this("");
+	}
+	
+	public ErrorBundle(String kind) {
+		this.kind = kind;
+	}
+	
 	void afterLoad() {
 		clearCreators();
 		Logger.getLogger(Attributes.class.getName()).warning(getErrorMessage());
 	}
 	
+	private final String kind;
 	private transient String errorMessage;
 	public String getErrorMessage() {
 		if (errorMessage == null) {
 			StringBuffer buf = new StringBuffer();
-			buf.append("The bundle for ").append(getKey()).append(" is invalid due to the following errors:\n");
+			buf.append("The " + kind + " bundle for ").append(getKey()).append(" is invalid due to the following errors:\n");
 			for (Iterator it = super.iterator(); it.hasNext(); ) {
+				// TODO: indent nested messages
 				buf.append(it.next()).append("\n");
 			}
 			errorMessage = buf.toString();
@@ -34,6 +44,10 @@ public class ErrorBundle extends BundleBase {
 	
 	public void addError(Exception e) {
 		super.add(e.getMessage());
+	}
+	
+	public int getErrorCount() {
+		return super.size();
 	}
 	
 	public Iterator iterator() {throw new InvalidBundleException(getErrorMessage());}
