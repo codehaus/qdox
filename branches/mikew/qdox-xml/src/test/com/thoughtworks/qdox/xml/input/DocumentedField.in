@@ -1,0 +1,11 @@
+package test;
+
+class X {
+
+    /**
+     * Explain y
+     * @foo bar
+     */
+    int y;
+
+}
