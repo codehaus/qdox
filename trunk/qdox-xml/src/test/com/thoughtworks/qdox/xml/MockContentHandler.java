@@ -5,7 +5,6 @@ import junit.framework.AssertionFailedError;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
 
 /**
  * A simple ContentHandler that serialises events for later comparision.
@@ -28,11 +27,11 @@ public class MockContentHandler implements ContentHandler {
         throw new UnsupportedOperationException();
     }
 
-    public void startDocument() throws SAXException {
+    public void startDocument() {
         buffer.append("START-DOCUMENT\n");
     }
 
-    public void endDocument() throws SAXException {
+    public void endDocument() {
         buffer.append("END-DOCUMENT\n");
     }
 
@@ -56,7 +55,6 @@ public class MockContentHandler implements ContentHandler {
     public void startElement(String namespaceUri,
                              String localName, String qName,
                              Attributes attrs)
-        throws SAXException 
     {
         checkPrefixMapping(namespaceUri, localName);
         if (attrs.getLength() > 0) {
@@ -69,41 +67,32 @@ public class MockContentHandler implements ContentHandler {
 
     public void endElement(String namespaceUri,
                            String localName, String qName)
-        throws SAXException 
     {
         checkPrefixMapping(namespaceUri, localName);
         buffer.append("END " + qName + "\n");
     }
 
-    public void characters(char[] ch, int start, int length)
-        throws SAXException 
-    {
+    public void characters(char[] ch, int start, int length) {
         buffer.append("\" " + new String(ch, start, length) + "\n");
     }
 
-    public void startPrefixMapping(String prefix, String uri)
-        throws SAXException 
-    {
+    public void startPrefixMapping(String prefix, String uri) {
         throw new UnsupportedOperationException();
     }
 
-    public void endPrefixMapping(String prefix) throws SAXException {
+    public void endPrefixMapping(String prefix) {
         throw new UnsupportedOperationException();
     }
 
-    public void ignorableWhitespace(char[] ch, int start, int length)
-        throws SAXException 
-    {
+    public void ignorableWhitespace(char[] ch, int start, int length) {
         throw new UnsupportedOperationException();
     }
 
-    public void processingInstruction(String target, String data)
-        throws SAXException 
-    {
+    public void processingInstruction(String target, String data) {
         throw new UnsupportedOperationException();
     }
 
-    public void skippedEntity(String name) throws SAXException {
+    public void skippedEntity(String name) {
         throw new UnsupportedOperationException();
     }
 

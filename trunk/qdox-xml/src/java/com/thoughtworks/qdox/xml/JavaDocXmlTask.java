@@ -3,7 +3,6 @@ package com.thoughtworks.qdox.xml;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaSource;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -92,7 +91,7 @@ public class JavaDocXmlTask extends Task {
         for (int i = 0; i < files.length; i++) {
             try {
                 builder.addSource(new File(files[i]));
-            } catch (FileNotFoundException e) {
+            } catch (IOException e) {
                 throw new BuildException(e);
             }
         }
@@ -119,7 +118,7 @@ public class JavaDocXmlTask extends Task {
         }
     }
 
-    protected void writePreamble(Writer writer) throws IOException {
+    protected void writePreamble(Writer writer) {
         PrintWriter out = new PrintWriter(writer);
         out.println(XML_VERSION_PREAMBLE);
         if (writeDtd) {
