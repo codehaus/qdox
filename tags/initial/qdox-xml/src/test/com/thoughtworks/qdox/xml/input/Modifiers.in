@@ -1,0 +1,11 @@
+package test;
+
+public class C {
+
+    private static final int X = 0;
+
+    protected boolean isDonIsGood() {
+        return true;
+    }
+
+}

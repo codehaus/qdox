@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<qdox>
+	<source>
+		<package>test</package>
+		<class>
+			<name>Author</name>
+			<comment>An author writes stuff.</comment>
+			<tag>
+				<name>foo</name>
+				<value>bar</value>
+			</tag>
+		</class>
+	</source>
+</qdox>

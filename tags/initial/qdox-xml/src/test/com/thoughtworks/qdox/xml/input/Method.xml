@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<qdox>
+	<source>
+		<package>test</package>
+		<class>
+			<name>X</name>
+			<method>
+				<name>getBlah</name>
+				<comment>Comment</comment>
+				<tag>
+					<name>foo</name>
+					<value>bar</value>
+				</tag>
+				<type>int</type>   
+				<parameter>
+					<name>arg</name>
+					<type>java.lang.String</type>
+				</parameter>
+			</method>
+		</class>
+	</source>
+</qdox>

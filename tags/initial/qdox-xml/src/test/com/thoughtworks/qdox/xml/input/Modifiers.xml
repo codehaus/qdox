@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<qdox>
+	<source>
+		<package>test</package>
+		<class>
+			<name>C</name>
+			<modifier>public</modifier>
+			<field>
+				<name>X</name>
+				<modifier>private</modifier>
+				<modifier>final</modifier>
+				<modifier>static</modifier>
+				<type>int</type>
+			</field>
+			<method>
+				<name>isDonIsGood</name>
+				<modifier>protected</modifier>
+				<type>boolean</type>   
+			</method>
+		</class>
+	</source>
+</qdox>
