@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<project default="jar" xmlns:j="jelly:core" xmlns:maven="jelly:maven">
+
+	<goal name="demo" description="Run qdox-xml on it's own source-base">
+
+		<attainGoal name="java:compile"/>
+		
+		<taskdef name="qdox-xml" 
+				 classname="com.thoughtworks.qdox.xml.JavaDocXmlTask">
+			<classpath>
+				<pathelement location="${basedir}/target/classes" />
+				<path refid="maven.dependency.classpath" />
+			</classpath>
+		</taskdef>
+
+		<echo message="Dumping QDox info as XML -> target/qdox.xml" />
+		<qdox-xml dest="target/qdox.xml">
+			<fileset dir="src/java" />
+		</qdox-xml>
+
+		<echo message="Extracting method summary -> target/method-summary.txt" />
+		<!-- TODO: get the style task working in maven -->
+		<style in="target/qdox.xml"
+			   style="style/method-summary.xsl" 
+			   out="target/method-summary.txt" />
+		
+	</goal>
+	
+</project>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<qdox>
+	<source>
+		<package>test</package>
+		<class>
+			<name>X</name>
+			<method>
+				<name>doThings</name>
+				<type>void</type>	
+				<exception>java.lang.IllegalStateException</exception>
+				<exception>java.io.IOException</exception>
+			</method>
+		</class>
+	</source>
+</qdox>
