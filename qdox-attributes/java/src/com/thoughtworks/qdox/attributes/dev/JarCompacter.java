@@ -29,7 +29,7 @@ public class JarCompacter {
 	}
 	
 	public static void compactJar(String fileName) {
-		AttributesPack pack = new AttributesPack(null);
+		AttributesPack pack = new AttributesPack(null, false);
 		ZipInputStream zin = null;
 		ZipOutputStream zout = null;
 			

@@ -337,13 +337,13 @@ public class TypeResolver {
 		}
 		public void testFindNestedClassInPackage() throws ClassNotFoundException {
 			resolver.addPackage("com.thoughtworks.qdox.attributes.dev");
-			Class klass = resolver.resolve("AttributesBuilder.ObjectMode");
-			assertSame(com.thoughtworks.qdox.attributes.dev.AttributesBuilder.ObjectMode.class, klass);
+			Class klass = resolver.resolve("AttributesBuilder.StringMode");
+			assertSame(com.thoughtworks.qdox.attributes.dev.AttributesBuilder.StringMode.class, klass);
 		}
 		public void testFindDeepNestedClassInPackage() throws ClassNotFoundException {
 			resolver.addPackage("com.thoughtworks.qdox.attributes.dev");
-			Class klass = resolver.resolve("AttributesBuilder.ObjectMode.Test");
-			assertSame(com.thoughtworks.qdox.attributes.dev.AttributesBuilder.ObjectMode.Test.class, klass);
+			Class klass = resolver.resolve("ObjectMode.TestParseValue.TestAttribute");
+			assertSame(com.thoughtworks.qdox.attributes.dev.ObjectMode.TestParseValue.TestAttribute.class, klass);
 		}
 		public void testFindExplicitlyImportedTopClass() throws ClassNotFoundException {
 			resolver.addImport("com.thoughtworks.qdox.attributes.dev.AttributesBuilder");
@@ -352,8 +352,8 @@ public class TypeResolver {
 		}
 		public void testFindExplicitlyImportedNestedClass() throws ClassNotFoundException {
 			resolver.addImport("com.thoughtworks.qdox.attributes.dev.AttributesBuilder");
-			Class klass = resolver.resolve("AttributesBuilder.ObjectMode");
-			assertSame(com.thoughtworks.qdox.attributes.dev.AttributesBuilder.ObjectMode.class, klass);
+			Class klass = resolver.resolve("AttributesBuilder.StringMode");
+			assertSame(com.thoughtworks.qdox.attributes.dev.AttributesBuilder.StringMode.class, klass);
 		}
 		public void testFindExplicitlyImportedMissing() throws ClassNotFoundException {
 			try {
@@ -387,8 +387,8 @@ public class TypeResolver {
 		}
 		public void testFindWildcardImportedNestedClass() throws ClassNotFoundException {
 			resolver.addImport("com.thoughtworks.qdox.attributes.dev.*");
-			Class klass = resolver.resolve("AttributesBuilder.ObjectMode");
-			assertSame(com.thoughtworks.qdox.attributes.dev.AttributesBuilder.ObjectMode.class, klass);
+			Class klass = resolver.resolve("AttributesBuilder.StringMode");
+			assertSame(com.thoughtworks.qdox.attributes.dev.AttributesBuilder.StringMode.class, klass);
 		}
 	}
 }

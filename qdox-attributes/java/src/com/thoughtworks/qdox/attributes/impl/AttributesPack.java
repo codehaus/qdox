@@ -18,11 +18,13 @@ public class AttributesPack {
 	private static final Logger log = Logger.getLogger(AttributesPack.class.getName());
 	
 	private final ClassLoader classLoader;
+	private final boolean clearCreators;
 	private final Map elements = new HashMap();
 	private final Set loadedURLs = new HashSet();
 	
-	public AttributesPack(ClassLoader classLoader) {
+	public AttributesPack(ClassLoader classLoader, boolean clearCreators) {
 		this.classLoader = classLoader;
+		this.clearCreators = clearCreators;
 	}
 	
 	public synchronized int size() {
@@ -97,7 +99,9 @@ public class AttributesPack {
 		int n = in.readInt();
 		while(n-- > 0) {
 			String key = in.readUTF();
-			Object old = elements.put(key, in.readObject());
+			SimpleBundle bundle = (SimpleBundle) in.readObject();
+			if (clearCreators) bundle.clearCreators();
+			Object old = elements.put(key, bundle);
 			if (old != null) log.log(Level.WARNING, "multiple attribute bundles found for " + key);
 		}
 	}

@@ -1,13 +1,10 @@
 package com.thoughtworks.qdox.attributes.dev;
 
-import java.beans.IntrospectionException;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-import junit.framework.TestCase;
-
-import com.thoughtworks.qdox.attributes.impl.*;
+import com.thoughtworks.qdox.attributes.impl.AttributesPack;
+import com.thoughtworks.qdox.attributes.impl.SimpleBundle;
 import com.thoughtworks.qdox.parser.Builder;
 import com.thoughtworks.qdox.parser.impl.JFlexLexer;
 import com.thoughtworks.qdox.parser.impl.Parser;
@@ -109,7 +106,7 @@ public class AttributesBuilder implements Builder {
 	}
 
 	public void beginClass(ClassDef def) {
-		if (typeResolver.isTopContext()) pack = new AttributesPack(null);
+		if (typeResolver.isTopContext()) pack = new AttributesPack(null, false);
 		String className = typeResolver.beginClass(def);
 		if (currentBundle.size() > 0) recordBundle(className);
 	}
@@ -148,7 +145,7 @@ public class AttributesBuilder implements Builder {
 	public void addJavaDocTag(String tag, String text) {
 		if (ignoredTags.contains(tag)) return;
 		try {
-			mode.processTag(tag, text, currentBundle, typeResolver);
+			mode.processTag(tag, text, currentBundle);
 		} catch (Exception e) {
 			reportError("error processing tag " + tag, e);
 		}
@@ -159,66 +156,15 @@ public class AttributesBuilder implements Builder {
 	}
 
 	public interface Mode {
-		void processTag(String tag, String text, SimpleBundle bundle, TypeResolver typeResolver) throws Exception;
+		void processTag(String tag, String text, SimpleBundle bundle) throws Exception;
+		void setTypeResolver(TypeResolver resolver);
 	}
 
 	public static class StringMode implements Mode {
-		public void processTag(String tag, String text, SimpleBundle bundle, TypeResolver typeResolver) {
+		public void processTag(String tag, String text, SimpleBundle bundle) {
 			bundle.add(tag, text);
 		}
-	}
-	
-	public static class ObjectMode implements Mode {
-
-		public void processTag(String tag, String text, SimpleBundle bundle, TypeResolver typeResolver) throws ClassNotFoundException, TagParseException, IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-			Class klass;
-			try {
-				if (tag.endsWith("Attribute")) {
-					klass = typeResolver.resolve(tag);
-				} else {
-					try {
-						klass = typeResolver.resolve(tag + "Attribute");
-					} catch (ClassNotFoundException e) {
-						klass = typeResolver.resolve(tag);
-					}
-				}
-				AttributeCreator creator = AttributeCreatorFactory.make(klass, text);
-				Object attribute = creator.create();
-				if (attribute instanceof java.io.Serializable) {
-					bundle.add(attribute);
-				} else {
-					bundle.add(attribute, creator);
-				}
-			} catch (ClassNotFoundException e) {
-				tagClassNotFound(tag, text, bundle);
-			}
-		}
-		
-		protected void tagClassNotFound(String tag, String text, SimpleBundle bundle) throws TagParseException {
-			throw new TagParseException("no class found for tag " + tag);
-		}
-		
-		/**
-		 * @deprecated Test class that should not be javadoc'ed.
-		 */
-		public static class Test extends TestCase {
-			private ObjectMode mode;
-			public void setUp() {
-				mode = new ObjectMode();
-			}
-			public void tearDown() {
-				mode = null;
-			}
-			public void testTagAttributeSuffix() throws Exception {
-				SimpleBundle bundle = new SimpleBundle();
-				mode.processTag("com.thoughtworks.qdox.attributes.Simple", "hello bye", bundle, new TypeResolver());
-				assertEquals("bye", bundle.get("hello"));
-			}
-			public void testTagAttributeExplicitSuffix() throws Exception {
-				SimpleBundle bundle = new SimpleBundle();
-				mode.processTag("com.thoughtworks.qdox.attributes.SimpleAttribute", "hello bye", bundle, new TypeResolver());
-				assertEquals("bye", bundle.get("hello"));
-			}
+		public void setTypeResolver(TypeResolver resolver) {
 		}
 	}
 	

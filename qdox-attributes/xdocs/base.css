@@ -5,7 +5,7 @@ h1 {
 	font-size: x-large;
 	text-align: center;
 }
-ul {
+ul, p {
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
 }
