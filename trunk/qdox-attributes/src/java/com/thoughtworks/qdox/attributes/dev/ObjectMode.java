@@ -478,18 +478,18 @@ public class ObjectMode implements AttributesBuilder.Mode {
 			{new String[]{"1", "2", "3"}, int[].class, new int[]{1, 2, 3}},
 			{new Object[]{new Object[]{"a", "b"}, new Object[]{"c", "d"}}, char[][].class, new char[][]{new char[]{'a', 'b'}, new char[]{'c', 'd'}}},
 			{"hello", String[].class, IllegalArgumentException.class},
-			{"ObjectMode.TestParseValue.TestAttribute", Class.class, TestAttribute.class},
+			{"ObjectMode.TestParseValue.SampleAttribute", Class.class, SampleAttribute.class},
 			{"NAME", String.class, "Toto"},
 			{"\"NAME\"", String.class, "NAME"},
 			{"INT_CONST", int.class, new Integer(42)},
 			{"INT_CONST", Integer.class, new Integer(42)},
 			{"INTEGER_CONST", int.class, new Integer(-3)},
 			{"INTEGER_CONST", Integer.class, new Integer(-3)},
-			{"VALUE1", TestEnum.class, TestEnum.VALUE1},
-			{"VALUE2", TestEnum.class, IllegalArgumentException.class},
-			{"VALUE3", TestEnum.class, IllegalArgumentException.class},
-			{"value4", TestEnum.class, IllegalArgumentException.class},
-			{"VALUE5", TestEnum.class, TestAttribute.VALUE5},
+			{"VALUE1", SampleEnum.class, SampleEnum.VALUE1},
+			{"VALUE2", SampleEnum.class, IllegalArgumentException.class},
+			{"VALUE3", SampleEnum.class, IllegalArgumentException.class},
+			{"value4", SampleEnum.class, IllegalArgumentException.class},
+			{"VALUE5", SampleEnum.class, SampleAttribute.VALUE5},
 		};
 		private static List asList(Object[] a) {
 			for (int i=0; i<a.length; i++) {
@@ -525,7 +525,7 @@ public class ObjectMode implements AttributesBuilder.Mode {
 				resolver.addPackage("com.thoughtworks.qdox.attributes.dev");
 				ObjectMode mode = new ObjectMode();
 				mode.setTypeResolver(resolver);
-				mode.parseValue(value, type, dest, TestAttribute.class);
+				mode.parseValue(value, type, dest, SampleAttribute.class);
 				Object result = dest.toArray()[dest.size()-1];
 				if (expectedResult.getClass() == Class.class && Throwable.class.isAssignableFrom((Class) expectedResult)) fail("expected exception " + ((Class) expectedResult).getName() + ", got " + result);
 				assertEqualsArray(expectedResult, result);
@@ -550,22 +550,22 @@ public class ObjectMode implements AttributesBuilder.Mode {
 		/**
 		 * @deprecated Test class that should not be javadoc'ed.
 		 */
-		public static class TestAttribute extends TestCase {
+		public static class SampleAttribute extends TestCase {
 			public static final String NAME = "Toto";
-			public static final TestEnum VALUE2 = new TestEnum();
-			public static final TestEnum VALUE5 = new TestEnum();
+			public static final SampleEnum VALUE2 = new SampleEnum();
+			public static final SampleEnum VALUE5 = new SampleEnum();
 			public static final int INT_CONST = 42;
 			public static final Integer INTEGER_CONST = new Integer(-3);
 		}
 		/**
 		 * @deprecated Test class that should not be javadoc'ed.
 		 */
-		public static class TestEnum {
-			public static final TestEnum VALUE1 = new TestEnum();
-			public static final TestEnum VALUE2 = new TestEnum();
-			public static TestEnum VALUE3 = new TestEnum();
-			public final TestEnum value4 = null;
-			public TestEnum() {}
+		public static class SampleEnum {
+			public static final SampleEnum VALUE1 = new SampleEnum();
+			public static final SampleEnum VALUE2 = new SampleEnum();
+			public static SampleEnum VALUE3 = new SampleEnum();
+			public final SampleEnum value4 = null;
+			public SampleEnum() {}
 		}
 	}
 	
@@ -710,14 +710,14 @@ public class ObjectMode implements AttributesBuilder.Mode {
 		}
 		public void testAmbiguousTag() throws Exception {
 			try {
-				mode.resolveTag(Test.class.getName());
+				mode.resolveTag(Sample.class.getName());
 				fail();
 			} catch (TagParseException e) {
 			}
 		}
 		
-		public static class Test {}
-		public static class TestAttribute {}
+		public static class Sample {}
+		public static class SampleAttribute {}
 	}
 
 

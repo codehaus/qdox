@@ -128,17 +128,11 @@ public class AttributesBuilder implements Builder {
 	}
 	
 	private void verifyAttribute(Object attribute, ElementType target) {
-		Bundle attributeClassBundle = Attributes.getInstance().get(attribute.getClass());
-		AttributeUsageAttribute usage = null;
-		try {
-			usage = (AttributeUsageAttribute) attributeClassBundle.get(AttributeUsageAttribute.class);
-		} catch (MultipleValuesException e) {
-			throw new MultipleValuesException("attribute type " + attribute.getClass().getName() + " has multiple usage attributes", e);
-		}
+		AttributeUsageAttribute usage = AttributeUsageAttribute.of(attribute);
 		if (usage != null) {
 			if (!usage.allowsTarget(target)) throw new IllegalArgumentException("attribute type " + attribute.getClass().getName() + " cannot be applied to " + target);
 			if (!usage.getAllowMultiple()) {
-				String usageDefiningClassName = (String) attributeClassBundle.getProvenanceMap().get(usage);
+				String usageDefiningClassName = (String) Attributes.getInstance().get(attribute.getClass()).getProvenanceMap().get(usage);
 				assert usageDefiningClassName != null : "attribute usage attribute applied to a package";
 				try {
 					Class usageRestrictedClass = typeResolver.resolve(usageDefiningClassName);
@@ -146,8 +140,8 @@ public class AttributesBuilder implements Builder {
 					assert it.hasNext() : "current bundle has no attribute of given class, should be at least one";
 					it.next();
 					if (it.hasNext()) throw new IllegalArgumentException("multiple values of attribute class " + usageDefiningClassName);
-				} catch (ClassNotFoundException e1) {
-					throw new RuntimeException("unable to load ancestor class", e1);
+				} catch (ClassNotFoundException e) {
+					throw new RuntimeException("unable to load ancestor class", e);
 				}
 			}
 		}

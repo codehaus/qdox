@@ -2,6 +2,7 @@ package com.thoughtworks.qdox.attributes.impl;
 
 import java.io.*;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -21,6 +22,21 @@ public class IndirectObjectList implements Externalizable {
 	private static final int SIZE_INCREMENT = 3;	// arbitrary
 	private static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 	private static final Creator[] EMPTY_CREATOR_ARRAY = new Creator[0];
+	
+	/**
+	 * Copy the contents of the original list into this list.
+	 * @param original the list from which to copy
+	 */
+	public void copy(IndirectObjectList original) {
+		this.size = original.size;
+		this.objects = original.toArray();
+		if (original.creators == EMPTY_CREATOR_ARRAY) {
+			this.creators = EMPTY_CREATOR_ARRAY;
+		} else {
+			this.creators = new Creator[original.creators.length];
+			System.arraycopy(original.creators, 0, creators, 0, creators.length);
+		}
+	}
 	
 	synchronized void clearCreators() {
 		creators = EMPTY_CREATOR_ARRAY;
@@ -102,6 +118,13 @@ public class IndirectObjectList implements Externalizable {
 		}
 		assert creators.length >= size;
 		creators[size-1] = creator;
+	}
+	
+	public synchronized void addAll(List list) {
+		ensureCapacity(size+list.size());
+		for (Iterator it = list.iterator(); it.hasNext();) {
+			objects[size++] = it.next();
+		}
 	}
 
 }

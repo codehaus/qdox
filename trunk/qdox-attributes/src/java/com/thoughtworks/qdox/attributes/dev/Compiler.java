@@ -56,6 +56,11 @@ public class Compiler {
 	public void execute() {
 		if (sourceRoots == null) sourceRoots = new File[] {new File(System.getProperty("user.dir"))};
 		if (destinations == null) destinations = sourceRoots;
+		
+		if (verbose) {
+			System.out.println("Effective source roots: " + Arrays.asList(sourceRoots));
+			System.out.println("Effective destinations: " + Arrays.asList(destinations));
+		}
 
 		if (sources == null) scanSourceRoots(); else scanSources();
 		if (cleanup) {
@@ -86,7 +91,7 @@ public class Compiler {
 			File file = files[i];
 			if (file.isDirectory()) {
 				pruneRecursive(file);
-			} else if (file.getName().endsWith(AttributesImpl.FILENAME_SUFFIX)) {
+			} else if (file.getName().endsWith(SimpleAttributesImpl.FILENAME_SUFFIX)) {
 				if (!matchedAttributeFiles.contains(file)) file.delete();
 			}			
 		}
@@ -151,7 +156,7 @@ public class Compiler {
 			}
 			destPath = (File) destinations[0];
 		}
-		File attribsFile = new File(destPath, qualifiedName + AttributesImpl.FILENAME_SUFFIX);
+		File attribsFile = new File(destPath, qualifiedName + SimpleAttributesImpl.FILENAME_SUFFIX);
 		
 		// 2. compare timestamps, skip if up-to-date
 		if (!force && attribsFile.exists() && attribsFile.lastModified() >= file.lastModified()) {
@@ -167,9 +172,10 @@ public class Compiler {
 				Map.Entry entry = (Map.Entry) it.next();
 				AttributesPack pack = (AttributesPack) entry.getValue();
 				if (pack.size() == 0) continue;
-				File outFile = new File(destPath, ((String) entry.getKey()).replace('.', File.separatorChar) + AttributesImpl.FILENAME_SUFFIX);
+				File outFile = new File(destPath, ((String) entry.getKey()).replace('.', File.separatorChar) + SimpleAttributesImpl.FILENAME_SUFFIX);
 				if (cleanup && !attribsFile.equals(outFile)) {
 					System.err.println("Warning: file '" + file + "' contains class '" + entry.getKey() + "'; you must run the compiler in nocleanup mode.");
+					System.err.println(">>> mismatch: " + attribsFile + " vs. " + outFile);
 				}
 				pack.save(outFile);
 				if (cleanup) matchedAttributeFiles.add(outFile);
@@ -212,7 +218,7 @@ public class Compiler {
 				} else if ("-nocleanup".equals(arg)) {
 					c.setCleanup(false);
 				} else if ("-verbose".equals(arg)) {
-					c.setVerbose(false);
+					c.setVerbose(true);
 				} else if ("-help".equals(arg)) {
 					printUsage();
 					return;

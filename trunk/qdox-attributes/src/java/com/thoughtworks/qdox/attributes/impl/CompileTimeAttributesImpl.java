@@ -9,6 +9,6 @@ package com.thoughtworks.qdox.attributes.impl;
  * @author <a href="mailto:piotr@ideanest.com">Piotr Kaminski</a>
  * @version $Revision$ ($Date$)
  */
-public class CompileTimeAttributesImpl extends AttributesImpl {
+public class CompileTimeAttributesImpl extends SimpleAttributesImpl {
 	public void checkModifyAttribute() {return;}
 }

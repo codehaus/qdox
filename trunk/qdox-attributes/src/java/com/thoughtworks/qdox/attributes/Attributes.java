@@ -21,7 +21,7 @@ import java.lang.reflect.*;
 
 public abstract class Attributes {
 	public static final String SIMPLE_IMPL_CLASS_NAME_PROPKEY = "com.thoughtworks.qdox.attributes.implementation.simple";
-	public static final String DEFAULT_SIMPLE_IMPL_CLASS_NAME = "com.thoughtworks.qdox.attributes.impl.AttributesImpl";
+	public static final String DEFAULT_SIMPLE_IMPL_CLASS_NAME = "com.thoughtworks.qdox.attributes.impl.SimpleAttributesImpl";
 	public static final String VALIDATING_IMPL_CLASS_NAME_PROPKEY = "com.thoughtworks.qdox.attributes.implementation.validating";
 	public static final String DEFAULT_VALIDATING_IMPL_CLASS_NAME = "com.thoughtworks.qdox.attributes.impl.ValidatingAttributesImpl";
 	
@@ -53,21 +53,21 @@ public abstract class Attributes {
 	 * @throws ClassNotFoundException if unable to find the implementation class
 	 */
 	public synchronized static Attributes getInstance(boolean validateUsage) {
-//		if (validateUsage) {
-//			if (validatingInstance == null) {
-//				String implClassName = System.getProperty(VALIDATING_IMPL_CLASS_NAME_PROPKEY);
-//				if (implClassName == null) implClassName = DEFAULT_VALIDATING_IMPL_CLASS_NAME;
-//				validatingInstance = instantiate(implClassName);
-//			}
-//			return validatingInstance;
-//		} else {
+		if (validateUsage) {
+			if (validatingInstance == null) {
+				String implClassName = System.getProperty(VALIDATING_IMPL_CLASS_NAME_PROPKEY);
+				if (implClassName == null) implClassName = DEFAULT_VALIDATING_IMPL_CLASS_NAME;
+				validatingInstance = instantiate(implClassName);
+			}
+			return validatingInstance;
+		} else {
 			if (simpleInstance == null) {
 				String implClassName = System.getProperty(SIMPLE_IMPL_CLASS_NAME_PROPKEY);
 				if (implClassName == null) implClassName = DEFAULT_SIMPLE_IMPL_CLASS_NAME;
 				simpleInstance = instantiate(implClassName);
 			}
 			return simpleInstance;
-//		}
+		}
 	}
 	
 	/**

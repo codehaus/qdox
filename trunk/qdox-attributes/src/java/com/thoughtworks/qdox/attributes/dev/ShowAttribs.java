@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import com.thoughtworks.qdox.attributes.Attributes;
 import com.thoughtworks.qdox.attributes.Bundle;
-import com.thoughtworks.qdox.attributes.impl.AttributesImpl;
+import com.thoughtworks.qdox.attributes.impl.AttributesImplBase;
 
 /**
  * Print the attributes of a list of elements to standard out.
@@ -30,7 +30,7 @@ public class ShowAttribs {
 				StringBuffer buf = new StringBuffer();
 				buf.append(klass.getName());
 				buf.append('#');
-				AttributesImpl.appendParamTypes(buf, constructors[j].getParameterTypes());
+				AttributesImplBase.appendParamTypes(buf, constructors[j].getParameterTypes());
 				print(buf.toString(), attribs.get(constructors[j]));
 			}
 
@@ -40,7 +40,7 @@ public class ShowAttribs {
 				buf.append(klass.getName());
 				buf.append('#');
 				buf.append(methods[j].getName());
-				AttributesImpl.appendParamTypes(buf, methods[j].getParameterTypes());
+				AttributesImplBase.appendParamTypes(buf, methods[j].getParameterTypes());
 				print(buf.toString(), attribs.get(methods[j]));
 			}
 		}

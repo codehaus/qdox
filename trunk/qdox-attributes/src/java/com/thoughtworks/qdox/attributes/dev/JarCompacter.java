@@ -1,14 +1,10 @@
 package com.thoughtworks.qdox.attributes.dev;
 
 import java.io.*;
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.util.zip.*;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
-import com.thoughtworks.qdox.attributes.impl.AttributesImpl;
 import com.thoughtworks.qdox.attributes.impl.AttributesPack;
+import com.thoughtworks.qdox.attributes.impl.SimpleAttributesImpl;
 
 /**
  * Compacts attribute files within JAR files into one combined attribute file.
@@ -44,7 +40,7 @@ public class JarCompacter {
 			while(true) {
 				ZipEntry entry = zin.getNextEntry();
 				if (entry == null) break;
-				if (entry.getName().endsWith(AttributesImpl.FILENAME_SUFFIX)) {
+				if (entry.getName().endsWith(SimpleAttributesImpl.FILENAME_SUFFIX)) {
 					// merge in attributes file
 					pack.merge(new ObjectInputStream(zin));
 				} else {
@@ -57,7 +53,7 @@ public class JarCompacter {
 			}
 			
 			zin.close();
-			ZipEntry entry = new ZipEntry(AttributesImpl.COALESCED_FILENAME);
+			ZipEntry entry = new ZipEntry(SimpleAttributesImpl.COALESCED_FILENAME);
 			zout.setLevel(9);
 			zout.putNextEntry(entry);
 			ObjectOutputStream oout = new ObjectOutputStream(zout);

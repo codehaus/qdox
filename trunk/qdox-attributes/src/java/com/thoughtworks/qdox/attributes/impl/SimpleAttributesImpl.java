@@ -1,15 +1,11 @@
 package com.thoughtworks.qdox.attributes.impl;
 
-import java.lang.reflect.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.thoughtworks.qdox.attributes.Attributes;
-import com.thoughtworks.qdox.attributes.Bundle;
-
 import junit.framework.TestCase;
+
+import com.thoughtworks.qdox.attributes.Bundle;
 
 /**
  * A simple non-validating implementation of the Attributes toolkit facade.
@@ -17,71 +13,21 @@ import junit.framework.TestCase;
  * @author <a href="mailto:piotr@ideanest.com">Piotr Kaminski</a>
  * @version $Revision$ ($Date$)
  */
-public class AttributesImpl extends Attributes {
-	
-	boolean canModifyAttributes = false;
-	
-	public void checkModifyAttribute() {
-		if (!canModifyAttributes) super.checkModifyAttribute();
-	}
-
+public class SimpleAttributesImpl extends AttributesImplBase {
 	public static final String COALESCED_FILENAME = "META-INF/all.attribs";
 	public static final String FILENAME_SUFFIX = ".attribs";
 
-	// TODO: look into changing to WeakHashMap, to permit class unloading
-	// what about strong classloader reference in AttributesPack?
+	boolean canModifyAttributes = false;
+
 	private final Map packs = new HashMap();
-	
-	public Bundle get(Package pakage, ClassLoader classLoader) {
-		return getPackage(pakage.getName(), classLoader);
-	}
 
-	public Bundle get(Class klass) {
-		return getClass(klass.getName(), klass.getClassLoader());
-	}
-
-	public Bundle get(Constructor constructor) {
-		StringBuffer buf = new StringBuffer();
-		appendParamTypes(buf, constructor.getParameterTypes());
-		return getConstructor(constructor.getDeclaringClass().getName(), buf.toString(), constructor.getDeclaringClass().getClassLoader());
-	}
-
-	public Bundle get(Constructor constructor, int parameterIndex) {
-		StringBuffer buf = new StringBuffer();
-		appendParamTypes(buf, constructor.getParameterTypes());
-		return getConstructorParameter(constructor.getDeclaringClass().getName(), buf.toString(), parameterIndex, constructor.getDeclaringClass().getClassLoader());
-	}
-
-	public Bundle get(Method method) {
-		StringBuffer buf = new StringBuffer();
-		buf.append(method.getName());
-		appendParamTypes(buf, method.getParameterTypes());
-		return getMethod(method.getDeclaringClass().getName(), buf.toString(), method.getDeclaringClass().getClassLoader());
-	}
-	
-	public Bundle get(Method method, int parameterIndex) {
-		StringBuffer buf = new StringBuffer();
-		buf.append(method.getName());
-		appendParamTypes(buf, method.getParameterTypes());
-		return getMethodParameter(method.getDeclaringClass().getName(), buf.toString(), parameterIndex, method.getDeclaringClass().getClassLoader());
-	}
-
-	public static void appendParamTypes(StringBuffer buf, Class[] paramTypes) {
-		buf.append('(');
-		for (int i = 0; i < paramTypes.length; i++) {
-			if (i>0) buf.append(',');
-			buf.append(paramTypes[i].getName());
-		}
-		buf.append(')');
+	public void checkModifyAttribute() {
+		if (!canModifyAttributes) super.checkModifyAttribute();
 	}
 
 	public Bundle getPackage(String packageName, ClassLoader classLoader) {
 		String extendedName = packageName + ".*";
 		return getPack(classLoader, extendedName).get(extendedName);
-	}
-
-	public Bundle get(Field field) {
-		return getField(field.getDeclaringClass().getName(), field.getName(), field.getDeclaringClass().getClassLoader());
 	}
 
 	public Bundle getClass(String className, ClassLoader classLoader) {
@@ -98,7 +44,7 @@ public class AttributesImpl extends Attributes {
 		if (paramIndex < 1) throw new IllegalArgumentException("parameter index below 1: " + paramIndex);
 		return getPack(classLoader, className).get(className + "#" + constructorSignature + "!" + paramIndex);
 	}
-	
+
 	public Bundle getMethod(String className, String methodSignature, ClassLoader classLoader) {
 		if (methodSignature.indexOf(' ') >= 0) throw new IllegalArgumentException("spaces in method signature: " + methodSignature);
 		return getPack(classLoader, className).get(className + "#" + methodSignature);
@@ -113,7 +59,7 @@ public class AttributesImpl extends Attributes {
 	public Bundle getField(String className, String fieldName, ClassLoader classLoader) {
 		return getPack(classLoader, className).get(className + "#" + fieldName);
 	}
-	
+
 	private synchronized AttributesPack getPack(ClassLoader classLoader, String className) {
 		if (className == null || className.length() == 0) throw new IllegalArgumentException("no class name");
 		if (classLoader == null) classLoader = Thread.currentThread().getContextClassLoader();
@@ -130,14 +76,14 @@ public class AttributesImpl extends Attributes {
 		pack.merge(attribsFilename);
 		return pack;
 	}
-	
+
 	/**
 	 * @deprecated Test class that should not be javadoc'ed.
 	 */
 	public static class Test extends TestCase {
-		private AttributesImpl a;
+		private AttributesImplBase a;
 		public void setUp() {
-			a = new AttributesImpl();
+			a = new SimpleAttributesImpl();
 		}
 		public void tearDown() {
 			a = null;
@@ -174,4 +120,5 @@ public class AttributesImpl extends Attributes {
 			a.getMethod("DummyClass", "dummyMethod()", null);
 		}
 	}
+
 }
