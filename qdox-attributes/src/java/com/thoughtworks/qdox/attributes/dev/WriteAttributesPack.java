@@ -33,7 +33,7 @@ public class WriteAttributesPack extends AttributesPackBase {
 			wcf.setBundles((BundleBase[]) nonEmptyBundles.toArray(ReadClassFile.EMPTY_BUNDLE_ARRAY));
 			wcf.save(new FileOutputStream(file));
 		} catch (ClassNotFoundException e) {
-			assert false;
+			throw new RuntimeException("assertion failure");
 		}
 	}
 

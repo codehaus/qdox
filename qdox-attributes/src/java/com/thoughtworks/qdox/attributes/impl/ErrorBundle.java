@@ -2,7 +2,6 @@ package com.thoughtworks.qdox.attributes.impl;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import com.thoughtworks.qdox.attributes.*;
 
@@ -16,7 +15,7 @@ public class ErrorBundle extends BundleBase {
 	
 	void afterLoad() {
 		clearCreators();
-		Logger.getLogger(Attributes.class.getName()).warning(getErrorMessage());
+		System.err.println(getErrorMessage());
 	}
 	
 	private transient String errorMessage;

@@ -35,9 +35,11 @@ public class IndirectObjectList implements Externalizable {
 			Object attribute = in.readObject();
 			if (attribute == null) try {
 				attribute = creators[i].create();
+			} catch (IOException e) {
+				throw e;
 			} catch (Exception e) {
-				IOException e2 = new InvalidObjectException("unable to recreate non-serializable object");
-				e2.initCause(e);
+				IOException e2 = new InvalidObjectException("unable to recreate non-serializable object: " + e);
+				// e2.initCause(e);  // -- JDK 1.4 only!
 				throw e2;
 			}
 			objects[i] = attribute;
@@ -85,7 +87,7 @@ public class IndirectObjectList implements Externalizable {
 			System.arraycopy(objects, 0, a, 0, size);
 			objects = a;
 		}
-		assert objects.length >= desiredCapacity;
+		if (! (objects.length >= desiredCapacity) ) throw new RuntimeException("assertion failure");
 	}
 	
 	public synchronized void add(Object o) {
@@ -100,7 +102,7 @@ public class IndirectObjectList implements Externalizable {
 			System.arraycopy(creators, 0, a, 0, creators.length);
 			creators = a;
 		}
-		assert creators.length >= size;
+		if (! (creators.length >= size) ) throw new RuntimeException("assertion failure");
 		creators[size-1] = creator;
 	}
 

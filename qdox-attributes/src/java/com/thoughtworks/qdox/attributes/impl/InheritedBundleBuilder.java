@@ -71,7 +71,7 @@ public class InheritedBundleBuilder {
 							}
 						}
 					} catch (ClassNotFoundException e) {
-						throw new RuntimeException("unable to load attribute class ancestor type", e);
+						throw new ChainedRuntimeException("unable to load attribute class ancestor type", e);
 					}
 				}
 				if (shouldInherit) inheritedBundle.add(attribute, declaringClassName);
@@ -88,7 +88,7 @@ public class InheritedBundleBuilder {
 		if (errorBundle.size() > 0) {
 			return errorBundle;
 		} else {
-			assert inheritedBundle != null;
+			if (inheritedBundle == null) throw new RuntimeException("assertion failure: no bundle");
 			return inheritedBundle;
 		}
 	}

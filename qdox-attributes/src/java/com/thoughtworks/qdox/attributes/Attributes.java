@@ -42,11 +42,11 @@ public abstract class Attributes {
 			try {
 				instance = (Attributes) Thread.currentThread().getContextClassLoader().loadClass(implClassName).newInstance();
 			} catch (InstantiationException e) {
-				throw new RuntimeException("failed to instantiate attribute implementation", e);
+				throw new ChainedRuntimeException("failed to instantiate attribute implementation", e);
 			} catch (IllegalAccessException e) {
-				throw new RuntimeException("failed to instantiate attribute implementation", e);
+				throw new ChainedRuntimeException("failed to instantiate attribute implementation", e);
 			} catch (ClassNotFoundException e) {
-				throw new RuntimeException("failed to instantiate attribute implementation", e);
+				throw new ChainedRuntimeException("failed to instantiate attribute implementation", e);
 			}
 		}
 		return instance;
