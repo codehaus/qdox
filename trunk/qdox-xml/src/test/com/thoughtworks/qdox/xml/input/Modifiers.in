@@ -2,7 +2,8 @@ package test;
 
 public class C {
 
-    private static final int X = 0;
+	// dodgy modifier ordering is intentional
+    static final private int X = 0;
 
     protected boolean isDonIsGood() {
         return true;

@@ -6,7 +6,9 @@
 			<name>X</name>
 			<method>
 				<name>doThings</name>
-				<type>void</type>	
+				<type>
+					<name>void</name>
+				</type>	
 				<exception>java.lang.IllegalStateException</exception>
 				<exception>java.io.IOException</exception>
 			</method>

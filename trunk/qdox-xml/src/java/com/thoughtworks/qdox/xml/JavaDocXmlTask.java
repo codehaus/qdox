@@ -2,12 +2,10 @@ package com.thoughtworks.qdox.xml;
 
 import com.thoughtworks.qdox.ant.AbstractQdoxTask;
 import com.thoughtworks.qdox.model.JavaSource;
-
 import java.io.File;
 import java.io.FileWriter;
-import java.io.Writer;
 import java.io.IOException;
-
+import java.io.Writer;
 import org.apache.tools.ant.BuildException;
 
 public class JavaDocXmlTask extends AbstractQdoxTask {

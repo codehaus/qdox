@@ -1,16 +1,15 @@
 package com.thoughtworks.qdox.xml;
 
+import java.util.Stack;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
-
-import java.util.Stack;
 
 /// UNTESTED!
 
 public class SaxXmlHandler implements XmlHandler {
 
-	//~~~( Member variables )~~~
+	//---( Member variables )---
 
 	private static final AttributesImpl EMPTY_ATTRIBUTES =
 		new AttributesImpl();
@@ -18,13 +17,13 @@ public class SaxXmlHandler implements XmlHandler {
 	private Stack nodeStack = new Stack();
 	private ContentHandler contentHandler;
 
-	//~~~( Constructor )~~~
+	//---( Constructor )---
 
 	public SaxXmlHandler(ContentHandler contentHandler) {
 		this.contentHandler = contentHandler;
 	}
 
-	//~~~( Implement XmlHandler )~~~
+	//---( Implement XmlHandler )---
 
 	public void startDocument() {
 		try {

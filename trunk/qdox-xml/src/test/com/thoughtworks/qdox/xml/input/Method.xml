@@ -11,10 +11,14 @@
 					<name>foo</name>
 					<value>bar</value>
 				</tag>
-				<type>int</type>   
+				<type>
+					<name>int</name>
+				</type>   
 				<parameter>
 					<name>arg</name>
-					<type>java.lang.String</type>
+					<type>
+						<name>java.lang.String</name>
+					</type>
 				</parameter>
 			</method>
 		</class>

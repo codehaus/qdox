@@ -1,12 +1,32 @@
 package com.thoughtworks.qdox.xml;
 
-import com.thoughtworks.qdox.model.*;
-
-import java.io.IOException;
-import java.io.Writer;
+import com.thoughtworks.qdox.model.AbstractJavaEntity;
+import com.thoughtworks.qdox.model.DocletTag;
+import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaField;
+import com.thoughtworks.qdox.model.JavaMethod;
+import com.thoughtworks.qdox.model.JavaParameter;
+import com.thoughtworks.qdox.model.JavaSource;
+import com.thoughtworks.qdox.model.Type;
+import java.util.Arrays;
+import java.util.Collection;
 
 public class JavaDocXmlGenerator {
 
+	//---( Constants )---
+
+	/** list of modifiers, to provide canonical ordering */
+	private static final String[] POSSIBLE_MODIFIERS = {
+		"public",
+		"protected",
+		"private",
+		"static",
+		"abstract",
+		"final",
+		"transient",
+		"synchronized",
+	};
+	
 	//---( Member variables )---
 
 	private XmlHandler handler;
@@ -31,6 +51,9 @@ public class JavaDocXmlGenerator {
 
 	void writeJavaSource(JavaSource javaSource) {
 		startElement("source");
+		if (javaSource.getFile() != null) {
+			addElement("file", javaSource.getFile().toString());
+		}
 		addElement("package", javaSource.getPackage());
 		String[] imports = javaSource.getImports();
 		for (int i = 0; i < imports.length; i++) {
@@ -40,7 +63,6 @@ public class JavaDocXmlGenerator {
 		for (int i = 0; i < classes.length; i++) {
 			writeJavaClass(classes[i]);
 		}
-		// TODO: handle file?
 		endElement();
 	}
 
@@ -105,10 +127,7 @@ public class JavaDocXmlGenerator {
 
 	void writeAbstractJavaEntity(AbstractJavaEntity javaEntity) {
 		addElement("name", javaEntity.getName());
-		String[] modifiers = javaEntity.getModifiers();
-		for (int i = 0; i < modifiers.length; i++) {
-			addElement("modifier", modifiers[i]);
-		}
+		writeModifiers(javaEntity);
 		if (javaEntity.getComment() != null
 			&& javaEntity.getComment().length() > 0)
 		{
@@ -117,6 +136,16 @@ public class JavaDocXmlGenerator {
 		DocletTag[] tags = javaEntity.getTags();
 		for (int i = 0; i < tags.length; i++) {
 			writeDocletTag(tags[i]);
+		}
+	}
+
+	void writeModifiers(AbstractJavaEntity javaEntity) {
+		Collection modifierSet = Arrays.asList(javaEntity.getModifiers());
+		for (int i = 0; i < POSSIBLE_MODIFIERS.length; i++) {
+			String modifier = POSSIBLE_MODIFIERS[i];
+			if (modifierSet.contains(modifier)) {
+				addElement("modifier", modifier);
+			}
 		}
 	}
 
@@ -129,19 +158,23 @@ public class JavaDocXmlGenerator {
 
 	void addTypeInfo(Type type) {
 		if (type == null) return;
-		addElement("type", type.getValue());
+		startElement("type");
+		addElement("name", type.getValue());
 		if (type.getDimensions() > 0) {
 			addElement("dimensions", String.valueOf(type.getDimensions()));
 		}
+		endElement();
 	}
 
 	//---( Support routines )---
 
 	private void startElement(String name) {
+		if (name == null) throw new NullPointerException();
 		handler.startElement(name);
 	}
 
 	private void addText(String text) {
+		if (text == null) throw new NullPointerException();
 		handler.addContent(text);
 	}
 

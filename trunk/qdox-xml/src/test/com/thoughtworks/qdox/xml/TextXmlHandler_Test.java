@@ -1,8 +1,7 @@
 package com.thoughtworks.qdox.xml;
 
-import junit.framework.TestCase;
-
 import java.io.StringWriter;
+import junit.framework.TestCase;
 
 public class TextXmlHandler_Test extends TestCase {
 
@@ -10,21 +9,32 @@ public class TextXmlHandler_Test extends TestCase {
 		super(name);
 	}
 
-	//~~~( Fixtures )~~~
+	//---( Fixtures )---
 
 	StringWriter buffer = new StringWriter();
 	TextXmlHandler handler = new TextXmlHandler(buffer);
 
-	//~~~( Utils )~~~
+	//---( Utils )---
 
 	void assertBuffered(String expected) {
-		String actual = buffer.toString();
+		String actual = stripCarriageReturns(buffer.toString());
 		if (!expected.equals(actual)) {
 			fail("EXPECTED:\n" + expected + "\nBUT WAS:\n" + actual);
 		}
 	}
 
-	//~~~( Tests )~~~
+	String stripCarriageReturns(String s) {
+		StringBuffer buffer = new StringBuffer();
+		char[] chars = s.toCharArray();
+		for (int i = 0; i < chars.length; i++) {
+			if (chars[i] != '\r') {
+				buffer.append(chars[i]);
+			}
+		}
+		return buffer.toString();
+	}
+
+	//---( Tests )---
 
 	public void testStart() {
 		handler.startElement("a");
@@ -86,12 +96,14 @@ public class TextXmlHandler_Test extends TestCase {
 		handler.endElement();
 		handler.endElement();
 		handler.endElement();
-            assertBuffered("<a>\n" +
-                           "  <b>xyz</b>\n" +
-                           "  <c>\n" +
-                           "    <d>mno</d>\n" +
-                           "  </c>\n" +
-                           "</a>\n");
+		assertBuffered(
+			"<a>\n" + 
+			"  <b>xyz</b>\n" + 
+			"  <c>\n" + 
+			"    <d>mno</d>\n" + 
+			"  </c>\n" + 
+			"</a>\n"
+		);
 	}
 
 }
