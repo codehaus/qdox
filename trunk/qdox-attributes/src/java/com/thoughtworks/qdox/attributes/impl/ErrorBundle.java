@@ -14,25 +14,16 @@ import com.thoughtworks.qdox.attributes.*;
  */
 public class ErrorBundle extends BundleBase {
 	
-	public ErrorBundle() {
-		this("");
-	}
-	
-	public ErrorBundle(String kind) {
-		this.kind = kind;
-	}
-	
 	void afterLoad() {
 		clearCreators();
 		Logger.getLogger(Attributes.class.getName()).warning(getErrorMessage());
 	}
 	
-	private final String kind;
 	private transient String errorMessage;
 	public String getErrorMessage() {
 		if (errorMessage == null) {
 			StringBuffer buf = new StringBuffer();
-			buf.append("The " + kind + " bundle for ").append(getKey()).append(" is invalid due to the following errors:\n");
+			buf.append("The bundle for ").append(getKey()).append(" is invalid due to the following errors:\n");
 			for (Iterator it = super.iterator(); it.hasNext(); ) {
 				// TODO: indent nested messages
 				buf.append(it.next()).append("\n");
@@ -45,16 +36,17 @@ public class ErrorBundle extends BundleBase {
 	public void addError(Exception e) {
 		super.add(e.getMessage());
 	}
-	
-	public int getErrorCount() {
-		return super.size();
+
+	public void addError(String msg) {
+		super.add(msg);
 	}
+
+	// allow size() method
 	
 	public Iterator iterator() {throw new InvalidBundleException(getErrorMessage());}
 	public Object[] toArray() {throw new InvalidBundleException(getErrorMessage());}
 	public void toArray(Object[] a) {throw new InvalidBundleException(getErrorMessage());}
 	public Map getProvenanceMap() {throw new InvalidBundleException(getErrorMessage());}
-	public int size() {throw new InvalidBundleException(getErrorMessage());}
 	public Object get(Class klass) {throw new InvalidBundleException(getErrorMessage());}
 	public Iterator iterator(Class klass) {throw new InvalidBundleException(getErrorMessage());}
 	public boolean has(Class klass) {throw new InvalidBundleException(getErrorMessage());}

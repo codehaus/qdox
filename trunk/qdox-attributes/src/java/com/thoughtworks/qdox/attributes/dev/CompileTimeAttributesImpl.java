@@ -1,4 +1,6 @@
-package com.thoughtworks.qdox.attributes.impl;
+package com.thoughtworks.qdox.attributes.dev;
+
+import com.thoughtworks.qdox.attributes.impl.AttributesImpl;
 
 /**
  * An non-validating attributes implementation that always allows attribute modification.  Used
@@ -9,6 +11,6 @@ package com.thoughtworks.qdox.attributes.impl;
  * @author <a href="mailto:piotr@ideanest.com">Piotr Kaminski</a>
  * @version $Revision$ ($Date$)
  */
-public class CompileTimeAttributesImpl extends SimpleAttributesImpl {
+public class CompileTimeAttributesImpl extends AttributesImpl {
 	public void checkModifyAttribute() {return;}
 }

@@ -37,7 +37,7 @@ public class AttributesBuilder implements Builder {
 	
 	private SimpleBundle currentBundle;
 	private ErrorBundle errorBundle;
-	private AttributesPack pack;
+	private WriteAttributesPack pack;
 	private JFlexLexer lexer;
 	private File currentFile;
 	
@@ -129,26 +129,24 @@ public class AttributesBuilder implements Builder {
 	
 	private void verifyAttribute(Object attribute, ElementType target) {
 		AttributeUsageAttribute usage = AttributeUsageAttribute.of(attribute);
-		if (usage != null) {
-			if (!usage.allowsTarget(target)) throw new IllegalArgumentException("attribute type " + attribute.getClass().getName() + " cannot be applied to " + target);
-			if (!usage.getAllowMultiple()) {
-				String usageDefiningClassName = (String) Attributes.getInstance().get(attribute.getClass()).getProvenanceMap().get(usage);
-				assert usageDefiningClassName != null : "attribute usage attribute applied to a package";
-				try {
-					Class usageRestrictedClass = typeResolver.resolve(usageDefiningClassName);
-					Iterator it = currentBundle.iterator(usageRestrictedClass);
-					assert it.hasNext() : "current bundle has no attribute of given class, should be at least one";
-					it.next();
-					if (it.hasNext()) throw new IllegalArgumentException("multiple values of attribute class " + usageDefiningClassName);
-				} catch (ClassNotFoundException e) {
-					throw new RuntimeException("unable to load ancestor class", e);
-				}
+		if (!usage.allowsTarget(target)) throw new IllegalArgumentException("attribute type " + attribute.getClass().getName() + " cannot be applied to " + target);
+		if (!usage.getAllowMultiple()) {
+			String usageDefiningClassName = (String) Attributes.getInstance().get(attribute.getClass()).getProvenanceMap().get(usage);
+			assert usageDefiningClassName != null : "attribute usage attribute applied to a package";
+			try {
+				Class usageRestrictedClass = typeResolver.resolve(usageDefiningClassName);
+				Iterator it = currentBundle.iterator(usageRestrictedClass);
+				assert it.hasNext() : "current bundle has no attribute of given class, should be at least one";
+				it.next();
+				if (it.hasNext()) throw new IllegalArgumentException("multiple values of attribute class " + usageDefiningClassName);
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException("unable to load ancestor class", e);
 			}
 		}
 	}
 
 	public void beginClass(ClassDef def) {
-		if (typeResolver.isTopContext()) pack = new AttributesPack(null, false);
+		if (typeResolver.isTopContext()) pack = new WriteAttributesPack();
 		String className = typeResolver.beginClass(def);
 		if (currentBundle.size() > 0) recordBundle(def.isInterface ? ElementType.INTERFACE : ElementType.CLASS, className);
 	}
@@ -171,7 +169,10 @@ public class AttributesBuilder implements Builder {
 		}
 		buf.append(')');
 		
-		recordBundle(def.constructor ? ElementType.CONSTRUCTOR : ElementType.METHOD, typeResolver.getCurrentClassName() + "#" + buf.toString());
+		recordBundle(
+			def.constructor ? ElementType.CONSTRUCTOR : ElementType.METHOD,
+			typeResolver.getCurrentClassName() + "#" + buf.toString() + (def.modifiers.contains("private") ? ";private" : "")
+		);
 	}
 
 	private void reportError(String string, Exception e) {
@@ -198,8 +199,28 @@ public class AttributesBuilder implements Builder {
 		typeResolver.addImport(importName);
 	}
 
+	/**
+	 * Defines the mode strategy interface for the attributes builder.
+	 * 
+	 * @author <a href="mailto:piotr@ideanest.com">Piotr Kaminski</a>
+	 * @version $Revision$ ($Date$)
+	 */
 	public interface Mode {
+		/**
+		 * This method will be called for each tag encountered in the source input.
+		 * @param tag the tag name, stripped of the leading '@'
+		 * @param text everything following the tag, stripped of leading and lagging whitespace
+		 * @param bundle the bundle that the attribute described by this tag should be added to
+		 * @throws Exception if the tag to attribute conversion fails in any way
+		 */
 		void processTag(String tag, String text, SimpleBundle bundle) throws Exception;
+		
+		/**
+		 * This method will be called once to make a type resolver available to the mode
+		 * strategy.  It will be called before the mode is asked to process any tags.
+		 * 
+		 * @param resolver an appropriate type resolver
+		 */
 		void setTypeResolver(TypeResolver resolver);
 	}
 

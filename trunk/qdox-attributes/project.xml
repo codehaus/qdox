@@ -28,7 +28,7 @@
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.codehaus.org:/cvsroot/qdox:qdox-attributes</connection>
     <developerConnection>scm:cvs:ext:${maven.username}@cvs.codehaus.org:/cvsroot/qdox:qdox-attributes</developerConnection>
-    <url>http://cvs.codehaus.org/viewcvs.cgi/qdox/?cvsroot=qdox</url>   
+    <url>http://cvs.codehaus.org/viewcvs.cgi/qdox-attributes/?cvsroot=qdox</url>   
   </repository>
   
   <versions>
@@ -87,15 +87,6 @@
   <build>
     <nagEmailAddress>qdox-user@lists.codehaus.org</nagEmailAddress>
     <sourceDirectory>src/java</sourceDirectory>
-    <!-- resource inclusion doesn't work -- fix me -->
-    <resources>
-    	<resource>
-    		<directory>${maven.build.dir}/attribs</directory>
-    		<includes>
-    			<include>**/*.attribs</include>
-    		</includes>
-    	</resource>
-    </resources>
   </build>
 
   <reports>

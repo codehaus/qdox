@@ -27,6 +27,9 @@ public class ArrayCreator implements Creator {
 		return a;
 	}
 	
+	/**
+	 * @deprecated Test class that should not be javadoc'ed.
+	 */
 	public static class Test extends TestCase {
 		public void testCreate1() {
 			IndirectObjectList c = new IndirectObjectList();
