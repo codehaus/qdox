@@ -12,7 +12,7 @@ public class TextXmlHandler_Test extends TestCase {
     //---( Fixtures )---
 
     StringWriter buffer = new StringWriter();
-    TextXmlHandler handler = new TextXmlHandler(buffer);
+    TextXmlHandler handler = new TextXmlHandler(buffer, "");
 
     //---( Utils )---
 

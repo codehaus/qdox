@@ -26,7 +26,7 @@ public class TextXmlHandler implements XmlHandler {
     }
 
     public TextXmlHandler(Writer out) {
-        this(out, "");
+        this(out, "  ");
     }
 
     //---( Implement XmlHandler )---

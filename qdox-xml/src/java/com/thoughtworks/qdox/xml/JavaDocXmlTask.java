@@ -15,6 +15,7 @@ public class JavaDocXmlTask extends AbstractQdoxTask {
 
     static final String XML_VERSION_PREAMBLE = 
         "<?xml version=\"1.0\"?>";
+
     static final String QD0X_DTD_PREAMBLE = 
         "<!DOCTYPE qdox PUBLIC"
         + " \"-//codehaus.org//QDox 1.0//EN\""
