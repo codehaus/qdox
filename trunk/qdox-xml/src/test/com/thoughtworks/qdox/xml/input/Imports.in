@@ -1,0 +1,6 @@
+package test;
+
+import java.util.*;
+import java.io.File;
+
+class X {}

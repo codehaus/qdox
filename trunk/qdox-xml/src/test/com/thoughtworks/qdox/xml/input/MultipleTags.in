@@ -1,0 +1,8 @@
+package test; 
+
+/**
+ * @attr1 juan
+ * @attr2 two
+ * @attr2 too
+ */
+class Widget {}
