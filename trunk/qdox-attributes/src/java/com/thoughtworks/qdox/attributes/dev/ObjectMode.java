@@ -215,7 +215,7 @@ public class ObjectMode implements AttributesBuilder.Mode {
 		NAMED_ARGS_LOOP:  for (Iterator it = args.listIterator(firstNamedArgIndex); it.hasNext();) {
 			String pair = (String) it.next();
 			int eq = pair.indexOf('=');
-			assert eq != -1;
+			if (eq == -1) throw new RuntimeException("assertion failure");
 			String propertyName = pair.substring(0, eq);
 			String propertyValue = pair.substring(eq+1);
 			for (int i = 0; i < props.length; i++) {

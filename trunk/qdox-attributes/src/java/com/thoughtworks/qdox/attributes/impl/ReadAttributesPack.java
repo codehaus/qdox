@@ -3,7 +3,6 @@ package com.thoughtworks.qdox.attributes.impl;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Level;
 
 import com.thoughtworks.qdox.attributes.Bundle;
 
@@ -62,9 +61,11 @@ public class ReadAttributesPack extends AttributesPackBase {
 				supertypes.put(className, rcf.getSupertypes());
 				mergeBundles(rcf.getBundles());
 			} catch (IOException e) {
-				log.log(Level.SEVERE, "error while reading attributes from " + url, e);
+				System.err.println("error while reading attributes from " + url);
+				e.printStackTrace(System.err);
 			} catch (ClassNotFoundException e) {
-				log.log(Level.SEVERE, "error while reading attributes from " + url, e);
+				System.err.println("error while reading attributes from " + url);
+				e.printStackTrace(System.err);
 			}
 		}
 	}
@@ -78,9 +79,11 @@ public class ReadAttributesPack extends AttributesPackBase {
 				supertypes.putAll((Map) in.readObject());
 				mergeBundles(readBundles(in));
 			} catch (IOException e) {
-				log.log(Level.SEVERE, "error while reading attributes from " + url, e);
+				System.err.println("error while reading attributes from " + url);
+				e.printStackTrace(System.err);
 			} catch (ClassNotFoundException e) {
-				log.log(Level.SEVERE, "error while reading attributes from " + url, e);
+				System.err.println("error while reading attributes from " + url);
+				e.printStackTrace(System.err);
 			}
 		}
 	}
@@ -91,7 +94,8 @@ public class ReadAttributesPack extends AttributesPackBase {
 			if (classLoader == null) enum = ClassLoader.getSystemResources(filename);
 			else enum = classLoader.getResources(filename);
 		} catch (IOException e) {
-			log.log(Level.SEVERE, "error while finding attribute resources called " + filename, e);
+			System.err.println("error while finding attribute resources called " + filename);
+			e.printStackTrace(System.err);
 			enum = Collections.enumeration(Collections.EMPTY_LIST);
 		}
 		return enum;
@@ -106,8 +110,8 @@ public class ReadAttributesPack extends AttributesPackBase {
 				// if old bundle is of size 0, then it must've been synthesized on request, the attribute got compiled later,
 				// and now we're reading in its definition; emit a warning that things might not be up-to-date
 				// TODO: track dependencies and recompile the appropriate bundles
-				if (old.size() == 0) log.log(Level.WARNING, "attribute used before it was compiled " + bundle.getKey());
-				else log.log(Level.WARNING, "multiple attribute bundles found for " + bundle.getKey());
+				if (old.size() == 0) System.err.println("attribute used before it was compiled " + bundle.getKey());
+				else System.err.println("multiple attribute bundles found for " + bundle.getKey());
 			}						
 		}
 	}
@@ -122,7 +126,6 @@ public class ReadAttributesPack extends AttributesPackBase {
 			try {
 				in.close();	// this had better not throw an exception!
 			} catch (IOException e) {
-				log.log(Level.FINE, "failed to close attribute file ", e);
 			}
 		}
 	}

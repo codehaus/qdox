@@ -16,7 +16,7 @@ public class ArrayCreator implements Creator {
 	private final IndirectObjectList contents;
 	
 	public ArrayCreator(Class type, IndirectObjectList contents) {
-		assert type.isArray();
+		if (!type.isArray()) throw new IllegalArgumentException("type is not an array");
 		this.type = type;
 		this.contents = contents;
 	}

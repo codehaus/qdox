@@ -31,8 +31,9 @@ public interface Bundle {
 	/**
 	 * Return an unmodifiable map from all the attributes in this bundle to the program elements on which
 	 * they were originally defined.  The keys will be the same attributes returned by {@link #toArray},
-	 * in the same order.  The value associated to each key will be the fully qualified name of the class in which
-	 * that attribute was originally declared.  For package attributes, the value will be <code>null</code>.
+	 * though not necessarily in the same order.  The value associated to each key will be the fully qualified
+	 * name of the class in which that attribute was originally declared.  For package attributes, the value
+	 * will be <code>null</code>.
 	 * @return an unmodifiable provenance map of the attributes in this bundle
 	 */
 	Map getProvenanceMap();

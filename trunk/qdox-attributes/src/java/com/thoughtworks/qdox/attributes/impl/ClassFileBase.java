@@ -43,7 +43,7 @@ public abstract class ClassFileBase {
 			System.arraycopy(b, 0, c, 0, len);
 			b = c;
 		}
-		assert b.length >= desiredLength;
+		if (! (b.length >= desiredLength) ) throw new RuntimeException("assertion failure");
 	}
 
 	private void readClass(final InputStream is) throws IOException {

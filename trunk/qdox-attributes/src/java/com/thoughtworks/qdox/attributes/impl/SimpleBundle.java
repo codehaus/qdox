@@ -30,7 +30,7 @@ public class SimpleBundle extends SearchableBundleBase implements Bundle {
 	
 	public synchronized Map getProvenanceMap() {
 		if (provenanceMap == null) {
-			provenanceMap = new LinkedHashMap();
+			provenanceMap = new HashMap();
 			for (int i=0; i<size; i++) provenanceMap.put(objects[i], getDefiningClassName());
 			constProvenanceMap = Collections.unmodifiableMap(provenanceMap);
 		}

@@ -6,7 +6,7 @@ package com.thoughtworks.qdox.attributes;
  * @author <a href="mailto:piotr@ideanest.com">Piotr Kaminski</a>
  * @version $Revision$ ($Date$)
  */
-public class MultipleValuesException extends RuntimeException {
+public class MultipleValuesException extends ChainedRuntimeException {
 
 	public MultipleValuesException() {
 		super();

@@ -125,7 +125,7 @@ public class Compiler {
 		} catch (IOException e) {
 			System.err.println("Error processing file '" + file + "': " + e);
 		} catch (ClassNotFoundException e) {
-			assert false;
+			throw new RuntimeException("assertion failure");
 		}
 	}
 	

@@ -2,7 +2,6 @@ package com.thoughtworks.qdox.attributes.impl;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Abstract base for attributes packs.  Basically a synchronized hash map of elements.
@@ -23,7 +22,7 @@ public abstract class AttributesPackBase {
 	}
 
 	public synchronized void put(String key, BundleBase bundle) {
-		assert !elements.containsKey(key);
+		if (elements.containsKey(key)) throw new RuntimeException("assertion failure: key already present");
 		bundle.setKey(key);
 		elements.put(key, bundle);
 	}
@@ -31,7 +30,5 @@ public abstract class AttributesPackBase {
 	public synchronized int size() {
 		return elements.size();
 	}
-
-	protected static final Logger log = Logger.getLogger(ReadAttributesPack.class.getName());
 
 }
