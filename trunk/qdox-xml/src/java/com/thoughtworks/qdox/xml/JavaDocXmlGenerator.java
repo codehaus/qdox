@@ -19,7 +19,7 @@ public class JavaDocXmlGenerator {
 
 	//---( Public interface )---
 
-	public void write(JavaSource[] javaSources) throws IOException {
+	public void write(JavaSource[] javaSources) {
 		handler.startDocument();
 		startElement("qdox");
 		for (int i = 0; i < javaSources.length; i++) {
@@ -29,7 +29,7 @@ public class JavaDocXmlGenerator {
 		handler.endDocument();
 	}
 
-	void writeJavaSource(JavaSource javaSource) throws IOException {
+	void writeJavaSource(JavaSource javaSource) {
 		startElement("source");
 		addElement("package", javaSource.getPackage());
 		String[] imports = javaSource.getImports();
@@ -44,7 +44,7 @@ public class JavaDocXmlGenerator {
 		endElement();
 	}
 
-	void writeJavaClass(JavaClass javaClass) throws IOException {
+	void writeJavaClass(JavaClass javaClass) {
 		startElement("class");
 		writeAbstractJavaEntity(javaClass);
 		if (javaClass.getSuperClass() != null) {
@@ -72,14 +72,14 @@ public class JavaDocXmlGenerator {
 		endElement();
 	}
 
-	void writeJavaField(JavaField javaField) throws IOException {
+	void writeJavaField(JavaField javaField) {
 		startElement("field");
 		writeAbstractJavaEntity(javaField);
 		addTypeInfo(javaField.getType());
 		endElement();
 	}
 
-	void writeJavaMethod(JavaMethod javaMethod) throws IOException {
+	void writeJavaMethod(JavaMethod javaMethod) {
 		String nodeType =
 			javaMethod.isConstructor() ? "constructor" : "method";
 		startElement(nodeType);
@@ -96,16 +96,14 @@ public class JavaDocXmlGenerator {
 		endElement();
 	}
 
-	void writeJavaParameter(JavaParameter javaParameter) throws IOException {
+	void writeJavaParameter(JavaParameter javaParameter) {
 		startElement("parameter");
 		addElement("name", javaParameter.getName());
 		addTypeInfo(javaParameter.getType());
 		endElement();
 	}
 
-	void writeAbstractJavaEntity(AbstractJavaEntity javaEntity)
-		throws IOException
-	{
+	void writeAbstractJavaEntity(AbstractJavaEntity javaEntity) {
 		addElement("name", javaEntity.getName());
 		String[] modifiers = javaEntity.getModifiers();
 		for (int i = 0; i < modifiers.length; i++) {
