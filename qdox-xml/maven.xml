@@ -15,7 +15,7 @@
 		</taskdef>
 
 		<echo message="Dumping QDox info as XML -> target/qdox.xml" />
-		<qdox-xml dest="target/qdox.xml">
+		<qdox-xml dest="target/qdox.xml" writeDTD="yes">
 			<fileset dir="src/java" />
 		</qdox-xml>
 
