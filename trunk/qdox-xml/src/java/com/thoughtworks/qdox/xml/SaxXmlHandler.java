@@ -1,20 +1,19 @@
 package com.thoughtworks.qdox.xml;
 
-import java.util.Stack;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
-/// UNTESTED!
-
-public class SaxXmlHandler implements XmlHandler {
+/** 
+ * An adaptor that allows the JavaDocXmlGenerator to produce SAX events
+ */
+ public class SaxXmlHandler implements XmlHandler {
 
 	//---( Member variables )---
 
 	private static final AttributesImpl EMPTY_ATTRIBUTES =
 		new AttributesImpl();
 
-	private Stack nodeStack = new Stack();
 	private ContentHandler contentHandler;
 
 	//---( Constructor )---
@@ -35,8 +34,7 @@ public class SaxXmlHandler implements XmlHandler {
 
 	public void startElement(String name) {
 		try {
-			nodeStack.push(name);
-			contentHandler.startElement("", name, name, EMPTY_ATTRIBUTES);
+			contentHandler.startElement("", "", name, EMPTY_ATTRIBUTES);
 		} catch (SAXException e) {
 			throw new XmlHandlerException(e);
 		}
@@ -51,10 +49,9 @@ public class SaxXmlHandler implements XmlHandler {
 		}
 	}
 
-	public void endElement() {
+	public void endElement(String name) {
 		try {
-			String name = (String) nodeStack.pop();
-			contentHandler.endElement("", name, name);
+			contentHandler.endElement("", "", name);
 		} catch (SAXException e) {
 			throw new XmlHandlerException(e);
 		}
