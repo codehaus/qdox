@@ -1,4 +1,5 @@
-<project name="qdox-attributes" repository="qdox-attributes" href="http://qdox.codehaus.org/attributes/">
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="qdox-attributes" repository="qdox-attributes" href="http://qdox.codehaus.org/attributes">
 
 	<title>QDox Attributes : Code Attributes Toolkit</title>
 
