@@ -18,7 +18,7 @@
         <pathelement location="${maven.build.dest}"/>
         <pathelement path="${plugin.getDependencyPath('junit')}"/>
       </classpath>
-      <batchtest todir="${maven.test.reportsDirectory}">
+      <batchtest todir="${maven.build.dir}/test-reports">
         <fileset dir="${maven.build.dest}">
           <include name="**/*$Test.class"/>
         </fileset>
