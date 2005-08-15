@@ -15,5 +15,4 @@
 # in addition to the first matching regex or "DEFAULT".
 
 # CVSspam
-^CVSROOT        /bin/true
-DEFAULT         /usr/local/despots/cvs/record_lastdir.rb
+ALL              /usr/local/despots/cvs/record_lastdir.rb
