@@ -53,9 +53,9 @@ public class ReadAttributesPack extends AttributesPackBase {
 	
 	public synchronized void mergeClass(String className) {
 		String filename = className.replace('.','/') + ".class";
-		Enumeration enum = getResources(filename);
-		while(enum.hasMoreElements()) {
-			URL url = (URL) enum.nextElement();
+		Enumeration enumVar = getResources(filename);
+		while(enumVar.hasMoreElements()) {
+			URL url = (URL) enumVar.nextElement();
 			try {
 				ReadClassFile rcf = new ReadClassFile(url.openStream(), true);
 				supertypes.put(className, rcf.getSupertypes());
@@ -71,9 +71,9 @@ public class ReadAttributesPack extends AttributesPackBase {
 	}
 	
 	public synchronized void mergeAggregateFile(String filename) {
-		Enumeration enum = getResources(filename);
-		while(enum.hasMoreElements()) {
-			URL url = (URL) enum.nextElement();
+		Enumeration enumVar = getResources(filename);
+		while(enumVar.hasMoreElements()) {
+			URL url = (URL) enumVar.nextElement();
 			try {
 				ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(url.openStream()));
 				supertypes.putAll((Map) in.readObject());
@@ -89,16 +89,16 @@ public class ReadAttributesPack extends AttributesPackBase {
 	}
 	
 	protected synchronized Enumeration getResources(String filename) {
-		Enumeration enum;
+		Enumeration enumVar;
 		try {
-			if (classLoader == null) enum = ClassLoader.getSystemResources(filename);
-			else enum = classLoader.getResources(filename);
+			if (classLoader == null) enumVar = ClassLoader.getSystemResources(filename);
+			else enumVar = classLoader.getResources(filename);
 		} catch (IOException e) {
 			System.err.println("error while finding attribute resources called " + filename);
 			e.printStackTrace(System.err);
-			enum = Collections.enumeration(Collections.EMPTY_LIST);
+			enumVar = Collections.enumeration(Collections.EMPTY_LIST);
 		}
-		return enum;
+		return enumVar;
 	}
 
 	private synchronized void mergeBundles(BundleBase[] bundles) {	
