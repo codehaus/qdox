@@ -1,0 +1,11 @@
+<qdox>
+    <source>
+        <package>test</package>
+        <class>
+            <name>Snafu</name>
+            <constructor>
+                <name>Snafu</name>
+            </constructor>
+        </class>
+    </source>
+</qdox>
