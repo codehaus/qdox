@@ -1,7 +1,0 @@
-package test; 
-
-class X {
-
-    void doThings() throws java.io.IOException, IllegalStateException {}
-
-}

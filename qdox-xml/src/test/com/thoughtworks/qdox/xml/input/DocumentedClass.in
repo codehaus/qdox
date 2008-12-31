@@ -1,7 +1,0 @@
-package test;
-
-/** 
-  * An author writes stuff. 
-  * @foo bar
-  */
-class Author {}
