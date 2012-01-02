@@ -1,0 +1,118 @@
+<html>
+  <head>
+    <title>Upgrading</title>
+  </head>
+  <body>
+  <h2>Upgrading to 1.10.1 or above</h2>
+      <p>
+        This section describes what needs to be done when upgrading to QDox 1.10.1.
+      </p>
+      <h2>Things that might break your code</h2>
+        <p>In some cases the Type.toString() was inconsequent (<a href="http://jira.codehaus.org/browse/QDOX-182">QDOX-182</a>) so we had to change the implementation.
+         If you use this in combination with innerClasses you should use Type.getFullyQualifiedName() to get the same result.
+        </p>
+  <h2>Upgrading to 1.10 or above</h2>
+      <p>
+        This section describes what needs to be done when upgrading to QDox 1.10.
+      </p>
+      <h2>Things that might break your code</h2>
+        <p> The toString()-method in most of the JavaObjects under com.thoughtworks.qdox.models used to return the corresponding codeblock.
+        This method has been renamed to getCodeBlock(). The toString() will follow the Java API Specs as described for each equivalent object under the java.lang-package.
+        Some methods require extra attention, because there's not an exact match. Watch out for differences between Type and JavaClass.
+        <table>
+          <tr><th>Java API</th><th>QDOX</th></tr>
+          <tr class="b"><td>((java.lang.Method) aMethod).getReturnsType().toString()</td><td>((com.thoughtworks.qdox.model.JavaMethod) aMethod).getReturns().toString()</td></tr>
+        </table> 
+        </p>
+        <p>com.thoughtworks.qdox.model.Type.getValue() will return the typeName for usage in the code. The new method com.thoughtworks.qdox.model.Type.getFullQualifiedName() will return the FQN as defined by the java specs. 
+        Normally they would return the same value, but pay attention when using inner classes.
+        </p>
+        
+           
+	<h2>Upgrading to 1.9 or above</h2>
+      <p>
+        This section describes what needs to be done when upgrading to QDox 1.9.
+      </p>
+      <h2>Things that might break your code</h2>
+        <p>
+          In both <a
+          href="javadoc/com/thoughtworks/qdox/model/JavaClass.html">JavaClass</a> and
+          <a href="javadoc/com/thoughtworks/qdox/model/JavaSource.html">JavaSource</a> 
+          the getPackage() returns an object of type <a 
+          href="javadoc/com/thoughtworks/qdox/model/JavaPackage.html">JavaPackage</a> 
+          instead of a String. To get the same result as before use getPackage().getName() .
+        </p>
+	  
+
+    <h2>Upgrading to 1.6 or above</h2>
+      <p>
+        This section describes what needs to be done when upgrading to QDox
+        1.6.  For an extensive list of changes (most of them backwards
+        compatible), please see the <a href="changes.html">Changes
+        Report</a>.
+      </p>
+      <h2>Things that might break your code</h2>
+        <p>
+          In <a
+          href="javadoc/com/thoughtworks/qdox/model/JavaClass.html">JavaClass</a>
+          the getInnerClasses() method has been renamed to
+          getNestedClasses().  The old name remains as a (deprecated)
+          synonym.
+        </p>
+        <p>
+          With support for generic types, we've introduced a bug affecting
+          the use of "&lt;" and "&gt;" in initialisers (see <a
+          href="http://jira.codehaus.org/browse/QDOX-71">QDOX-71</a>).
+        </p>
+
+    <h2>Upgrading to 1.5</h2>
+      <p>
+        This section describes what needs to be done when upgrading to QDox
+        1.5.  For an extensive list of changes (most of them backwards
+        compatible), please see the <a href="changes.html">Changes
+        Report</a>.
+      </p>
+      <h2>Things that might break your code</h2>
+        <p>
+          The <a href="javadoc/com/thoughtworks/qdox/model/DocletTag.html">DocletTag</a>
+          interface no longer contains a setContext() method.  That information is now provided via 
+          <a href="javadoc/com/thoughtworks/qdox/model/DocletTagFactory.html">DocletTagFactory</a>, 
+          where createDocletTag() now requires an additional "context" parameter.
+        </p>
+        <p>
+          The parser now passes tag-data to 
+          <a href="javadoc/com/thoughtworks/qdox/parser/Builder.html">Builders</a> using a new
+          <a href="javadoc/com/thoughtworks/qdox/parser/structs/TagDef.html">TagDef</a> structure.
+        </p>
+
+    <h2>Upgrading to 1.3</h2>
+      <p>
+        This section describes what needs to be done when upgrading to QDox 1.3.
+        For an extensive list of changes (most of them backwards compatible), please see the
+        <a href="changes.html">Changes Report</a>.
+      </p>
+      <h2>Things that might break your code</h2>
+        <p>
+          (Thanks to Peter Donald for contributing this list).
+        </p>
+        <ul>
+          <li>
+            <a href="javadoc/com/thoughtworks/qdox/model/DocletTag.html">DocletTag</a>
+            is now an interface and needs to be replaced with
+            <a href="javadoc/com/thoughtworks/qdox/model/DefaultDocletTag.html">DefaultDocletTag</a>
+          </li>
+          <li>
+            <a href="javadoc/com/thoughtworks/qdox/model/JavaClass.html">JavaClass</a>
+            has changed so that there is no setParent but instead you need to 
+            pass the parent into the constructor.
+          </li>
+          <li>
+            <a href="javadoc/com/thoughtworks/qdox/model/JavaClassParent.html">JavaClassParent</a>
+            now has to additional methods that need to be implemented if you implement it:
+            <a href="javadoc/com/thoughtworks/qdox/model/JavaClassParent.html#getClassLibrary()">getClassLibrary()</a> and
+            <a href="javadoc/com/thoughtworks/qdox/model/JavaClassParent.html#resolveType(java.lang.String)">resolveType(java.lang.String)</a>.         
+          </li>
+        </ul>
+  </body>
+  
+</html>
