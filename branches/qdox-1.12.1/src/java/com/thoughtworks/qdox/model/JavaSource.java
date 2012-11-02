@@ -260,8 +260,14 @@ public class JavaSource implements Serializable, JavaClassParent {
         String dotSuffix = "." + importSpec;
             
         for (int i = 0; i < imports.length && resolvedName == null; i++) {
-            if (imports[i].equals(importSpec) || (!fullMatch && imports[i].endsWith(dotSuffix))) {
-                String candidateName = imports[i].substring( 0, imports[i].length() - importSpec.length()) + typeName;
+            String imprt = imports[i];
+            //static imports can refer to inner classes
+            if(imprt.startsWith( "static " ) ) {
+                imprt = imprt.substring( 7 );
+            }
+
+            if (imprt.equals(importSpec) || (!fullMatch && imprt.endsWith(dotSuffix))) {
+                String candidateName = imprt.substring( 0, imprt.length() - importSpec.length()) + typeName;
                 resolvedName = resolveFullyQualifiedType( candidateName );
                 if(resolvedName == null && !"*".equals(importSpec)) {
                 	resolvedName = candidateName;
