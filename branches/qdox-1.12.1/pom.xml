@@ -400,16 +400,6 @@
   </dependencies>
 
   <distributionManagement>
-    <repository>
-      <id>codehaus.org</id>
-      <name>QDox Central Repository</name>
-      <url>dav:https://dav.codehaus.org/repository/qdox/</url>
-    </repository>
-    <snapshotRepository>
-      <id>codehaus.org</id>
-      <name>QDox Central Development Repository</name>
-      <url>dav:https://dav.codehaus.org/snapshots.repository/qdox/</url>
-    </snapshotRepository>
     <site>
       <id>codehaus.org</id>
       <name>QDox Site</name>
