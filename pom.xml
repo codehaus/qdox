@@ -370,7 +370,7 @@
           <preparationGoals>clean install</preparationGoals>
           <goals>deploy</goals>
           <tagBase>https://svn.codehaus.org/qdox/tags</tagBase>
-          <arguments>-P!release-site -Dproject.rel.org.thoughtworks.qdox:qdox=${project.rel.org.thoughtworks.qdox:qdox} -Dproject.dev.org.thoughtworks.qdox:qdox=${project.dev.org.thoughtworks.qdox:qdox}</arguments>
+          <arguments>-P!release-site</arguments>
         </configuration>
       </plugin>
     </plugins>
