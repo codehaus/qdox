@@ -356,7 +356,29 @@ public class JavaMethodTest extends TestCase {
     	mthd.setModifiers(new String[]{"public"});
     	mthd.addParameter(new JavaParameter(new Type("java.lang.Object"), null));
     	assertEquals("public boolean java.lang.Object.equals(java.lang.Object)", mthd.toString());
-    	
+    }
+    
+    public void testConstructorToString() throws Exception {
+        JavaClass cls = new JavaClass("a.b.Executor");
+        JavaMethod constructor = new JavaMethod(null,"Executor");
+        constructor.setConstructor( true );
+        cls.addMethod(constructor);
+        assertEquals("a.b.Executor()", constructor.toString());
+    }
+
+    public void testConstructorReturnType() throws Exception {
+        JavaMethod constructor = new JavaMethod(null,"Executor");
+        constructor.setConstructor( true );
+        assertEquals(null, constructor.getReturnType());
+    }
+
+    public void testConstructorParameterTypes() throws Exception {
+        JavaClass cls = new JavaClass("a.b.Executor");
+        JavaMethod constructor = new JavaMethod(null,"Executor");
+        constructor.addParameter( new JavaParameter( new Type("a.b.C"), "param" ) );
+        constructor.setConstructor( true );
+        cls.addMethod(constructor);
+        assertEquals("a.b.C", constructor.getParameterTypes()[0].toString());
     }
 
     private void assertNotEquals(Object o1, Object o2) {
