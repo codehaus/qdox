@@ -10,7 +10,7 @@
   <name>QDox</name>
   <groupId>com.thoughtworks.qdox</groupId>
   <artifactId>qdox</artifactId>
-  <version>1.12.2-SNAPSHOT</version>
+  <version>1.12.1-SNAPSHOT</version>
   
   <url>http://qdox.codehaus.org</url>
   <description>
@@ -366,11 +366,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.3.2</version>
         <configuration>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-          <preparationGoals>clean install</preparationGoals>
-          <goals>deploy</goals>
-          <tagBase>https://svn.codehaus.org/qdox/tags</tagBase>
-          <arguments>-P!release-site</arguments>
+          <goals>deploy</goals> <!-- deploy-site by hand -->
         </configuration>
       </plugin>
     </plugins>
@@ -465,21 +461,6 @@
         <qdox.byaccj.executable>${basedir}/bootstrap/yacc.exe</qdox.byaccj.executable>
       </properties>
     </profile>
-    <!-- 
-    <profile>
-      <id>release-site</id>
-      <activation>
-        <file>
-          <exists>release.properties</exists>
-        </file>
-      </activation>
-      <build>
-        <filters>
-          <filter>release.properties</filter>
-        </filters>
-      </build>
-    </profile>
-     -->
   </profiles>
 
   <!-- Reports -->
