@@ -125,14 +125,12 @@ public class JavaMethod extends AbstractInheritableJavaEntity implements Member 
             result.write(parameter.getName());
         }
         result.write(')');
-        if (isDeclaration) {
-            if (exceptions.length > 0) {
+        if (isDeclaration && exceptions.length > 0) {
                 result.write(" throws ");
                 for (int i = 0; i < exceptions.length; i++) {
                     if (i > 0) result.write(", ");
                     result.write(exceptions[i].getValue());
                 }
-            }
         }
         if (isPrettyPrint) {
             if (sourceCode != null && sourceCode.length() > 0) {
@@ -196,16 +194,38 @@ public class JavaMethod extends AbstractInheritableJavaEntity implements Member 
     }
 
     public boolean equals(Object obj) {
-        if (obj == null) return false;
+        if ( this == obj )
+        {
+            return true;
+        }
+        if ( !( obj instanceof JavaMethod ) ) 
+        {
+            return false;   
+        }
         JavaMethod m = (JavaMethod) obj;
 
-        if (m.isConstructor() != isConstructor()) return false;
+        if (m.isConstructor() != isConstructor())
+        {
+            return false;
+        }
 
-        if (m.getName() == null) return (getName() == null);
-        if (!m.getName().equals(getName())) return false;
+        if ( m.getName() != null && !m.getName().equals( this.getName() ) )
+        {
+            return false;
+        }
+        if ( this.getName() != null && !this.getName().equals( m.getName() ) )
+        {
+            return false;
+        }
         
-        if (m.getReturns() == null) return (getReturns() == null);
-        if (!m.getReturns().equals(getReturns())) return false;
+        if ( m.getReturns() != null && !m.getReturns().equals( this.getReturns() ) )
+        {
+            return false;
+        }
+        if ( this.getReturns() != null && !this.getReturns().equals( m.getReturns() ) )
+        {
+            return false;
+        }
 
         JavaParameter[] myParams = getParameters();
         JavaParameter[] otherParams = m.getParameters();

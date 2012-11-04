@@ -182,6 +182,12 @@ public class JavaMethodTest extends TestCase {
         JavaMethod m4 = new JavaMethod();
         m4.setName("thing");
         m4.setReturns(new Type("int"));
+        
+        JavaMethod m5 = new JavaMethod();
+        JavaMethod m6 = new JavaMethod();
+        
+        JavaMethod m7 = new JavaMethod();
+        m7.setReturns( new Type("int") );
 
         JavaMethod c1 = new JavaMethod();
         c1.setName("thing");
@@ -203,6 +209,10 @@ public class JavaMethodTest extends TestCase {
         assertNotEquals(c1, c2);
         assertEquals(c2, c3);
         assertFalse(mth.equals(null));
+        assertNotEquals( m4, m5 );
+        assertNotEquals( m5, m4 );
+        assertEquals( m5, m6 );
+        assertNotEquals( m5, m7 );
     }
 
     public void testEqualsWithParameters() throws Exception {
