@@ -399,11 +399,18 @@ public class JavaMethod extends AbstractInheritableJavaEntity implements Member 
 		if(isNative()) {
 			result.append("native ");
 		}
-		result.append(getReturns().getValue() + " ");
+		if (!constructor) {
+            result.append(getReturns().getValue() + " ");
+        }
 		if(getParentClass() != null) {
-			result.append(getParentClass().getFullyQualifiedName() + ".");
+		    result.append(getParentClass().getFullyQualifiedName());
+            if (!constructor) {
+                result.append(".");
+            }
 		}
-		result.append(getName());
+		if (!constructor) {
+            result.append(getName());
+        }
 		result.append("(");
 		for(int paramIndex=0;paramIndex<getParameters().length;paramIndex++) {
 			if(paramIndex>0) {
@@ -461,12 +468,15 @@ public class JavaMethod extends AbstractInheritableJavaEntity implements Member 
      * @since 1.12
      */
     protected Type getReturnType ( boolean resolve, JavaClass callingClass) {
-        Type result =  getReturns().resolve( this.getParentClass(), callingClass );
-        
-        //According to java-specs, if it could be resolved the upper boundary, so Object, should be returned  
-        if ( !resolve && !returns.getFullyQualifiedName().equals( result.getFullyQualifiedName() ) )
-        {
-            result = new Type( "java.lang.Object" );
+        Type result = null;
+        if (getReturns() != null) {
+            result =  getReturns().resolve( this.getParentClass(), callingClass );
+            
+            //According to java-specs, if it could be resolved the upper boundary, so Object, should be returned  
+            if ( !resolve && !returns.getFullyQualifiedName().equals( result.getFullyQualifiedName() ) )
+            {
+                result = new Type( "java.lang.Object" );
+            }
         }
         return result;
     }
@@ -499,7 +509,7 @@ public class JavaMethod extends AbstractInheritableJavaEntity implements Member 
         {
             Type curType = getParameters()[paramIndex].getType().resolve( this.getParentClass(), callingClass );
             //According to java-specs, if it could be resolved the upper boundary, so Object, should be returned  
-            if ( !resolve && !returns.getFullyQualifiedName().equals( curType.getFullyQualifiedName() ) )
+            if ( !resolve && returns != null && !returns.getFullyQualifiedName().equals( curType.getFullyQualifiedName() ) )
             {
                 result[paramIndex] = new Type( "java.lang.Object" );
             }
