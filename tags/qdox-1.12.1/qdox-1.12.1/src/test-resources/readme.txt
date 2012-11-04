@@ -1,1 +1,0 @@
-this folder is introduces to have a solid way to test qdox-148
