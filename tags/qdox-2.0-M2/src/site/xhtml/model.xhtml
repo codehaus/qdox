@@ -1,0 +1,346 @@
+<html>
+  <head>
+    <title>The Model</title>
+  </head>
+  <body>
+
+  <p>After the source code has been <a href="usage.html">parsed</a>, the content of the files can be navigated using a simple to use and intuitive object model.</p>
+
+  <h2><a href="apidocs/com/thoughtworks/qdox/model/JavaSource.html">JavaSource</a></h2>
+  <p>Represents a complete .java file. This contains a collection of classes.</p>
+
+  <h3>Example Input</h3>
+  <div class="Source Java"><pre>
+    package com.blah.foo;
+    
+    import java.awt.*;
+    import java.util.List;
+    
+    public class Class1 {
+      ...
+    }
+    
+    class Class2 {
+    }
+    
+    interface Interface1 {
+    }
+            </pre></div>
+
+            <h3>Example Code</h3>
+            <div class="Source Java"><pre>
+    JavaProjectBuilder builder = new JavaProjectBuilder();
+    JavaSource src = builder.addSource(myReader);
+    
+    JavaPackage pkg      = src.<a href="apidocs/com/thoughtworks/qdox/model/JavaSource.html#getPackage()">getPackage</a>(); 
+    List&lt;String&gt; imports     = src.<a href="apidocs/com/thoughtworks/qdox/model/JavaSource.html#getImports()">getImports</a>(); // {"java.awt.*",
+                                         //  "java.util.List"}
+    
+    JavaClass class1     = src.<a href="apidocs/com/thoughtworks/qdox/model/JavaSource.html#getClasses()">getClasses</a>().get(0);
+    JavaClass class2     = src.<a href="apidocs/com/thoughtworks/qdox/model/JavaSource.html#getClasses()">getClasses</a>().get(1);
+    JavaClass interface1 = src.<a href="apidocs/com/thoughtworks/qdox/model/JavaSource.html#getClasses()">getClasses</a>().get(2);
+            </pre></div>
+          <h2><a href="apidocs/com/thoughtworks/qdox/model/JavaPackage.html">JavaPackage</a></h2>
+            <p>Represents the package of the class.</p>
+            
+            <h3>Example input</h3>
+            <div class="Source Java"><pre>
+    package com.blah.foo;
+    
+    public class BarClass  {
+    ...
+    }
+  </pre></div>
+            
+  <h3>Example Code</h3>
+  <div class="Source Java"><pre>
+    JavaProjectBuilder builder = new JavaProjectBuilder();
+    JavaSource src = builder.addSource(myReader);
+    
+    JavaPackage pkg      = src.<a href="apidocs/com/thoughtworks/qdox/model/JavaSource.html#getPackage()">getPackage</a>();
+    
+    Collection&lt;JavaClass&gt; classes  = pkg.<a href="apidocs/com/thoughtworks/qdox/model/JavaPackage.html#getClasses()">getClasses</a>(); // BarClass
+    String name          = pkg.<a href="apidocs/com/thoughtworks/qdox/model/JavaPackage.html#getName()">getName</a>(); // "com.blah.foo"
+    String toString      = pkg.<a href="apidocs/com/thoughtworks/qdox/model/JavaPackage.html#toString()">toString</a>(); // "package com.blah.foo" conform javaAPI
+    JavaPackage parent   = pkg.<a href="apidocs/com/thoughtworks/qdox/model/JavaPackage.html#getParentPackage()">getParentPackage</a>(); //
+  </pre></div>            
+
+  <h2><a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html">JavaClass</a></h2>
+  <p>Represents a class or interface. This contains doclet tags, fields and methods. Information about the class
+	 definition is available, such as which classes are extended, which interfaces implemented and modifiers.</p>
+
+  <h3>Example Input</h3>
+  <div class="Source Java"><pre>
+    package com.blah.foo;
+    
+    import java.io.*;
+    import com.custom.*;
+    import com.base.SubClass;
+    
+    /**
+     * @author Joe
+     */
+    public abstract class MyClass extends SubClass
+                implements Serializable, CustomInterface  {
+    
+      private String name;
+      public void doStuff() { ... }
+      private int getNumber() { ... }
+    
+    }
+  </pre></div>
+
+  <h3>Example Code</h3>
+  <div class="Source Java"><pre>
+    JavaProjectBuilder builder = new JavaProjectBuilder();
+    builder.addSource(myReader);
+    
+    JavaClass cls = builder.getClassByName("com.blah.foo.MyClass");
+    
+    String pkg      = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getPackage()">getPackage</a>();            // "com.blah.foo"
+    String name     = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getName()">getName</a>();               // "MyClass"
+    String fullName = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getCanonicalName()">getCanonicalName</a>(); // "com.blah.foo.MyClass";
+    String canonicalName = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getFullyQualifiedName()">getFullyQualifiedName</a>(); // "com.blah.foo.MyClass";
+    boolean isInterface = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#isInterface()">isInterface</a>();       // false
+    
+    boolean isPublic   = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#isPublic()">isPublic</a>();   // true
+    boolean isAbstract = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#isAbstract()">isAbstract</a>(); // true
+    boolean isFinal    = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#isFinal()">isFinal</a>();    // false
+    
+    JavaType superClass = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getSuperClass()">getSuperClass</a>(); // "com.base.SubClass";
+    List&lt;JavaType&gt; imps     = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getImplements()">getImplements</a>(); // {"java.io.Serializable",
+                                           //  "com.custom.CustomInterface"}
+    
+    String author = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getTagsByName(java.lang.String)">getTagsByName</a>("author").getValue(); // "joe"
+    
+    JavaField nameField = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getFields()">getFields</a>()[0];
+    JavaMethod doStuff = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getMethods()">getMethods</a>()[0];
+    JavaMethod getNumber = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getMethods()">getMethods</a>()[1];
+    
+    JavaSource javaSource = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getParentSource()">getParentSource</a>();
+  </pre></div>
+
+  <h2><a href="apidocs/com/thoughtworks/qdox/model/JavaField.html">JavaField</a></h2>
+  <p>Represents a field in a class. This has doclet tags, a name and a type.</p>
+
+  <h3>Example Input</h3>
+  <div class="Source Java"><pre>
+    import java.util.Date;
+    
+    public class MyClass  {
+    
+      /**
+       * @magic
+       */
+      private String email;
+    
+      public static Date[][] dates;
+    
+    }
+            </pre></div>
+						<h3>Example Code</h3>
+            <div class="Source Java"><pre>
+    JavaField e = cls.getFields()[0];
+    
+    JavaType eType     = e.<a href="apidocs/com/thoughtworks/qdox/model/JavaField.html#getType()">getType</a>(); // "java.lang.String";
+    String eName   = e.<a href="apidocs/com/thoughtworks/qdox/model/JavaField.html#getName()">getName</a>(); // "email";
+    DocletTag eTag = e.<a href="apidocs/com/thoughtworks/qdox/model/AbstractJavaEntity.html#getTagByName(java.lang.String)">getTagsByName</a>("magic"); // @magic
+    boolean eArray = e.<a href="apidocs/com/thoughtworks/qdox/model/JavaField.html#getType()">getType</a>().<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#isArray()">isArray</a>(); // false;
+    
+    JavaField d = cls.getFields()[1];
+    
+    JavaType dType     = d.<a href="apidocs/com/thoughtworks/qdox/model/JavaField.html#getType()">getType</a>(); // "java.util.Date";
+    String dName   = d.<a href="apidocs/com/thoughtworks/qdox/model/JavaField.html#getName()">getName</a>(); // "dates";
+    DocletTag dTag = d.<a href="apidocs/com/thoughtworks/qdox/model/AbstractJavaEntity.html#getTagByName(java.lang.String)">getTagsByName</a>("magic"); // null
+    boolean dArray = d.<a href="apidocs/com/thoughtworks/qdox/model/JavaField.html#getType()">getType</a>().<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#isArray()">isArray</a>(); // true;
+    int dDimensions= d.<a href="apidocs/com/thoughtworks/qdox/model/JavaField.html#getType()">getType</a>().<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#getDimensions()">getDimensions</a>(); // 2;
+    boolean dStatic= d.<a href="apidocs/com/thoughtworks/qdox/model/JavaField.html#isStatic()">isStatic</a>(); // true;
+    
+    JavaClass javaClass = d.<a href="apidocs/com/thoughtworks/qdox/model/JavaField.html#getParentClass()">getParentClass</a>();
+            </pre></div>
+
+  <h2><a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html">JavaMethod</a></h2>
+  <p>Represents a method in a class. This has doclet tags, a name, return type, parameters and exceptions.</p>
+
+  <h3>Example Input</h3>
+  <div class="Source Java"><pre>
+    import java.util.Date;
+    import java.io.*;
+    
+    public class MyClass  {
+    
+      /**
+       * @returns Lots of dates
+       */
+      public static Date[] doStuff(int number,
+                                   String stuff)
+                throws RuntimeException, IOException {
+        ...
+      }
+    
+    }
+  </pre></div>
+
+  <h3>Example Code</h3>
+  <div class="Source Java"><pre>
+    JavaMethod m = cls.getMethods()[0];
+    
+    String mName = m.<a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html#getName()">getName</a>(); // "doStuff";
+    JavaType mReturns = m.<a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html#getReturns()">getReturns</a>(); // "java.util.Date";
+    boolean mArray = m.<a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html#getReturns()">getReturns</a>().<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#isArray()">isArray</a>(); // true
+    boolean mStatic = m.<a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html#isStatic()">isStatic</a>(); // true
+    boolean mPublic = m.<a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html#isPublic()">isPublic</a>(); // true
+    
+    String doc = m.getTagByName("returns").getValue();
+      // "Lots of dates"
+    
+    List&lt;JavaType&gt; exceptions = m.<a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html#getExceptions()">getExceptions</a>();
+      // {"java.lang.RuntimeException", "java.io.IOException"}
+    
+    JavaParameter numberParam = m.<a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html#getParameters()">getParameters</a>()[0];
+    JavaParameter stuffParam = m.<a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html#getParameters()">getParameters</a>()[1];
+    
+    JavaClass javaClass = m.<a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html#getParentClass()">getParentClass</a>();
+  </pre></div>
+
+  <h2><a href="apidocs/com/thoughtworks/qdox/model/JavaParameter.html">JavaParameter</a></h2>
+  <p>Represents a parameter passed to a method. This has a name and a type.</p>
+
+
+  <h3>Example Input</h3>
+  <div class="Source Java"><pre>
+    public class MyClass  {
+    
+      public void stuff(int n, Object[] objects) {
+        ...
+      }
+    
+    }
+  </pre></div>
+  
+  <h3>Example Code</h3>
+  <div class="Source Java"><pre>
+    JavaMethod m = cls.getMethods()[0];
+    
+    JavaParameter n = m.<a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html#getParameters()">getParameters</a>()[0];
+    String nName = n.<a href="apidocs/com/thoughtworks/qdox/model/JavaParameter.html#getName()">getName</a>(); // "n"
+    JavaType nType   = n.<a href="apidocs/com/thoughtworks/qdox/model/JavaParameter.html#getType()">getType</a>(); // "int";
+    
+    JavaParameter o = m.<a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html#getParameters()">getParameters</a>()[1];
+    String oName   = o.<a href="apidocs/com/thoughtworks/qdox/model/JavaParameter.html#getName()">getName</a>(); // "objects"
+    JavaType oType     = o.<a href="apidocs/com/thoughtworks/qdox/model/JavaParameter.html#getType()">getType</a>(); // "java.lang.Object";
+    boolean oArray = o.<a href="apidocs/com/thoughtworks/qdox/model/JavaParameter.html#getType()">getType</a>().<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#isArray()">isArray</a>(); // true
+    
+    JavaMethod javaMethod = o.<a href="apidocs/com/thoughtworks/qdox/model/JavaParameter.html#getParentMethod()">getParentMethod</a>();
+  </pre></div>
+
+  <h2><a href="apidocs/com/thoughtworks/qdox/model/JavaType.html">JavaType</a></h2>
+  <p>Represents a specific instance of a class used by another class (such as return value, superclass, etc).
+     The value represents the name of the class. Array dimensions are also available. Since 1.8 it's also possible to get the generic value of the Type</p>
+
+  <h3>Example Input</h3>
+  <div class="Source Java"><pre>
+    <![CDATA[
+  
+    import java.util.*;
+    
+    public class MyClass  {
+    
+      public void stuff(int n, Object[] objects,
+    	                  Date[][] dates, List<String> stringList) {
+        ...
+      }
+    
+    }
+    ]]>
+  </pre></div>
+
+  <h3>Example Code</h3>
+  <div class="Source Java"><pre>
+    JavaMethod m = cls.getMethods()[0];
+    
+    JavaType returns = m.getReturns();
+    returns.<a href="apidocs/com/thoughtworks/qdox/model/Type.html#getValue()">getValue</a>(); // "void"
+    returns.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#isArray()">isArray</a>(); // false
+    returns.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#getDimensions()">getDimensions</a>(); // 0
+    
+    JavaType n = m.getParameters()[0].getType();
+    n.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#getValue()">getValue</a>(); // "int"
+    n.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#isArray()">isArray</a>(); // false
+    n.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#getDimensions()">getDimensions</a>(); // 0
+    
+    JavaType objects = m.getParameters()[1].getType();
+    objects.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#getValue()">getValue</a>(); // "java.lang.Object"
+    objects.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#isArray()">isArray</a>(); // true
+    objects.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#getDimensions()">getDimensions</a>(); // 1
+    
+    JavaType dates = m.getParameters()[2].getType();
+    dates.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#getValue()">getValue</a>(); // "java.util.Date"
+    dates.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#isArray()">isArray</a>(); // true
+    dates.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#getDimensions()">getDimensions</a>(); // 2
+    
+    JavaType stringList = m.getParameters()[3].getType();
+    stringList.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#getValue()">getValue</a>(); // "java.util.List"
+    stringList.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#getGenericValue()">getGenericValue</a>(); // <![CDATA["java.util.List<java.lang.String>"]]>
+    stringList.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#isArray()">isArray</a>(); // false
+    stringList.<a href="apidocs/com/thoughtworks/qdox/model/JavaType.html#getDimensions()">getDimensions</a>(); // 0
+          </pre></div>
+          
+					<h2><a href="apidocs/com/thoughtworks/qdox/model/DocletTag.html">DocletTag</a></h2>
+				    <p>Represents a JavaDoc tag. Each tag has a name and a value. Optionally, the value can be broken up into
+						tokens accessed by index or name.</p>
+						
+						<p>The <code><a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html">JavaClass</a></code>,
+                   <code><a href="apidocs/com/thoughtworks/qdox/model/JavaField.html">JavaField</a></code> and
+                   <code><a href="apidocs/com/thoughtworks/qdox/model/JavaMethod.html">JavaMethod</a></code> classes all
+                    support comments and DocletTags</p>
+
+			<p>The returned <code><a href="apidocs/com/thoughtworks/qdox/model/DocletTag.html">DocletTag</a></code> carries
+			the name, value and methods for breaking up the value into specific parameters.
+			</p>
+						<h3>Example Input</h3>
+            <div class="Source Java"><pre>
+    /**
+     * This method does nothing at all.
+     *
+     * @returns A boolean of whether we care or not.
+     * @param email Someone's email address.
+     * @param dob Date of birth.
+     *
+     * @permission administrator full-access
+     * @webservice publish=true name=myservice type=rpc
+     */
+    boolean doWeCare(String email, Date dob);
+            </pre></div>
+
+						<h3>Example Code</h3>
+            <div class="Source Java"><pre>
+    JavaMethod mth = cls.<a href="apidocs/com/thoughtworks/qdox/model/JavaClass.html#getMethods()">getMethods</a>()[0];
+    
+    // Access the JavaDoc comment
+    String comment = mth.<a href="apidocs/com/thoughtworks/qdox/model/AbstractJavaEntity.html#getComment()">getComment</a>();
+      // "This method does nothing at all."
+    
+    // Access a single doclet tag
+    DocletTag returns = mth.<a href="apidocs/com/thoughtworks/qdox/model/AbstractJavaEntity.html#getTagByName(java.lang.String)">getTagByName</a>("returns");
+    returns.<a href="apidocs/com/thoughtworks/qdox/model/DocletTag.html#getName()">getName</a>(); // "returns";
+    returns.<a href="apidocs/com/thoughtworks/qdox/model/DocletTag.html#getValue()">getValue</a>(); // "A boolean of whether we care or not."
+    
+    // Access multiple doclet tags with the same name
+    DocletTag[] params = mth.<a href="apidocs/com/thoughtworks/qdox/model/AbstractJavaEntity.html#getTagByName(java.lang.String)">getTagsByName</a>("param");
+    params[0].<a href="apidocs/com/thoughtworks/qdox/model/DocletTag.html#getValue()">getValue</a>(); // "Someone's email address."
+    params[1].<a href="apidocs/com/thoughtworks/qdox/model/DocletTag.html#getValue()">getValue</a>(); // "Date of birth."
+    
+    // Access specific parameters of a doclet tag by index
+    DocletTag permission = mth.<a href="apidocs/com/thoughtworks/qdox/model/AbstractJavaEntity.html#getTagByName(java.lang.String)">getTagByName</a>("permission");
+    permission.<a href="apidocs/com/thoughtworks/qdox/model/DocletTag.html#getParameters()">getParameter</a>[0]; // "administrator"
+    permission.<a href="apidocs/com/thoughtworks/qdox/model/DocletTag.html#getParameters()">getParameter</a>[1]; // "full-access"
+    
+    // Access specific parameters of a doclet tag by name
+    DocletTag webservice = mth.<a href="apidocs/com/thoughtworks/qdox/model/AbstractJavaEntity.html#getTagByName(java.lang.String)">getTagByName</a>("webservice");
+    webservice.<a href="apidocs/com/thoughtworks/qdox/model/DocletTag.html#getNamedParameter(java.lang.String)">getNamedParameter</a>("type"); // "rpc"
+    webservice.<a href="apidocs/com/thoughtworks/qdox/model/DocletTag.html#getNamedParameter(java.lang.String)">getNamedParameter</a>("name"); // "myservice"
+           </pre></div>
+	</body>
+
+</html>
