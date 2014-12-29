@@ -1,0 +1,182 @@
+<html>
+  <head>
+    <title>Who is using QDox</title>
+  </head>
+  <body>
+
+      <p><table>
+        <tr>
+          <th>Project</th>
+          <th>Description</th>
+          <th>How QDox is Used</th>
+        </tr>
+
+        <tr class="b">
+          <td><nobr><a href="http://aspectwerkz.codehaus.org/">AspectWerkz</a></nobr></td>
+          <td>
+            AspectWerkz is an Aspect Oriented Programming (AOP) toolkit for Java that modifies byte-code to 
+            weave in interceptors and mixins.
+          </td>
+          <td>
+            Attributes can be used to associate interceptors and mixins with a specific class.
+          </td>
+        </tr>
+
+        <tr class="a">
+          <td><nobr><a href="http://avalon.apache.org/phoenix/">Avalon Phoenix</a></nobr></td>
+          <td>
+             Phoenix was a micro-kernel designed and implemented on top of the Avalon framework. It provided a number 
+             of facilities to manage the environment of Server Applications. Apache cancelled the Avalon project 2004
+          </td>
+          <td>
+            'MetaGenerate' is part of the Phoenix toolset and picks up @phoenix prefixed JavaDoc tags
+            to make XML manifests for the components that will be laced together in more XML to make 
+            a complete server application.
+          </td>
+        </tr>
+
+        <tr class="b">
+          <td><nobr><a href="http://cocoon.apache.org/">Cocoon</a></nobr></td>
+          <td>
+            Apache Cocoon is an XML publishing framework that raises the usage of XML and XSLT technologies for server applications
+            to a new level. Designed for performance and scalability around pipelined SAX processing, Cocoon offers a flexible
+            environment based on a separation of concerns between content, logic, and style. 
+          </td>
+          <td>
+            The QDox Block reads in Java source files and fires out SAX events enabling processing by standard XML tools (such as XSLT).
+          </td>
+        </tr>
+
+        <tr class="a">
+          <td><nobr><a href="http://jakarta.apache.org/commons/sandbox/attributes/">Commons Attributes</a></nobr></td>
+          <td>
+            Jakarta Commons Attributes provides an API to runtime metadata attributes. Attributes are specified as doclet tags and then compiled into the classpath where they can be accessed at runtime (without requiring the source). The aim is to provide a framework similar to .NET attributes.
+          </td>
+          <td>
+            QDox is used to extract the JavaDoc tags from the source files.
+          </td>
+        </tr>
+        
+        <tr class="b">
+          <td><nobr><a href="http://mojo.codehaus.org/gwt-maven-plugin">GWT-maven-plugin</a></nobr></td>
+          <td>
+            The gwt-maven-plugin provides support for GWT projects, including running the GWT developer tools (the compiler, shell and i18n generation) and performing support operations to help developers make GWT fit more closely in with their standard JEE web application development (debugging, managing the embedded server, running noserver, merging web.xml, generating I18N interfaces, generating Async GWT-RPC interfaces, and more) and environment (Eclipse IDE).
+          </td>
+          <td>
+            QDox is used to generate the Async GWT-RPC interfaces based on their Service-classes.  
+          </td>
+        </tr>
+
+        <tr class="a">
+          <td><nobr><a href="http://ivory.codehaus.org/">Ivory</a></nobr></td>
+          <td>
+            Ivory provides easy integration between your exiting Java classes, Avalon services, and Axis. 
+            It allows easy deployment of soap services with none of the WSDD configuration that Axis normally mandates. 
+          </td>
+          <td>
+            Attributes are used to provide additional hints to Ivory about Java classes that cannot be determined via reflection.
+          </td>
+        </tr>
+        
+        <tr class="b">
+          <td><nobr><a href="http://maven.apache.org/plugins/maven-javadoc-plugin/">maven-javadoc-plugin</a></nobr></td>
+          <td>
+            The Javadoc Plugin uses the Javadoc tool to generate javadocs for the specified project.
+          </td>
+          <td>
+            When developers write code, they could forget to create (or update) the Javadoc comments. The &lt;fix&gt; and &lt;test-fix&gt;
+ goals are interactive goals to fix the actual Javadoc comments.
+          </td>
+        </tr>
+
+        <tr class="a">
+          <td><nobr><a href="http://maven.apache.org/">Maven 2</a></nobr></td>
+          <td>
+            Maven is a software project management and comprehension tool.
+          </td>
+          <td>
+            QDox is used for extraction of Javadoc tags from source files to generate plugin descriptors
+          </td>
+        </tr>
+
+        <tr class="b">
+          <td><nobr><a href="http://www.mockmaker.org">Mock Maker</a></nobr></td>
+          <td>
+            Mock Maker is a tool for automatically generating mock objects from custom classes to aid in testing the
+            untestable. This supports the practises of Test Driven Development and eXtreme Programming.
+          </td>
+          <td>
+            Mock Maker scans the source repository for any class/interface marked with the @mock JavaDoc tag
+            and automatically creates the Mock Object for this that matches the class definition.
+          </td>
+        </tr>
+
+        <tr class="a">
+          <td><nobr><a href="http://nanning.codehaus.org/">Nanning</a></nobr></td>
+          <td>
+            Nanning is an Aspect Oriented Programming (AOP) toolkit for Java that does not require
+            a custom compiler. It uses dynamic proxies to weave in interceptors and mixins at runtime.
+          </td>
+          <td>
+            QDox is used to allow aspects to be applied to classes by specifiying meta-data in doclet tags.
+          </td>
+        </tr>
+
+        <tr class="b">
+          <td><nobr><a href="http://paranamer.codehaus.org/">Paranamer</a></nobr></td>
+          <td>
+            Paranamer a mechamism for accessing the parameter names of methods of Java classes compiled into jars
+          </td>
+          <td>
+            QDox is used to parse the source and generate the parameter names list.
+          </td>
+        </tr>
+
+        <tr class="a">
+          <td><nobr><a href="http://springframework.me/">Spring ME</a></nobr></td>
+          <td>
+            A version of Spring that not only has a very small runtime footprint (none), but also is capable of running on small handheld devices, since it does not rely on reflection.
+          </td>
+          <td>
+          </td>
+        </tr>
+
+        <tr class="b">
+          <td><nobr><a href="http://vdoclet.sourceforge.net/">vDoclet</a></nobr></td>
+          <td>
+            vDoclet is a framework for code-generation using Velocity templates, 
+            based on annotated Java source-code.
+          </td>
+          <td>
+            vDoclet uses QDox to produce input-data for it's templates.
+          </td>
+        </tr>
+        
+        <tr class="a">
+          <td><nobr><a href="http://voruta.sourceforge.net/">Voruta</a></nobr></td>
+          <td>
+            Voruta is a data access framework for embedding SQL statements in Java methods using custom JavaDoc 
+            tags and dynamic code generation at runtime.
+          </td>
+          <td>
+            QDox is used to parse metadata and CGLib to generate implementation at runtime.
+          </td>
+        </tr>
+
+        <tr class="b">
+          <td><nobr><a href="http://xdoclet.codehaus.org/">XDoclet2</a></nobr></td>
+          <td>
+            XDoclet2 is a framework for code-generation using Velocity or Jelly templates, 
+            based on annotated Java source-code. It is a rewrite of XDoclet.
+          </td>
+          <td>
+            XDoclet2 uses QDox to produce input-data for it's templates, as well as
+            QDox' APITestCase to validate the generated sources.
+          </td>
+        </tr>
+
+      </table></p>
+
+  </body>
+
+</html>
